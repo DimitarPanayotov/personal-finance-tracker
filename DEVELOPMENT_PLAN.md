@@ -4,15 +4,18 @@
 - [x] Created Spring Boot project
 - [x] Set up Git repository
 - [x] Verified application runs
-- [ ] Create database entities
-- [ ] Set up basic security
+
+## Day 2 Progress
+- Made a Database schema
+- Made the project structure
+- Made the first entity(User),
+had some problems with H2 Database and added a SecurityConfig file to fix them(not completely understanding how they work, will come later when we start to security implementation)
 
 ## Next Steps
-1. Create User entity
-2. Create Transaction entity
-3. Create Category entity
-4. Set up repositories
-5. Create first controller
+- Create Transaction entity
+- Create Category entity 
+- Set up repositories
+- Create first controller
 
 ## Database Design
 Coming next...
