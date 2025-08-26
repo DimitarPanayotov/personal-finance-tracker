@@ -25,9 +25,13 @@ will come later when we start the security implementation)
 - Working on validation with annotations and ErrorMessages class
 - Made the User DTO - request, response and mapper
 
+## Day 4 Progress
+- Wrote tests for the User DTO with JUnit5, AssertJ, Jakarta Bean Validation
+- Wrote tests for the Repositories with JPATest
+- Wrote tests for the entities
+
 ## Next Steps
 - Finish DTOs
-- Write tests
 - Services and controllers - make query and command interfaces that should be implemented by the services
 - Security with JWT authentication
 
