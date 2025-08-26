@@ -29,6 +29,8 @@ will come later when we start the security implementation)
 - Wrote tests for the User DTO with JUnit5, AssertJ, Jakarta Bean Validation
 - Wrote tests for the Repositories with JPATest
 - Wrote tests for the entities
+- Made the Category DTOs + tests
+- Ran all tests and passed with 93-94% coverage
 
 ## Next Steps
 - Finish DTOs

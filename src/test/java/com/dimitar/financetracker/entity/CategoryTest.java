@@ -96,7 +96,7 @@ class CategoryTest {
 
     @Test
     void tooLongName_shouldFailValidation() {
-        String longName = "a".repeat(101); // assuming CATEGORY_NAME_MAX_LENGTH is 100
+        String longName = "a".repeat(101);
         category.setName(longName);
 
         Set<ConstraintViolation<Category>> violations = validator.validate(category);
@@ -172,6 +172,25 @@ class CategoryTest {
         LocalDateTime after = LocalDateTime.now().plusSeconds(1);
 
         assertThat(newCategory.getCreatedAt()).isBetween(before, after);
+        assertThat(newCategory.getUpdatedAt()).isBetween(before, after);
+    }
+
+    @Test
+    void onUpdate_shouldUpdateTimestamp() throws InterruptedException {
+        category.onCreate();
+        LocalDateTime originalCreatedAt = category.getCreatedAt();
+        LocalDateTime originalUpdatedAt = category.getUpdatedAt();
+
+        Thread.sleep(10);
+        LocalDateTime before = LocalDateTime.now().minusSeconds(1);
+
+        category.onUpdate();
+
+        LocalDateTime after = LocalDateTime.now().plusSeconds(1);
+
+        assertThat(category.getCreatedAt()).isEqualTo(originalCreatedAt);
+        assertThat(category.getUpdatedAt()).isBetween(before, after);
+        assertThat(category.getUpdatedAt()).isAfter(originalUpdatedAt);
     }
 
     @Test
