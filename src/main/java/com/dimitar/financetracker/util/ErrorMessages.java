@@ -2,24 +2,24 @@ package com.dimitar.financetracker.util;
 
 public final class ErrorMessages {
     public static final String USERNAME_REQUIRED = "Username is required";
-    public static final String USERNAME_TOO_LONG = "Username must be less than %d characters";
+    public static final String USERNAME_TOO_LONG = "Username must be less than 50 characters";
     public static final String EMAIL_REQUIRED = "Email is required";
     public static final String EMAIL_INVALID = "Email must be valid";
-    public static final String EMAIL_TOO_LONG = "Email must be less than %d characters";
+    public static final String EMAIL_TOO_LONG = "Email must be less than 100 characters";
     public static final String PASSWORD_REQUIRED = "Password is required";
-    public static final String PASSWORD_TOO_SHORT = "Password must be at least %d characters";
+    public static final String PASSWORD_TOO_SHORT = "Password must be at least 6 characters";
 
     public static final String CATEGORY_NAME_REQUIRED = "Category name is required";
-    public static final String CATEGORY_NAME_TOO_LONG = "Category name must be less than %d characters";
+    public static final String CATEGORY_NAME_TOO_LONG = "Category name must be less than 100 characters";
     public static final String CATEGORY_TYPE_REQUIRED = "Category type is required";
     public static final String CATEGORY_COLOR_REQUIRED = "Color is required";
-    public static final String CATEGORY_COLOR_TOO_LONG = "Color must be less than %d characters";
+    public static final String CATEGORY_COLOR_TOO_LONG = "Color must be less than 7 characters";
     public static final String USER_REQUIRED = "User is required";
 
     public static final String AMOUNT_REQUIRED = "Amount is required";
     public static final String AMOUNT_MIN = "Amount must be at least 0.01";
     public static final String TRANSACTION_DATE_REQUIRED = "Transaction date is required";
-    public static final String DESCRIPTION_TOO_LONG = "Description must be less than %d characters";
+    public static final String DESCRIPTION_TOO_LONG = "Description must be less than 255 characters";
     public static final String CATEGORY_REQUIRED = "Category is required";
 
     public static final String BUDGET_AMOUNT_REQUIRED = "Budget amount is required";

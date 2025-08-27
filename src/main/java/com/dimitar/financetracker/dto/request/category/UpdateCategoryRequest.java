@@ -7,8 +7,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import static com.dimitar.financetracker.util.DatabaseConstants.CATEGORY_NAME_MAX_LENGTH;
-import static com.dimitar.financetracker.util.DatabaseConstants.COLOR_LENGTH;
 import static com.dimitar.financetracker.util.ErrorMessages.CATEGORY_COLOR_TOO_LONG;
 import static com.dimitar.financetracker.util.ErrorMessages.CATEGORY_NAME_TOO_LONG;
 
@@ -17,11 +15,11 @@ import static com.dimitar.financetracker.util.ErrorMessages.CATEGORY_NAME_TOO_LO
 @AllArgsConstructor
 @Builder
 public class UpdateCategoryRequest {
-    @Size(max = CATEGORY_NAME_MAX_LENGTH, message = CATEGORY_NAME_TOO_LONG)
+    @Size(max = 100, message = CATEGORY_NAME_TOO_LONG)
     private String name;
 
     private CategoryType type;
 
-    @Size(max = COLOR_LENGTH, message = CATEGORY_COLOR_TOO_LONG)
+    @Size(max = 7, message = CATEGORY_COLOR_TOO_LONG)
     private String color;
 }

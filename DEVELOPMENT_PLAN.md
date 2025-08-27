@@ -34,9 +34,12 @@ will come later when we start the security implementation)
 
 ## Day 5 Progress
 - Made Transaction DTOs + mapper + tests
-- 350 test all working with high coverage
+- 350 tests all passing with high coverage
+- Made Budget DTOs + mapper + test
+- 400 tests all passing with high coverage
+- DTOs FINISHED!
+
 ## Next Steps
-- Finish DTOs
 - Services and controllers - make query and command interfaces that should be implemented by the services
 - Security with JWT authentication
 

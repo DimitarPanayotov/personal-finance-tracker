@@ -26,7 +26,7 @@ class TransactionMapperTest {
     @BeforeEach
     void setUp() {
         transactionMapper = new TransactionMapper();
-
+        
         testUser = User.builder()
                 .id(1L)
                 .username("testuser")

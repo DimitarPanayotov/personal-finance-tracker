@@ -13,6 +13,7 @@ public final class DatabaseConstants {
     public static final int AMOUNT_SCALE = 2;
 
     public static final int BUDGET_PERIOD_MAX_LENGTH = 20;
+    public static final int QUARTERLY_MONTHS = 3;
 
     private DatabaseConstants() {
         throw new AssertionError("Cannot instantiate utility class!");

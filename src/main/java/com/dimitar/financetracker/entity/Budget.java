@@ -29,6 +29,8 @@ import java.time.LocalDateTime;
 
 import static com.dimitar.financetracker.util.DatabaseConstants.AMOUNT_PRECISION;
 import static com.dimitar.financetracker.util.DatabaseConstants.AMOUNT_SCALE;
+import static com.dimitar.financetracker.util.DatabaseConstants.BUDGET_PERIOD_MAX_LENGTH;
+import static com.dimitar.financetracker.util.DatabaseConstants.QUARTERLY_MONTHS;
 import static com.dimitar.financetracker.util.ErrorMessages.BUDGET_AMOUNT_MIN;
 import static com.dimitar.financetracker.util.ErrorMessages.BUDGET_AMOUNT_REQUIRED;
 import static com.dimitar.financetracker.util.ErrorMessages.BUDGET_PERIOD_REQUIRED;
@@ -77,7 +79,7 @@ public class Budget {
     private LocalDate endDate;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = BUDGET_PERIOD_MAX_LENGTH)
     @NotNull(message = BUDGET_PERIOD_REQUIRED)
     private BudgetPeriod period;
 
@@ -95,7 +97,7 @@ public class Budget {
         createdAt = LocalDateTime.now();
         updatedAt = LocalDateTime.now();
 
-        if (endDate == null && period != null && startDate != null) {
+        if (endDate == null && period != null && startDate != null && period != BudgetPeriod.CUSTOM) {
             this.endDate = calculateEndDate();
         }
     }
@@ -109,7 +111,7 @@ public class Budget {
         return switch (period) {
             case WEEKLY -> startDate.plusWeeks(1);
             case MONTHLY -> startDate.plusMonths(1);
-            case QUARTERLY -> startDate.plusMonths(3);
+            case QUARTERLY -> startDate.plusMonths(QUARTERLY_MONTHS);
             case YEARLY -> startDate.plusYears(1);
             case CUSTOM -> endDate; // For custom, endDate must be provided
         };

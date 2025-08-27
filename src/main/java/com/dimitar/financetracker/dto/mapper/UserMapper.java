@@ -16,7 +16,7 @@ public class UserMapper {
         return User.builder()
             .username(request.getUsername())
             .email(request.getEmail())
-            .password(request.getPassword()) //should encode
+            .password(request.getPassword()) // TODO: This should be encoded by the service layer, not here
             .build();
     }
 
@@ -57,5 +57,12 @@ public class UserMapper {
         if (request.getEmail() != null && !request.getEmail().trim().isEmpty()) {
             user.setEmail(request.getEmail().trim().toLowerCase());
         }
+    }
+
+    public void updatePassword(User user, String newEncodedPassword) {
+        if (user == null || newEncodedPassword == null) {
+            return;
+        }
+        user.setPassword(newEncodedPassword);
     }
 }

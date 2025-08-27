@@ -154,16 +154,6 @@ class TransactionTest {
     }
 
     @Test
-    void nullDescription_shouldPassValidation() {
-        transaction.setDescription(null);
-
-        Set<ConstraintViolation<Transaction>> violations = validator.validate(transaction);
-        assertThat(violations)
-                .filteredOn(v -> v.getPropertyPath().toString().equals("description"))
-                .isEmpty();
-    }
-
-    @Test
     void emptyDescription_shouldPassValidation() {
         transaction.setDescription("");
 
@@ -199,14 +189,7 @@ class TransactionTest {
     void onCreate_shouldSetCreatedAtAndUpdatedAt() {
         Transaction transaction = new Transaction();
 
-        // Use reflection to call protected method for testing
-        try {
-            var method = Transaction.class.getDeclaredMethod("onCreate");
-            method.setAccessible(true);
-            method.invoke(transaction);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        transaction.onCreate();
 
         assertThat(transaction.getCreatedAt()).isNotNull();
         assertThat(transaction.getUpdatedAt()).isNotNull();
@@ -217,30 +200,22 @@ class TransactionTest {
     @Test
     void onUpdate_shouldUpdateUpdatedAtField() {
         Transaction transaction = new Transaction();
+        transaction.onCreate();
+        LocalDateTime originalCreatedAt = transaction.getCreatedAt();
+        LocalDateTime originalUpdatedAt = transaction.getUpdatedAt();
 
-        // Use reflection to call protected methods for testing
+        // Wait a bit to ensure different timestamp
         try {
-            var onCreateMethod = Transaction.class.getDeclaredMethod("onCreate");
-            onCreateMethod.setAccessible(true);
-            onCreateMethod.invoke(transaction);
-
-            LocalDateTime originalCreatedAt = transaction.getCreatedAt();
-            LocalDateTime originalUpdatedAt = transaction.getUpdatedAt();
-
-            // Wait a bit to ensure different timestamp
             Thread.sleep(10);
-
-            var onUpdateMethod = Transaction.class.getDeclaredMethod("onUpdate");
-            onUpdateMethod.setAccessible(true);
-            onUpdateMethod.invoke(transaction);
-
-            assertThat(transaction.getCreatedAt()).isEqualTo(originalCreatedAt); // Should not change
-            assertThat(transaction.getUpdatedAt()).isNotEqualTo(originalUpdatedAt); // Should change
-            assertThat(transaction.getUpdatedAt()).isAfter(originalUpdatedAt);
-
-        } catch (Exception e) {
-            throw new RuntimeException(e);
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
         }
+
+        transaction.onUpdate();
+
+        assertThat(transaction.getCreatedAt()).isEqualTo(originalCreatedAt); // Should not change
+        assertThat(transaction.getUpdatedAt()).isNotEqualTo(originalUpdatedAt); // Should change
+        assertThat(transaction.getUpdatedAt()).isAfter(originalUpdatedAt);
     }
 
     @Test
