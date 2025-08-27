@@ -316,6 +316,42 @@ class TransactionRepositoryTest {
         assertThat(transactions.getTotalPages()).isZero();
     }
 
+    @Test
+    void save_shouldSetCreatedAtAndUpdatedAt() {
+        Transaction transaction = Transaction.builder()
+                .user(testUser)
+                .category(expenseCategory)
+                .amount(new BigDecimal("100.00"))
+                .transactionDate(LocalDate.now())
+                .description("Test transaction")
+                .build();
+
+        Transaction saved = transactionRepository.save(transaction);
+
+        assertThat(saved.getCreatedAt()).isNotNull();
+        assertThat(saved.getUpdatedAt()).isNotNull();
+        assertThat(saved.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
+        assertThat(saved.getUpdatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
+    }
+
+    @Test
+    void update_shouldUpdateUpdatedAtField() {
+        Transaction transaction = createTestTransaction(
+                testUser, expenseCategory, new BigDecimal("100.00"),
+                LocalDate.now(), "Original description");
+
+        LocalDateTime originalCreatedAt = transaction.getCreatedAt();
+        LocalDateTime originalUpdatedAt = transaction.getUpdatedAt();
+
+        // Update the transaction
+        transaction.setDescription("Updated description");
+        Transaction updated = transactionRepository.save(transaction);
+
+        assertThat(updated.getCreatedAt()).isEqualTo(originalCreatedAt);
+        assertThat(updated.getUpdatedAt()).isAfterOrEqualTo(originalUpdatedAt);
+        assertThat(updated.getDescription()).isEqualTo("Updated description");
+    }
+
     private User createAndPersistUser(String username, String email) {
         User user = User.builder()
                 .username(username)
@@ -349,5 +385,18 @@ class TransactionRepositoryTest {
                 .createdAt(LocalDateTime.now())
                 .build();
         return entityManager.persistAndFlush(transaction);
+    }
+
+    private Transaction createTestTransaction(User user, Category category, BigDecimal amount, LocalDate date, String description) {
+        Transaction transaction = Transaction.builder()
+                .user(user)
+                .category(category)
+                .amount(amount)
+                .transactionDate(date)
+                .description(description)
+                .build();
+
+        // JPA will automatically call @PrePersist when saving
+        return transactionRepository.save(transaction);
     }
 }

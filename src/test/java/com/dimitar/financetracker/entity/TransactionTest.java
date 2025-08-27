@@ -145,11 +145,12 @@ class TransactionTest {
 
     @Test
     void tooLongDescription_shouldFailValidation() {
-        String longDescription = "a".repeat(256); // assuming DESCRIPTION_MAX_LENGTH is 1000
+        String longDescription = "a".repeat(256); // DESCRIPTION_MAX_LENGTH is 255
         transaction.setDescription(longDescription);
 
         Set<ConstraintViolation<Transaction>> violations = validator.validate(transaction);
-        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("description"));
+        assertThat(violations).anyMatch(v -> v.getPropertyPath().toString().equals("description")
+            && v.getMessage().contains("Description must be less than"));
     }
 
     @Test
@@ -192,6 +193,54 @@ class TransactionTest {
         LocalDateTime after = LocalDateTime.now().plusSeconds(1);
 
         assertThat(newTransaction.getCreatedAt()).isBetween(before, after);
+    }
+
+    @Test
+    void onCreate_shouldSetCreatedAtAndUpdatedAt() {
+        Transaction transaction = new Transaction();
+
+        // Use reflection to call protected method for testing
+        try {
+            var method = Transaction.class.getDeclaredMethod("onCreate");
+            method.setAccessible(true);
+            method.invoke(transaction);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        assertThat(transaction.getCreatedAt()).isNotNull();
+        assertThat(transaction.getUpdatedAt()).isNotNull();
+        assertThat(transaction.getCreatedAt()).isEqualTo(transaction.getUpdatedAt());
+        assertThat(transaction.getCreatedAt()).isBeforeOrEqualTo(LocalDateTime.now());
+    }
+
+    @Test
+    void onUpdate_shouldUpdateUpdatedAtField() {
+        Transaction transaction = new Transaction();
+
+        // Use reflection to call protected methods for testing
+        try {
+            var onCreateMethod = Transaction.class.getDeclaredMethod("onCreate");
+            onCreateMethod.setAccessible(true);
+            onCreateMethod.invoke(transaction);
+
+            LocalDateTime originalCreatedAt = transaction.getCreatedAt();
+            LocalDateTime originalUpdatedAt = transaction.getUpdatedAt();
+
+            // Wait a bit to ensure different timestamp
+            Thread.sleep(10);
+
+            var onUpdateMethod = Transaction.class.getDeclaredMethod("onUpdate");
+            onUpdateMethod.setAccessible(true);
+            onUpdateMethod.invoke(transaction);
+
+            assertThat(transaction.getCreatedAt()).isEqualTo(originalCreatedAt); // Should not change
+            assertThat(transaction.getUpdatedAt()).isNotEqualTo(originalUpdatedAt); // Should change
+            assertThat(transaction.getUpdatedAt()).isAfter(originalUpdatedAt);
+
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Test
@@ -280,5 +329,3 @@ class TransactionTest {
                 .isEmpty();
     }
 }
-
-

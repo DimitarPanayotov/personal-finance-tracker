@@ -32,6 +32,9 @@ will come later when we start the security implementation)
 - Made the Category DTOs + tests
 - Ran all tests and passed with 93-94% coverage
 
+## Day 5 Progress
+- Made Transaction DTOs + mapper + tests
+- 350 test all working with high coverage
 ## Next Steps
 - Finish DTOs
 - Services and controllers - make query and command interfaces that should be implemented by the services
