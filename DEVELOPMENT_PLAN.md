@@ -39,6 +39,13 @@ will come later when we start the security implementation)
 - 400 tests all passing with high coverage
 - DTOs FINISHED!
 
+## Day 6 Progress
+- Did research about the Service layer and controllers
+- Created Query and Command interfaces (CQRS pattern)
+- Created first service - Create User
+- Created the controller and tested in Postman - everything is ok!
+- Created global exception handler + error responses
+
 ## Next Steps
 - Services and controllers - make query and command interfaces that should be implemented by the services
 - Security with JWT authentication
