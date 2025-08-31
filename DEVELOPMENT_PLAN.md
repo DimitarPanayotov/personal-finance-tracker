@@ -46,6 +46,10 @@ will come later when we start the security implementation)
 - Created the controller and tested in Postman - everything is ok!
 - Created global exception handler + error responses
 
+## Day 7 Progress
+- Created Get User by Id query request
+- Tested with Postman and added custom Exception, updated the Exception Handler
+
 ## Next Steps
 - Services and controllers - make query and command interfaces that should be implemented by the services
 - Security with JWT authentication

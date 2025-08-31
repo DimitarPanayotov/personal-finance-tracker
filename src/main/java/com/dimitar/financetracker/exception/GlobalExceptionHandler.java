@@ -4,6 +4,7 @@ import com.dimitar.financetracker.dto.response.error.ErrorResponse;
 import com.dimitar.financetracker.dto.response.error.ValidationErrorResponse;
 import com.dimitar.financetracker.exception.user.DuplicateEmailException;
 import com.dimitar.financetracker.exception.user.DuplicateUsernameException;
+import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import static com.dimitar.financetracker.util.HttpStatuses.CONFLICT_STATUS_CODE;
+import static com.dimitar.financetracker.util.HttpStatuses.NOT_FOUND;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,5 +51,19 @@ public class GlobalExceptionHandler {
         );
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
+
+    @ExceptionHandler(UserDoesNotExistException.class)
+    public ResponseEntity<ErrorResponse> handleNonExistExceptions(
+        RuntimeException ex, HttpServletRequest request) {
+
+        ErrorResponse response = new ErrorResponse(
+            NOT_FOUND,
+            "Not found",
+            ex.getMessage(),
+            request.getRequestURI()
+        );
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }
