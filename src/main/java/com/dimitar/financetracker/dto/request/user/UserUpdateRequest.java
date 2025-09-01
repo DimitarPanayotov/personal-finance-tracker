@@ -1,6 +1,7 @@
 package com.dimitar.financetracker.dto.request.user;
 
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,8 @@ import static com.dimitar.financetracker.util.ErrorMessages.USERNAME_TOO_LONG;
 @AllArgsConstructor
 @Builder
 public class UserUpdateRequest {
+    private Long id;
+
     @Size(max = USERNAME_MAX_LENGTH, message = USERNAME_TOO_LONG)
     private String username;
 

@@ -49,8 +49,13 @@ will come later when we start the security implementation)
 ## Day 7 Progress
 - Created Get User by Id query request
 - Tested with Postman and added custom Exception, updated the Exception Handler
-
+- Created Update User request and Delete User Request (basic CRUD user operations finished)
+- Created Requests for Creating Category, Getting Category by Id and all categories by user id
+- Testes everything with Postman and the relation are OK!
 ## Next Steps
+- Update Category Command and Update Category Command Input Record; Delete Category Command
+- Adding Validation and Error Handling
+- Testing
 - Services and controllers - make query and command interfaces that should be implemented by the services
 - Security with JWT authentication
 

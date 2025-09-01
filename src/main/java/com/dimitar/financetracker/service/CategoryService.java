@@ -1,0 +1,33 @@
+package com.dimitar.financetracker.service;
+
+import com.dimitar.financetracker.dto.request.category.CreateCategoryRequest;
+import com.dimitar.financetracker.dto.response.category.CategoryResponse;
+import com.dimitar.financetracker.service.command.category.CreateCategoryCommand;
+import com.dimitar.financetracker.service.command.category.CreateCategoryCommandInput;
+import com.dimitar.financetracker.service.query.category.GetAllCategoriesQuery;
+import com.dimitar.financetracker.service.query.category.GetCategoryByIdQuery;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+@Service
+@RequiredArgsConstructor
+public class CategoryService {
+    private final CreateCategoryCommand createCategoryCommand;
+    private final GetCategoryByIdQuery getCategoryByIdQuery;
+    private final GetAllCategoriesQuery getAllCategoriesQuery;
+
+    public CategoryResponse createCategory(CreateCategoryRequest request, Long userId) {
+        CreateCategoryCommandInput commandRequest = new CreateCategoryCommandInput(request, userId);
+        return createCategoryCommand.execute(commandRequest);
+    }
+
+    public CategoryResponse getCategoryById(Long categoryId) {
+        return getCategoryByIdQuery.execute(categoryId);
+    }
+
+    public List<CategoryResponse> getAllCategories(Long userId) {
+        return getAllCategoriesQuery.execute(userId);
+    }
+}
