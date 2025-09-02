@@ -28,6 +28,7 @@ public class CreateCategoryRequest {
 
     @NotNull(message = CATEGORY_TYPE_REQUIRED)
     private CategoryType type;
+
     @NotBlank(message = CATEGORY_COLOR_REQUIRED)
     @Size(max = COLOR_LENGTH, message = CATEGORY_COLOR_TOO_LONG)
     private String color;

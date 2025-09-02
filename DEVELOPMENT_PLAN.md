@@ -52,8 +52,21 @@ will come later when we start the security implementation)
 - Created Update User request and Delete User Request (basic CRUD user operations finished)
 - Created Requests for Creating Category, Getting Category by Id and all categories by user id
 - Testes everything with Postman and the relation are OK!
+
+## Day 8 Progress
+- Created Update Category Service and tested in Postman
+- Created Delete Category Service and tested in Postman
+- Added basic JWT Security
+- JwtUtil: Creates and validates tokens
+  AuthenticationService: Business logic for register/login
+  CustomUserDetailsService: Loads user for Spring Security
+  JwtAuthenticationFilter: Validates tokens on every request
+  SecurityConfig: Configures which endpoints need authentication
+- Stateless system - the client proves identity with each request using the jwt token
+- The flow is - login or register to get a JWT token, use this token in authorization header with Bearer TOKEN - access the protected endpoints
 ## Next Steps
-- Update Category Command and Update Category Command Input Record; Delete Category Command
+- Starting security
+- Read a lot about security
 - Adding Validation and Error Handling
 - Testing
 - Services and controllers - make query and command interfaces that should be implemented by the services
