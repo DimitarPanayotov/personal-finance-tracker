@@ -5,6 +5,7 @@ import com.dimitar.financetracker.dto.request.user.UserRegistrationRequest;
 import com.dimitar.financetracker.dto.response.user.AuthenticationResponse;
 import com.dimitar.financetracker.entity.User;
 import com.dimitar.financetracker.exception.user.UserAlreadyExistsException;
+import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
 import com.dimitar.financetracker.repository.UserRepository;
 import com.dimitar.financetracker.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
+    private static final long ONE_DAY_IN_MILLIS = 86400L;
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
@@ -25,7 +27,6 @@ public class AuthenticationService {
     private final CustomUserDetailsService userDetailsService;
 
     public AuthenticationResponse register(UserRegistrationRequest request) {
-        // Check if user already exists
         if (userRepository.existsByUsername(request.getUsername())) {
             throw new UserAlreadyExistsException("Username already exists: " + request.getUsername());
         }
@@ -52,7 +53,7 @@ public class AuthenticationService {
                 .type("Bearer")
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .expiresIn(86400L) // 24 hours in seconds
+                .expiresIn(ONE_DAY_IN_MILLIS)
                 .build();
     }
 
@@ -71,14 +72,14 @@ public class AuthenticationService {
 
         // Get user info
         User user = userRepository.findByUsernameOrEmail(request.getUsernameOrEmail(), request.getUsernameOrEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new UserDoesNotExistException("User not found"));
 
         return AuthenticationResponse.builder()
                 .token(jwtToken)
                 .type("Bearer")
                 .username(user.getUsername())
                 .email(user.getEmail())
-                .expiresIn(86400L) // 24 hours in seconds
+                .expiresIn(ONE_DAY_IN_MILLIS)
                 .build();
     }
 }

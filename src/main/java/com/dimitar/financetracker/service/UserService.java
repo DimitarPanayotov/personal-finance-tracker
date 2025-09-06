@@ -11,34 +11,26 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    private final CreateUserCommand createUserCommand;
     private final GetUserQuery getUserQuery;
     private final UpdateUserCommand updateUserCommand;
     private final DeleteUserCommand deleteUserCommand;
 
-    public UserService(CreateUserCommand createUserCommand,
-                       GetUserQuery getUserQuery,
+    public UserService(GetUserQuery getUserQuery,
                        UpdateUserCommand updateUserCommand,
                        DeleteUserCommand deleteUserCommand) {
-        this.createUserCommand = createUserCommand;
         this.getUserQuery = getUserQuery;
         this.updateUserCommand = updateUserCommand;
         this.deleteUserCommand = deleteUserCommand;
-    }
-
-    public UserResponse createUser(UserRegistrationRequest request) {
-        return createUserCommand.execute(request);
     }
 
     public UserResponse getUser(Long id) {
         return getUserQuery.execute(id);
     }
 
-    public UserResponse updateUser(Long id, UserUpdateRequest request) {
-        request.setId(id);
+    public UserResponse updateUser(UserUpdateRequest request) {
         return updateUserCommand.execute(request);
     }
-
+    
     public void deleteUser(Long userId) {
         deleteUserCommand.execute(userId);
     }

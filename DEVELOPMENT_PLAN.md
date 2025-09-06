@@ -59,11 +59,18 @@ will come later when we start the security implementation)
 - Added basic JWT Security
 - JwtUtil: Creates and validates tokens
   AuthenticationService: Business logic for register/login
-  CustomUserDetailsService: Loads user for Spring Security
-  JwtAuthenticationFilter: Validates tokens on every request
-  SecurityConfig: Configures which endpoints need authentication
+- CustomUserDetailsService: Loads user for Spring Security
+- JwtAuthenticationFilter: Validates tokens on every request
+- SecurityConfig: Configures which endpoints need authentication
 - Stateless system - the client proves identity with each request using the jwt token
 - The flow is - login or register to get a JWT token, use this token in authorization header with Bearer TOKEN - access the protected endpoints
+
+## Day 9 Progress
+- Worked on security
+- Updated the User and Category controllers, so they work with JWT tokens instead of @RequestParam ID
+- Now user registers or logs in -> sees categories or updates something without a need of his id
+- Tested everything in postman
+
 ## Next Steps
 - Starting security
 - Read a lot about security

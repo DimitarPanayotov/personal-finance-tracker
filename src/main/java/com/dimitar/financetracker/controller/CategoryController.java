@@ -3,6 +3,7 @@ package com.dimitar.financetracker.controller;
 import com.dimitar.financetracker.dto.request.category.CreateCategoryRequest;
 import com.dimitar.financetracker.dto.request.category.UpdateCategoryRequest;
 import com.dimitar.financetracker.dto.response.category.CategoryResponse;
+import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +16,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -25,12 +25,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CategoryController {
     private final CategoryService categoryService;
+    private final AuthenticationFacade authenticationFacade;
 
-    @PostMapping("/{userId}")
+    @PostMapping
     public ResponseEntity<CategoryResponse> createCategory(
-        @PathVariable Long userId,
         @Valid @RequestBody CreateCategoryRequest request) {
-        CategoryResponse response = categoryService.createCategory(request, userId);
+        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
+        CategoryResponse response = categoryService.createCategory(request, authenticatedUserId);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
@@ -41,23 +42,24 @@ public class CategoryController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories(@RequestParam Long userId) {
-        List<CategoryResponse> categories = categoryService.getAllCategories(userId);
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
+        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
+        List<CategoryResponse> categories = categoryService.getAllCategories(authenticatedUserId);
         return ResponseEntity.ok(categories);
     }
 
     @PatchMapping("/{categoryId}")
     public ResponseEntity<CategoryResponse> updateCategory(@PathVariable Long categoryId,
-                                                           @RequestParam Long userId,
                                                            @Valid @RequestBody UpdateCategoryRequest request) {
-        CategoryResponse response = categoryService.updateCategory(request, userId, categoryId);
+        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
+        CategoryResponse response = categoryService.updateCategory(request, authenticatedUserId, categoryId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{categoryId}")
-    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId,
-                                               @RequestParam Long userId) {
-        categoryService.deleteCategory(categoryId, userId);
+    public ResponseEntity<Void> deleteCategory(@PathVariable Long categoryId) {
+        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
+        categoryService.deleteCategory(categoryId, authenticatedUserId);
         return ResponseEntity.noContent().build();
     }
 }
