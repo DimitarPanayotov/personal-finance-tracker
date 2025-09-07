@@ -17,6 +17,8 @@ import static com.dimitar.financetracker.util.ErrorMessages.PASSWORD_TOO_SHORT;
 @AllArgsConstructor
 @Builder
 public class PasswordChangeRequest {
+    private Long userId;
+
     @NotBlank(message = CURRENT_PASSWORD_REQUIRED)
     private String password;
 

@@ -1,7 +1,9 @@
 package com.dimitar.financetracker.service;
 
+import com.dimitar.financetracker.dto.request.user.PasswordChangeRequest;
 import com.dimitar.financetracker.dto.request.user.UserUpdateRequest;
 import com.dimitar.financetracker.dto.response.user.UserResponse;
+import com.dimitar.financetracker.service.command.user.ChangePasswordCommand;
 import com.dimitar.financetracker.service.command.user.DeleteUserCommand;
 import com.dimitar.financetracker.service.command.user.UpdateUserCommand;
 import com.dimitar.financetracker.service.query.user.GetUserQuery;
@@ -12,13 +14,16 @@ public class UserService {
     private final GetUserQuery getUserQuery;
     private final UpdateUserCommand updateUserCommand;
     private final DeleteUserCommand deleteUserCommand;
+    private final ChangePasswordCommand changePasswordCommand;
 
     public UserService(GetUserQuery getUserQuery,
                        UpdateUserCommand updateUserCommand,
-                       DeleteUserCommand deleteUserCommand) {
+                       DeleteUserCommand deleteUserCommand,
+                       ChangePasswordCommand changePasswordCommand) {
         this.getUserQuery = getUserQuery;
         this.updateUserCommand = updateUserCommand;
         this.deleteUserCommand = deleteUserCommand;
+        this.changePasswordCommand = changePasswordCommand;
     }
 
     public UserResponse getUser(Long id) {
@@ -31,5 +36,9 @@ public class UserService {
     
     public void deleteUser(Long userId) {
         deleteUserCommand.execute(userId);
+    }
+
+    public UserResponse changePassword(PasswordChangeRequest request) {
+        return changePasswordCommand.execute(request);
     }
 }

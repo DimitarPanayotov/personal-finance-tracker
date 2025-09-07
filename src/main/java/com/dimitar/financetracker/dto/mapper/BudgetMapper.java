@@ -22,6 +22,7 @@ public class BudgetMapper {
             .startDate(request.getStartDate())
             .endDate(request.getEndDate())
             .period(request.getPeriod())
+            .isActive(true)
             .build();
     }
 

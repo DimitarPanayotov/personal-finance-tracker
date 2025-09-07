@@ -37,7 +37,8 @@ public class CategoryController {
 
     @GetMapping("/{categoryId}")
     public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long categoryId) {
-        CategoryResponse response = categoryService.getCategoryById(categoryId);
+        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
+        CategoryResponse response = categoryService.getCategoryById(categoryId, authenticatedUserId);
         return ResponseEntity.ok(response);
     }
 

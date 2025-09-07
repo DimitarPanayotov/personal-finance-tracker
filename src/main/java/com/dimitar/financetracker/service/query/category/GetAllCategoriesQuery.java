@@ -15,6 +15,7 @@ import java.util.List;
 public class GetAllCategoriesQuery implements Query<Long, List<CategoryResponse>> {
     private final CategoryRepository categoryRepository;
     private final CategoryMapper categoryMapper;
+
     @Override
     public List<CategoryResponse> execute(Long userId) {
         List<Category> categories = categoryRepository.findAllByUserId(userId);

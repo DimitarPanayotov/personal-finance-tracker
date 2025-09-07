@@ -1,5 +1,6 @@
 package com.dimitar.financetracker.controller;
 
+import com.dimitar.financetracker.dto.request.user.PasswordChangeRequest;
 import com.dimitar.financetracker.dto.request.user.UserUpdateRequest;
 import com.dimitar.financetracker.dto.response.user.UserResponse;
 import com.dimitar.financetracker.service.AuthenticationFacade;
@@ -42,5 +43,13 @@ public class UserController {
         Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
         userService.deleteUser(authenticatedUserId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+    
+    @PatchMapping("/me/change-password")
+    public ResponseEntity<UserResponse> changeCurrentUserPassword(@Valid @RequestBody PasswordChangeRequest request) {
+        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
+        request.setUserId(authenticatedUserId);
+        UserResponse response = userService.changePassword(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

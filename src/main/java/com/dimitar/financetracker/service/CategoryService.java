@@ -11,6 +11,7 @@ import com.dimitar.financetracker.service.command.category.UpdateCategoryCommand
 import com.dimitar.financetracker.service.command.category.input.UpdateCategoryCommandInput;
 import com.dimitar.financetracker.service.query.category.GetAllCategoriesQuery;
 import com.dimitar.financetracker.service.query.category.GetCategoryByIdQuery;
+import com.dimitar.financetracker.service.query.category.input.GetCategoryByIdQueryInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +31,9 @@ public class CategoryService {
         return createCategoryCommand.execute(commandRequest);
     }
 
-    public CategoryResponse getCategoryById(Long categoryId) {
-        return getCategoryByIdQuery.execute(categoryId);
+    public CategoryResponse getCategoryById(Long categoryId, Long userId) {
+        GetCategoryByIdQueryInput request = new GetCategoryByIdQueryInput(categoryId, userId);
+        return getCategoryByIdQuery.execute(request);
     }
 
     public List<CategoryResponse> getAllCategories(Long userId) {

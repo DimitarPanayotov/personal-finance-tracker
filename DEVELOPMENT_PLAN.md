@@ -47,10 +47,10 @@ will come later when we start the security implementation)
 - Created global exception handler + error responses
 
 ## Day 7 Progress
-- Created Get User by Id query request
+- Created Get User by id query request
 - Tested with Postman and added custom Exception, updated the Exception Handler
 - Created Update User request and Delete User Request (basic CRUD user operations finished)
-- Created Requests for Creating Category, Getting Category by Id and all categories by user id
+- Created Requests for Creating Category, Getting Category by id and all categories by user id
 - Testes everything with Postman and the relation are OK!
 
 ## Day 8 Progress
@@ -73,9 +73,22 @@ will come later when we start the security implementation)
 - Started with Transaction Service, implemented Create Transaction, tested it
 - Implemented Get All Transactions
 - Implemented Create Budget and Get All Budgets to test - everything works
+- Implemented Password Change for User
+- Fixed Get Category by id bug
 
 ## Next Steps
 - Adding more functionality to the services
+- GET /api/users/me/statistics
+- User commands: change password, update email, account deactivation, reset account
+- User queries: Get user statistics, get user activity summary, get user preferences, validate user status
+- Category commands: merge categories, archive, restore, import default categories
+- Category queries: get by type, get active, get popular, get empty, search, get summary, get by date range
+- Transaction commands: Update, Delete, Duplicate
+- Transaction queries: GetById, GetInDateRange, GetByCategory, GetByAmountRange, Search(By description or keywords), Summary(spending by category, period, etc.), GetMonthly/WeeklySpending, GetTopSpending Categories, GetRecentTransactions, GetRecurringTransactions
+- Budget commands: Update, Delete, Deactivate, Reset, Bulk Crate Budgets(multiple budgets at once - yearly budgets broken down by month)
+- Budget queries: GetById, GetByCategory, GetActiveBudgets, GetBudgetUsage(how much of each budget has been spent), BudgetAlerts(close to being spent), BudgetSummary
+- Advanced Features: Financial Dashboard, Monthly Financial Summary, Goal Progress Tracking
+- Smart Features: Budget Recommendations, Spending Alerts, Anomaly Detection, Smart Categorization
 - Starting security
 - Read a lot about security
 - Adding Validation and Error Handling
@@ -84,4 +97,15 @@ will come later when we start the security implementation)
 - Security with JWT authentication
 
 ## Ideas
+- After Service Layer: Enhanced Error Handling - Custom exceptions, validation
+  Comprehensive Testing - Unit tests for your new services
+  API Documentation - Swagger/OpenAPI docs
+- Then: Integration Tests - End-to-end testing
+  Security Enhancements - Rate limiting, input sanitization
+  Deployment Preparation - Docker, profiles, logging
+- Then: Later (Polish Phase):
+  Integration Tests - End-to-end testing
+  Security Enhancements - Rate limiting, input sanitization
+  Deployment Preparation - Docker, profiles, logging
+
 
