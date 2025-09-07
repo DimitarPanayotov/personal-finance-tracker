@@ -8,6 +8,7 @@ import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
 import com.dimitar.financetracker.repository.CategoryRepository;
 import com.dimitar.financetracker.repository.UserRepository;
 import com.dimitar.financetracker.service.command.Command;
+import com.dimitar.financetracker.service.command.category.input.CreateCategoryCommandInput;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

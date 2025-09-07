@@ -70,8 +70,12 @@ will come later when we start the security implementation)
 - Updated the User and Category controllers, so they work with JWT tokens instead of @RequestParam ID
 - Now user registers or logs in -> sees categories or updates something without a need of his id
 - Tested everything in postman
+- Started with Transaction Service, implemented Create Transaction, tested it
+- Implemented Get All Transactions
+- Implemented Create Budget and Get All Budgets to test - everything works
 
 ## Next Steps
+- Adding more functionality to the services
 - Starting security
 - Read a lot about security
 - Adding Validation and Error Handling

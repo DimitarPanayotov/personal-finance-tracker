@@ -6,6 +6,7 @@ import com.dimitar.financetracker.entity.Category;
 import com.dimitar.financetracker.exception.category.CategoryDoesNotExistException;
 import com.dimitar.financetracker.repository.CategoryRepository;
 import com.dimitar.financetracker.service.command.Command;
+import com.dimitar.financetracker.service.command.category.input.UpdateCategoryCommandInput;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
