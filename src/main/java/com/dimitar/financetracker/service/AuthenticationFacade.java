@@ -21,9 +21,10 @@ public class AuthenticationFacade {
             throw new RuntimeException("User not authenticated");
         }
 
-        String username = authentication.getName();
-        return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserDoesNotExistException("Authenticated user not found: " + username));
+        String loginIdentifier = authentication.getName();
+        return userRepository.findByUsername(loginIdentifier)
+                .or(() -> userRepository.findByEmail(loginIdentifier))
+                .orElseThrow(() -> new UserDoesNotExistException("Authenticated user not found: " + loginIdentifier));
     }
 
     public Long getAuthenticatedUserId() {

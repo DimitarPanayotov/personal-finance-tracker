@@ -3,12 +3,14 @@ package com.dimitar.financetracker.controller;
 import com.dimitar.financetracker.dto.request.category.CreateCategoryRequest;
 import com.dimitar.financetracker.dto.request.category.UpdateCategoryRequest;
 import com.dimitar.financetracker.dto.response.category.CategoryResponse;
+import com.dimitar.financetracker.model.CategoryType;
 import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.CategoryService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -62,5 +65,11 @@ public class CategoryController {
         Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
         categoryService.deleteCategory(categoryId, authenticatedUserId);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/type/{type}")
+    public ResponseEntity<List<CategoryResponse>> getAllCategoriesByType(@PathVariable CategoryType type) {
+        List<CategoryResponse> categories = categoryService.getCategoriesByType(type);
+        return ResponseEntity.ok(categories);
     }
 }

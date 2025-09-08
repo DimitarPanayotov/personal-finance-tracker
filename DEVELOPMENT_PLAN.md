@@ -77,9 +77,10 @@ will come later when we start the security implementation)
 - Fixed Get Category by id bug
 
 ## Next Steps
+- Fixing the controllers by removing input records and adding the logic with the authenticated user to the services instead of the controllers
 - Adding more functionality to the services
 - GET /api/users/me/statistics
-- User commands: change password, update email, account deactivation, reset account
+- User commands: account deactivation, reset account
 - User queries: Get user statistics, get user activity summary, get user preferences, validate user status
 - Category commands: merge categories, archive, restore, import default categories
 - Category queries: get by type, get active, get popular, get empty, search, get summary, get by date range
