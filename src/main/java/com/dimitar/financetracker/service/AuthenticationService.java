@@ -15,6 +15,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+//Request flow (tying it all together)
+//Register (POST /api/auth/register)
+//Validate uniqueness of username/email.
+//Save new user with encoded password.
+//Generate JWT and return it.
+//Login (POST /api/auth/login)
+//Authenticate credentials via AuthenticationManager.
+//Generate JWT.
+//Return JWT + user info.
+//Subsequent requests
+//Client includes Authorization: Bearer <jwt> header.
+//JwtAuthenticationFilter validates token and sets authentication.
+//Controllers can then access @AuthenticationPrincipal or your AuthenticationFacade to get the user.
 @Service
 @RequiredArgsConstructor
 public class AuthenticationService {
@@ -59,6 +72,10 @@ public class AuthenticationService {
 
     public AuthenticationResponse login(UserLoginRequest request) {
         // Authenticate user
+        //Behind the scenes:
+        //Delegates to DaoAuthenticationProvider.
+        //Calls CustomUserDetailsService.loadUserByUsername(...).
+        //Verifies password with PasswordEncoder.
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getUsernameOrEmail(),

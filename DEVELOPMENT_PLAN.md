@@ -76,6 +76,10 @@ will come later when we start the security implementation)
 - Implemented Password Change for User
 - Fixed Get Category by id bug
 
+## Day 10 Progress 
+- Read in depth about security, made a helper file
+- 
+
 ## Next Steps
 - Fixing the controllers by removing input records and adding the logic with the authenticated user to the services instead of the controllers
 - Adding more functionality to the services
@@ -90,12 +94,8 @@ will come later when we start the security implementation)
 - Budget queries: GetById, GetByCategory, GetActiveBudgets, GetBudgetUsage(how much of each budget has been spent), BudgetAlerts(close to being spent), BudgetSummary
 - Advanced Features: Financial Dashboard, Monthly Financial Summary, Goal Progress Tracking
 - Smart Features: Budget Recommendations, Spending Alerts, Anomaly Detection, Smart Categorization
-- Starting security
-- Read a lot about security
 - Adding Validation and Error Handling
 - Testing
-- Services and controllers - make query and command interfaces that should be implemented by the services
-- Security with JWT authentication
 
 ## Ideas
 - After Service Layer: Enhanced Error Handling - Custom exceptions, validation

@@ -32,6 +32,13 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
+        //DaoAuthenticationProvider is a built-in provider that:
+        //Calls userDetailsService.loadUserByUsername(username) to get the user.
+        //Uses the PasswordEncoder to check password validity.
+        //We configure it with:
+        //our UserDetailsService (to fetch users),
+        //our PasswordEncoder (to hash & compare passwords).
+        //Even though we’re using JWTs for subsequent requests, this still matters at login time (when we authenticate a user with username + password and issue a JWT)
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
         authProvider.setUserDetailsService(userDetailsService);
         authProvider.setPasswordEncoder(passwordEncoder());
@@ -40,13 +47,14 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        //This is used when we actually authenticate a username/password request (e.g., in a login endpoint).
         return config.getAuthenticationManager();
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable())
+            .csrf(csrf -> csrf.disable()) //because of stateless sessions
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/h2-console/**").permitAll()
@@ -54,7 +62,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
             )
             .sessionManagement(session -> session
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS) //every request must carry JWT
             )
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
@@ -62,5 +70,17 @@ public class SecurityConfig {
 
         return http.build();
     }
-
 }
+//Request Flow (putting it all together)
+//Unauthenticated login request (/api/auth/login)
+//Allowed by .requestMatchers("/api/auth/**").permitAll().
+//You authenticate username+password manually in your controller using AuthenticationManager.
+//If valid, you generate a JWT and return it.
+//Authenticated request to /api/**
+//Goes through JwtAuthenticationFilter:
+//Reads Authorization: Bearer ... header.
+//Extracts username from JWT.
+//Validates token and sets SecurityContext.
+//Request is then processed by your controller with a valid Authentication.
+//H2 Console
+//Open to all (during dev) and frame headers disabled so it works.

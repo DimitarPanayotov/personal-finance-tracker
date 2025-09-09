@@ -14,6 +14,17 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+//Generates JWTs
+//Extracts claims (username, expiration, etc.)
+//Validate tokens
+
+//Request lifecycle (tying it in)
+//Login/Register → app calls JwtUtil.generateToken(...).
+//->User gets Authorization: Bearer <jwt> response.
+//Client request with token ->
+//JwtAuthenticationFilter intercepts request,
+// extracts Authorization header, calls JwtUtil.extractUsername and JwtUtil.validateToken.
+//Token valid → SecurityContext is populated → request continues authenticated.
 @Component
 public class JwtUtil {
 
@@ -31,6 +42,7 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    //extracts all claims
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
