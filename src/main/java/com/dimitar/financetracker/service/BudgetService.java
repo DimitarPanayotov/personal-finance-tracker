@@ -3,7 +3,6 @@ package com.dimitar.financetracker.service;
 import com.dimitar.financetracker.dto.request.budget.CreateBudgetRequest;
 import com.dimitar.financetracker.dto.response.budget.BudgetResponse;
 import com.dimitar.financetracker.service.command.budget.CreateBudgetCommand;
-import com.dimitar.financetracker.service.command.budget.input.CreateBudgetCommandInput;
 import com.dimitar.financetracker.service.query.budget.GetAllBudgetsQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,12 +15,11 @@ public class BudgetService {
     private final CreateBudgetCommand createBudgetCommand;
     private final GetAllBudgetsQuery getAllBudgetsQuery;
 
-    public BudgetResponse createBudget(CreateBudgetRequest request, Long userId) {
-        CreateBudgetCommandInput input = new CreateBudgetCommandInput(request, userId);
-        return createBudgetCommand.execute(input);
+    public BudgetResponse createBudget(CreateBudgetRequest request) {
+        return createBudgetCommand.execute(request);
     }
 
-    public List<BudgetResponse> getAllBudgets(Long userId) {
-        return getAllBudgetsQuery.execute(userId);
+    public List<BudgetResponse> getAllBudgets() {
+        return getAllBudgetsQuery.execute(null);
     }
 }

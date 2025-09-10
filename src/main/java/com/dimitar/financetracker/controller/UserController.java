@@ -3,7 +3,6 @@ package com.dimitar.financetracker.controller;
 import com.dimitar.financetracker.dto.request.user.PasswordChangeRequest;
 import com.dimitar.financetracker.dto.request.user.UserUpdateRequest;
 import com.dimitar.financetracker.dto.response.user.UserResponse;
-import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,34 +20,27 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
-    private final AuthenticationFacade authenticationFacade;
 
     @GetMapping("/me")
     public ResponseEntity<UserResponse> getCurrentUser() {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        UserResponse response = userService.getUser(authenticatedUserId);
+        UserResponse response = userService.getUser();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @PatchMapping("/me")
     public ResponseEntity<UserResponse> updateCurrentUser(@Valid @RequestBody UserUpdateRequest request) {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        request.setId(authenticatedUserId);
         UserResponse response = userService.updateUser(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     @DeleteMapping("/me")
     public ResponseEntity<Void> deleteCurrentUser() {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        userService.deleteUser(authenticatedUserId);
+        userService.deleteUser();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
     
     @PatchMapping("/me/change-password")
     public ResponseEntity<UserResponse> changeCurrentUserPassword(@Valid @RequestBody PasswordChangeRequest request) {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        request.setUserId(authenticatedUserId);
         UserResponse response = userService.changePassword(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }

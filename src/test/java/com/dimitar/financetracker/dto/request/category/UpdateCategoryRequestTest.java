@@ -161,7 +161,7 @@ class UpdateCategoryRequestTest {
     @Test
     void allArgsConstructor_shouldCreateRequestWithAllFields() {
         UpdateCategoryRequest request = new UpdateCategoryRequest(
-                "Transportation", CategoryType.EXPENSE, "#0000FF");
+            1L, "Transportation", CategoryType.EXPENSE, "#0000FF");
 
         assertThat(request.getName()).isEqualTo("Transportation");
         assertThat(request.getType()).isEqualTo(CategoryType.EXPENSE);

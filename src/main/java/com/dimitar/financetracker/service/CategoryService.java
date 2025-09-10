@@ -5,15 +5,11 @@ import com.dimitar.financetracker.dto.request.category.UpdateCategoryRequest;
 import com.dimitar.financetracker.dto.response.category.CategoryResponse;
 import com.dimitar.financetracker.model.CategoryType;
 import com.dimitar.financetracker.service.command.category.CreateCategoryCommand;
-import com.dimitar.financetracker.service.command.category.input.CreateCategoryCommandInput;
 import com.dimitar.financetracker.service.command.category.DeleteCategoryCommand;
-import com.dimitar.financetracker.service.command.category.input.DeleteCategoryCommandInput;
 import com.dimitar.financetracker.service.command.category.UpdateCategoryCommand;
-import com.dimitar.financetracker.service.command.category.input.UpdateCategoryCommandInput;
 import com.dimitar.financetracker.service.query.category.GetAllCategoriesQuery;
 import com.dimitar.financetracker.service.query.category.GetCategoryByIdQuery;
 import com.dimitar.financetracker.service.query.category.GetCategoryByTypeQuery;
-import com.dimitar.financetracker.service.query.category.input.GetCategoryByIdQueryInput;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,28 +25,24 @@ public class CategoryService {
     private final DeleteCategoryCommand deleteCategoryCommand;
     private final GetCategoryByTypeQuery getCategoryByTypeQuery;
 
-    public CategoryResponse createCategory(CreateCategoryRequest request, Long userId) {
-        CreateCategoryCommandInput commandRequest = new CreateCategoryCommandInput(request, userId);
-        return createCategoryCommand.execute(commandRequest);
+    public CategoryResponse createCategory(CreateCategoryRequest request) {
+        return createCategoryCommand.execute(request);
     }
 
-    public CategoryResponse getCategoryById(Long categoryId, Long userId) {
-        GetCategoryByIdQueryInput request = new GetCategoryByIdQueryInput(categoryId, userId);
-        return getCategoryByIdQuery.execute(request);
+    public CategoryResponse getCategoryById(Long categoryId) {
+        return getCategoryByIdQuery.execute(categoryId);
     }
 
-    public List<CategoryResponse> getAllCategories(Long userId) {
-        return getAllCategoriesQuery.execute(userId);
+    public List<CategoryResponse> getAllCategories() {
+        return getAllCategoriesQuery.execute(null);
     }
 
-    public CategoryResponse updateCategory(UpdateCategoryRequest request, Long userId, Long categoryId) {
-        UpdateCategoryCommandInput updateRequest = new UpdateCategoryCommandInput(request, userId, categoryId);
-        return updateCategoryCommand.execute(updateRequest);
+    public CategoryResponse updateCategory(UpdateCategoryRequest request) {
+        return updateCategoryCommand.execute(request);
     }
 
-    public void deleteCategory(Long categoryId, Long userId) {
-        DeleteCategoryCommandInput deleteRequest = new DeleteCategoryCommandInput(categoryId, userId);
-        deleteCategoryCommand.execute(deleteRequest);
+    public void deleteCategory(Long categoryId) {
+        deleteCategoryCommand.execute(categoryId);
     }
 
     public List<CategoryResponse> getCategoriesByType(CategoryType type) {

@@ -65,7 +65,7 @@ class BudgetMapperTest {
         assertThat(budget.getStartDate()).isEqualTo(LocalDate.of(2024, 1, 1));
         assertThat(budget.getEndDate()).isEqualTo(LocalDate.of(2024, 1, 31));
         assertThat(budget.getId()).isNull(); // Not set during mapping
-        assertThat(budget.getIsActive()).isNull(); // Will be set by entity default
+        assertThat(budget.getIsActive()).isTrue(); // Will be set by entity default
         assertThat(budget.getCreatedAt()).isNull(); // Set by @PrePersist
         assertThat(budget.getUpdatedAt()).isNull(); // Set by @PrePersist
     }

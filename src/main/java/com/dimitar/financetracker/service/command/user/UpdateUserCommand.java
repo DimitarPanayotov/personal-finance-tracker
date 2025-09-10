@@ -6,8 +6,8 @@ import com.dimitar.financetracker.dto.response.user.UserResponse;
 import com.dimitar.financetracker.entity.User;
 import com.dimitar.financetracker.exception.user.DuplicateEmailException;
 import com.dimitar.financetracker.exception.user.DuplicateUsernameException;
-import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
 import com.dimitar.financetracker.repository.UserRepository;
+import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.command.Command;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Component;
@@ -15,38 +15,37 @@ import org.springframework.stereotype.Component;
 @Component
 @Transactional
 public class UpdateUserCommand implements Command<UserUpdateRequest, UserResponse> {
+    private final AuthenticationFacade authenticationFacade;
     private final UserRepository userRepository;
     private final UserMapper userMapper;
 
-    public UpdateUserCommand(UserRepository userRepository,
+    public UpdateUserCommand(AuthenticationFacade authenticationFacade,
+                             UserRepository userRepository,
                              UserMapper userMapper) {
+        this.authenticationFacade = authenticationFacade;
         this.userRepository = userRepository;
         this.userMapper = userMapper;
     }
 
     @Override
-    public UserResponse execute(UserUpdateRequest input) {
-        if (input.getId() == null) {
-            throw new IllegalArgumentException("User ID is required for update operation");
-        }
-        User existingUser = userRepository.findById(input.getId())
-            .orElseThrow(() -> new UserDoesNotExistException("User with this id does not exist: " + input.getId()));
+    public UserResponse execute(UserUpdateRequest request) {
+        User user = authenticationFacade.getAuthenticatedUser();
 
-        if (input.getUsername() != null && !input.getUsername().equals(existingUser.getUsername())) {
-            if (userRepository.existsByUsername(input.getUsername())) {
-                throw new DuplicateUsernameException("Username already exists: " + input.getUsername());
+        if (request.getUsername() != null && !request.getUsername().equals(user.getUsername())) {
+            if (userRepository.existsByUsername(request.getUsername())) {
+                throw new DuplicateUsernameException("Username already exists: " + request.getUsername());
             }
-            existingUser.setUsername(input.getUsername());
+            user.setUsername(user.getUsername());
         }
 
-        if (input.getEmail() != null && !input.getEmail().equals(existingUser.getEmail())) {
-            if (userRepository.existsByEmail(input.getEmail())) {
-                throw new DuplicateEmailException("Email already exists: " + input.getEmail());
+        if (request.getEmail() != null && !request.getEmail().equals(user.getEmail())) {
+            if (userRepository.existsByEmail(request.getEmail())) {
+                throw new DuplicateEmailException("Email already exists: " + user.getEmail());
             }
-            existingUser.setEmail(input.getEmail());
+            user.setEmail(request.getEmail());
         }
 
-        User updatedUser = userRepository.save(existingUser);
+        User updatedUser = userRepository.save(user);
         return userMapper.toResponse(updatedUser);
     }
 }

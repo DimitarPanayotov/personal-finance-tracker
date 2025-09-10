@@ -26,16 +26,16 @@ public class UserService {
         this.changePasswordCommand = changePasswordCommand;
     }
 
-    public UserResponse getUser(Long id) {
-        return getUserQuery.execute(id);
+    public UserResponse getUser() {
+        return getUserQuery.execute(null);
     }
 
     public UserResponse updateUser(UserUpdateRequest request) {
         return updateUserCommand.execute(request);
     }
     
-    public void deleteUser(Long userId) {
-        deleteUserCommand.execute(userId);
+    public void deleteUser() {
+        deleteUserCommand.execute(null);
     }
 
     public UserResponse changePassword(PasswordChangeRequest request) {

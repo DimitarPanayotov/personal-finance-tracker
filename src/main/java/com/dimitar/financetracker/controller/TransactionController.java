@@ -2,7 +2,6 @@ package com.dimitar.financetracker.controller;
 
 import com.dimitar.financetracker.dto.request.transaction.CreateTransactionRequest;
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
-import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TransactionController {
     private final TransactionService transactionService;
-    private final AuthenticationFacade authenticationFacade;
 
     @PostMapping
     public ResponseEntity<TransactionResponse> createTransaction(@Valid @RequestBody CreateTransactionRequest request) {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        TransactionResponse response = transactionService.createTransaction(request, authenticatedUserId);
+        TransactionResponse response = transactionService.createTransaction(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
     public ResponseEntity<List<TransactionResponse>> getAllTransactions() {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        List<TransactionResponse> transactions = transactionService.getAllTransactions(authenticatedUserId);
+        List<TransactionResponse> transactions = transactionService.getAllTransactions();
         return ResponseEntity.ok(transactions);
     }
 }

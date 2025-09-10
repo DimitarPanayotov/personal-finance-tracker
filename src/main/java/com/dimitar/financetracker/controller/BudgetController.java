@@ -2,7 +2,6 @@ package com.dimitar.financetracker.controller;
 
 import com.dimitar.financetracker.dto.request.budget.CreateBudgetRequest;
 import com.dimitar.financetracker.dto.response.budget.BudgetResponse;
-import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.BudgetService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,19 +20,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class BudgetController {
     private final BudgetService budgetService;
-    private final AuthenticationFacade authenticationFacade;
 
     @PostMapping
     public ResponseEntity<BudgetResponse> createBudget(@Valid @RequestBody CreateBudgetRequest request) {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        BudgetResponse response = budgetService.createBudget(request, authenticatedUserId);
+        BudgetResponse response = budgetService.createBudget(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @GetMapping
     public ResponseEntity<List<BudgetResponse>> getAllBudgets() {
-        Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
-        List<BudgetResponse> budgets = budgetService.getAllBudgets(authenticatedUserId);
+        List<BudgetResponse> budgets = budgetService.getAllBudgets();
         return ResponseEntity.ok(budgets);
     }
 }

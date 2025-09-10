@@ -78,10 +78,10 @@ will come later when we start the security implementation)
 
 ## Day 10 Progress 
 - Read in depth about security, made a helper file
-- 
+- Changed the Service layer by removing input records and moved 
+the authentication logic from the controller to the Service layer
 
 ## Next Steps
-- Fixing the controllers by removing input records and adding the logic with the authenticated user to the services instead of the controllers
 - Adding more functionality to the services
 - GET /api/users/me/statistics
 - User commands: account deactivation, reset account

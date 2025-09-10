@@ -17,6 +17,8 @@ import static com.dimitar.financetracker.util.ErrorMessages.CATEGORY_NAME_TOO_LO
 @AllArgsConstructor
 @Builder
 public class UpdateCategoryRequest {
+    private Long categoryId;
+
     @Size(max = CATEGORY_NAME_MAX_LENGTH, message = CATEGORY_NAME_TOO_LONG)
     private String name;
 
