@@ -3,6 +3,7 @@ package com.dimitar.financetracker.controller;
 import com.dimitar.financetracker.dto.request.user.PasswordChangeRequest;
 import com.dimitar.financetracker.dto.request.user.UserUpdateRequest;
 import com.dimitar.financetracker.dto.response.user.UserResponse;
+import com.dimitar.financetracker.dto.response.user.UserStatisticsResponse;
 import com.dimitar.financetracker.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +43,12 @@ public class UserController {
     @PatchMapping("/me/change-password")
     public ResponseEntity<UserResponse> changeCurrentUserPassword(@Valid @RequestBody PasswordChangeRequest request) {
         UserResponse response = userService.changePassword(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @GetMapping("/me/statistics")
+    public ResponseEntity<UserStatisticsResponse> getCurrentUserStatistics() {
+        UserStatisticsResponse response = userService.getStatistics();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

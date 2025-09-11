@@ -1,7 +1,10 @@
 package com.dimitar.financetracker.repository;
 
 import com.dimitar.financetracker.entity.Transaction;
+import com.dimitar.financetracker.model.CategoryType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -32,15 +35,40 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
     List<Transaction> findByUserIdAndDescriptionContainingIgnoreCase(Long userId, String searchTerm);
 
     // Analytics queries
-//    @Query("SELECT SUM(t.amount) FROM Transaction t " +
-//        "WHERE t.user.id = :userId " +
-//        "AND t.category.type = :type " +
-//        "AND t.transactionDate BETWEEN :startDate AND :endDate")
-//    BigDecimal sumAmountByUserAndTypeAndDateRange(
-//        @Param("userId") Long userId,
-//        @Param("type") CategoryType type,
-//        @Param("startDate") LocalDate startDate,
-//        @Param("endDate") LocalDate endDate);
+    @Query("SELECT SUM(t.amount) FROM Transaction t " +
+        "WHERE t.user.id = :userId " +
+        "AND t.category.type = :type")
+    BigDecimal sumAmountByUserAndType(
+        @Param("userId") Long userId,
+        @Param("type") CategoryType type);
+
+    @Query("SELECT SUM(t.amount) FROM Transaction t " +
+        "WHERE t.user.id = :userId " +
+        "AND t.category.type = :type " +
+        "AND t.transactionDate BETWEEN :startDate AND :endDate")
+    BigDecimal sumAmountByUserAndTypeAndDateRange(
+        @Param("userId") Long userId,
+        @Param("type") CategoryType type,
+        @Param("startDate") LocalDate startDate,
+        @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT COUNT(t) FROM Transaction t " +
+        "WHERE t.user.id = :userId " +
+        "AND t.category.type = :type")
+    Long countByUserAndType(
+        @Param("userId") Long userId,
+        @Param("type") CategoryType type);
+
+    @Query("SELECT COUNT(t) FROM Transaction t " +
+        "WHERE t.user.id = :userId")
+    Long countByUser(@Param("userId") Long userId);
+
+    @Query("SELECT AVG(t.amount) FROM Transaction t " +
+        "WHERE t.user.id = :userId " +
+        "AND t.category.type = :type")
+    BigDecimal avgAmountByUserAndType(
+        @Param("userId") Long userId,
+        @Param("type") CategoryType type);
 
     // Monthly summary
 //    @Query("SELECT FUNCTION('YEAR', t.transactionDate) as year, " +

@@ -1,8 +1,10 @@
 package com.dimitar.financetracker.controller;
 
 import com.dimitar.financetracker.dto.request.category.CreateCategoryRequest;
+import com.dimitar.financetracker.dto.request.category.MergeCategoriesRequest;
 import com.dimitar.financetracker.dto.request.category.UpdateCategoryRequest;
 import com.dimitar.financetracker.dto.response.category.CategoryResponse;
+import com.dimitar.financetracker.dto.response.category.ImportCategoriesResponse;
 import com.dimitar.financetracker.model.CategoryType;
 import com.dimitar.financetracker.service.CategoryService;
 import jakarta.validation.Valid;
@@ -63,5 +65,17 @@ public class CategoryController {
     public ResponseEntity<List<CategoryResponse>> getAllCategoriesByType(@PathVariable CategoryType type) {
         List<CategoryResponse> categories = categoryService.getCategoriesByType(type);
         return ResponseEntity.ok(categories);
+    }
+
+    @PostMapping("/merge")
+    public ResponseEntity<Void> mergeCategories(@Valid @RequestBody MergeCategoriesRequest request) {
+        categoryService.mergeCategories(request);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/import-defaults")
+    public ResponseEntity<ImportCategoriesResponse> importDefaultCategories() {
+        ImportCategoriesResponse response = categoryService.importDefaultCategories();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

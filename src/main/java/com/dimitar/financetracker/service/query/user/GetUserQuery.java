@@ -3,13 +3,9 @@ package com.dimitar.financetracker.service.query.user;
 import com.dimitar.financetracker.dto.mapper.UserMapper;
 import com.dimitar.financetracker.dto.response.user.UserResponse;
 import com.dimitar.financetracker.entity.User;
-import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
-import com.dimitar.financetracker.repository.UserRepository;
 import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.query.Query;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class GetUserQuery implements Query<Void, UserResponse> {

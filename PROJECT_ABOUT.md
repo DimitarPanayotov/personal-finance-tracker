@@ -29,6 +29,7 @@
 - Lombok
 - Jakarta and Hibernate Validators
 - PostgreSQL
+- JWT
 
 ## 2.Database Schema
 **Live Diagram:** [View on dbdiagram.io](https://dbdiagram.io/d/PersonalFinanceTrackerDiagram-68aaf8b21e7a611967557bf8)
