@@ -83,8 +83,7 @@ the authentication logic from the controller to the Service layer
 - Added User Statistics, Merge categories, Import default categories
 
 ## Next Steps
-- Adding more functionality to the services
-- GET /api/users/me/statistics
+- Adding more functionality to the service layer
 - User commands: account deactivation, reset account
 - User queries: get user activity summary, get user preferences, validate user status
 - Category commands: archive, restore

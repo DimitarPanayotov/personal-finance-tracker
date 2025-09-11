@@ -1,80 +1,41 @@
 package com.dimitar.financetracker.service.template;
 
-import com.dimitar.financetracker.entity.Category;
-import com.dimitar.financetracker.entity.User;
 import com.dimitar.financetracker.model.CategoryType;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
 public class DefaultCategoryTemplateService {
 
-    @Data
-    public static class CategoryTemplate {
-        private final String name;
-        private final CategoryType type;
-        private final String color;
-
-        public CategoryTemplate(String name, CategoryType type, String color) {
-            this.name = name;
-            this.type = type;
-            this.color = color;
-        }
-
-        public Category toCategory(User user) {
-            return Category.builder()
-                    .name(name)
-                    .type(type)
-                    .color(color)
-                    .user(user)
-                    .build();
-        }
-    }
-
-    public List<CategoryTemplate> getDefaultExpenseCategories() {
-        return List.of(
-            new CategoryTemplate("Food & Dining", CategoryType.EXPENSE, "#FF6B6B"),
-            new CategoryTemplate("Groceries", CategoryType.EXPENSE, "#4ECDC4"),
-            new CategoryTemplate("Transportation", CategoryType.EXPENSE, "#45B7D1"),
-            new CategoryTemplate("Gas & Fuel", CategoryType.EXPENSE, "#96CEB4"),
-            new CategoryTemplate("Entertainment", CategoryType.EXPENSE, "#FECA57"),
-            new CategoryTemplate("Shopping", CategoryType.EXPENSE, "#FF9FF3"),
-            new CategoryTemplate("Health & Medical", CategoryType.EXPENSE, "#54A0FF"),
-            new CategoryTemplate("Insurance", CategoryType.EXPENSE, "#5F27CD"),
-            new CategoryTemplate("Utilities", CategoryType.EXPENSE, "#00D2D3"),
-            new CategoryTemplate("Rent/Mortgage", CategoryType.EXPENSE, "#FF6348"),
-            new CategoryTemplate("Phone & Internet", CategoryType.EXPENSE, "#2ED573"),
-            new CategoryTemplate("Education", CategoryType.EXPENSE, "#FFA502"),
-            new CategoryTemplate("Travel", CategoryType.EXPENSE, "#3742FA"),
-            new CategoryTemplate("Personal Care", CategoryType.EXPENSE, "#F8B500"),
-            new CategoryTemplate("Subscriptions", CategoryType.EXPENSE, "#A4B0BE"),
-            new CategoryTemplate("Miscellaneous", CategoryType.EXPENSE, "#57606F")
-        );
-    }
-
-    public List<CategoryTemplate> getDefaultIncomeCategories() {
-        return List.of(
-            new CategoryTemplate("Salary", CategoryType.INCOME, "#2ED573"),
-            new CategoryTemplate("Freelance", CategoryType.INCOME, "#1DD1A1"),
-            new CategoryTemplate("Business Income", CategoryType.INCOME, "#00D2D3"),
-            new CategoryTemplate("Investment Returns", CategoryType.INCOME, "#55A3FF"),
-            new CategoryTemplate("Rental Income", CategoryType.INCOME, "#26DE81"),
-            new CategoryTemplate("Side Hustle", CategoryType.INCOME, "#0FB9B1"),
-            new CategoryTemplate("Gifts", CategoryType.INCOME, "#A55EEA"),
-            new CategoryTemplate("Refunds", CategoryType.INCOME, "#778CA3"),
-            new CategoryTemplate("Bonus", CategoryType.INCOME, "#F8B500"),
-            new CategoryTemplate("Other Income", CategoryType.INCOME, "#4B6584")
-        );
-    }
-
     public List<CategoryTemplate> getAllDefaultCategories() {
-        return List.of(
-            getDefaultExpenseCategories(),
-            getDefaultIncomeCategories()
-        ).stream()
-        .flatMap(List::stream)
-        .toList();
+        return Arrays.asList(
+                // Income categories
+                new CategoryTemplate("Salary", CategoryType.INCOME, "#4CAF50"),
+                new CategoryTemplate("Freelance", CategoryType.INCOME, "#8BC34A"),
+                new CategoryTemplate("Investment Returns", CategoryType.INCOME, "#CDDC39"),
+                new CategoryTemplate("Rental Income", CategoryType.INCOME, "#FFC107"),
+                new CategoryTemplate("Business Income", CategoryType.INCOME, "#FF9800"),
+                new CategoryTemplate("Other Income", CategoryType.INCOME, "#795548"),
+
+                // Expense categories
+                new CategoryTemplate("Food & Dining", CategoryType.EXPENSE, "#F44336"),
+                new CategoryTemplate("Groceries", CategoryType.EXPENSE, "#E91E63"),
+                new CategoryTemplate("Transportation", CategoryType.EXPENSE, "#9C27B0"),
+                new CategoryTemplate("Utilities", CategoryType.EXPENSE, "#673AB7"),
+                new CategoryTemplate("Housing", CategoryType.EXPENSE, "#3F51B5"),
+                new CategoryTemplate("Healthcare", CategoryType.EXPENSE, "#2196F3"),
+                new CategoryTemplate("Entertainment", CategoryType.EXPENSE, "#03DAC6"),
+                new CategoryTemplate("Shopping", CategoryType.EXPENSE, "#00BCD4"),
+                new CategoryTemplate("Education", CategoryType.EXPENSE, "#009688"),
+                new CategoryTemplate("Insurance", CategoryType.EXPENSE, "#4CAF50"),
+                new CategoryTemplate("Travel", CategoryType.EXPENSE, "#8BC34A"),
+                new CategoryTemplate("Personal Care", CategoryType.EXPENSE, "#CDDC39"),
+                new CategoryTemplate("Gifts & Donations", CategoryType.EXPENSE, "#FFC107"),
+                new CategoryTemplate("Subscriptions", CategoryType.EXPENSE, "#FF9800"),
+                new CategoryTemplate("Fees & Charges", CategoryType.EXPENSE, "#FF5722"),
+                new CategoryTemplate("Other Expenses", CategoryType.EXPENSE, "#795548")
+        );
     }
 }
