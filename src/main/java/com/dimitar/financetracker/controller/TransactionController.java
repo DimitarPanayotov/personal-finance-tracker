@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -42,5 +43,11 @@ public class TransactionController {
         request.setTransactionId(transactionId);
         TransactionResponse response = transactionService.updateTransaction(request);
         return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{transactionId}")
+    public ResponseEntity<Void> deleteTransaction(@PathVariable Long transactionId) {
+        transactionService.deleteTransaction(transactionId);
+        return ResponseEntity.noContent().build();
     }
 }

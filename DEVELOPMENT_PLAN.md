@@ -81,7 +81,7 @@ will come later when we start the security implementation)
 - Changed the Service layer by removing input records and moved 
 the authentication logic from the controller to the Service layer
 - Added User Statistics, Merge categories, Import default categories
-- Added Search Category by name, Update Transaction
+- Added Search Category by name, Update Transaction, Delete Transaction
 
 ## Next Steps
 - Adding more functionality to the service layer
@@ -106,8 +106,6 @@ the authentication logic from the controller to the Service layer
   Security Enhancements - Rate limiting, input sanitization
   Deployment Preparation - Docker, profiles, logging
 - Then: Later (Polish Phase):
-  Integration Tests - End-to-end testing
-  Security Enhancements - Rate limiting, input sanitization
-  Deployment Preparation - Docker, profiles, logging
+
 
 
