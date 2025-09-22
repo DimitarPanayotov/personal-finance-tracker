@@ -23,6 +23,8 @@ public interface CategoryRepository extends JpaRepository<Category, Long> {
 
     List<Category> findAllByUserIdAndType(Long userId, CategoryType type);
 
+    List<Category> findAllByUserIdAndNameContaining(Long userId, String name);
+
     // Find categories with transaction count (for analytics)
 //    @Query("SELECT c, COUNT(t) as transactionCount " +
 //        "FROM Category c LEFT JOIN c.transactions t " +

@@ -81,14 +81,15 @@ will come later when we start the security implementation)
 - Changed the Service layer by removing input records and moved 
 the authentication logic from the controller to the Service layer
 - Added User Statistics, Merge categories, Import default categories
+- Added Search Category by name, Update Transaction
 
 ## Next Steps
 - Adding more functionality to the service layer
 - User commands: account deactivation, reset account
 - User queries: get user activity summary, get user preferences, validate user status
 - Category commands: archive, restore
-- Category queries: get active, get popular, get empty, search, get summary, get by date range
-- Transaction commands: Update, Delete, Duplicate
+- Category queries: get active, get popular, get empty, get summary, get by date range
+- Transaction commands: Delete, Duplicate
 - Transaction queries: GetById, GetInDateRange, GetByCategory, GetByAmountRange, Search(By description or keywords), Summary(spending by category, period, etc.), GetMonthly/WeeklySpending, GetTopSpending Categories, GetRecentTransactions, GetRecurringTransactions
 - Budget commands: Update, Delete, Deactivate, Reset, Bulk Crate Budgets(multiple budgets at once - yearly budgets broken down by month)
 - Budget queries: GetById, GetByCategory, GetActiveBudgets, GetBudgetUsage(how much of each budget has been spent), BudgetAlerts(close to being spent), BudgetSummary

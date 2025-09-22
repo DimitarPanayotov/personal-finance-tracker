@@ -1,8 +1,10 @@
 package com.dimitar.financetracker.service;
 
 import com.dimitar.financetracker.dto.request.transaction.CreateTransactionRequest;
+import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionRequest;
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.service.command.transaction.CreateTransactionCommand;
+import com.dimitar.financetracker.service.command.transaction.UpdateTransactionCommand;
 import com.dimitar.financetracker.service.query.transaction.GetAllTransactionsQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.util.List;
 public class TransactionService {
     private final CreateTransactionCommand createTransactionCommand;
     private final GetAllTransactionsQuery getAllTransactionsQuery;
+    private final UpdateTransactionCommand updateTransactionCommand;
 
     public TransactionResponse createTransaction(CreateTransactionRequest request) {
         return createTransactionCommand.execute(request);
@@ -21,5 +24,9 @@ public class TransactionService {
 
     public List<TransactionResponse> getAllTransactions() {
         return getAllTransactionsQuery.execute(null);
+    }
+
+    public TransactionResponse updateTransaction(UpdateTransactionRequest request) {
+        return updateTransactionCommand.execute(request);
     }
 }

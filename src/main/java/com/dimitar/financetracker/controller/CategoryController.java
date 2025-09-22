@@ -78,4 +78,11 @@ public class CategoryController {
         ImportCategoriesResponse response = categoryService.importDefaultCategories();
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
+    @GetMapping("/name/{name}")
+    public ResponseEntity<List<CategoryResponse>> searchCategoriesByNae(@PathVariable String name) {
+        List<CategoryResponse> categories = categoryService.searchCategoriesByName(name);
+        return ResponseEntity.ok(categories);
+    }
+
 }

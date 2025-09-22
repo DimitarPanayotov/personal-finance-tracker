@@ -19,6 +19,8 @@ import static com.dimitar.financetracker.util.DatabaseConstants.DESCRIPTION_MAX_
 @AllArgsConstructor
 @Builder
 public class UpdateTransactionRequest {
+    private Long transactionId;
+
     private Long categoryId;
 
     @DecimalMin(value = "0.01", message = AMOUNT_MIN)

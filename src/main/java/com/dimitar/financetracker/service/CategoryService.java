@@ -15,6 +15,7 @@ import com.dimitar.financetracker.service.command.category.UpdateCategoryCommand
 import com.dimitar.financetracker.service.query.category.GetAllCategoriesQuery;
 import com.dimitar.financetracker.service.query.category.GetCategoryByIdQuery;
 import com.dimitar.financetracker.service.query.category.GetCategoryByTypeQuery;
+import com.dimitar.financetracker.service.query.category.SearchCategoryByNameQuery;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +32,7 @@ public class CategoryService {
     private final GetCategoryByTypeQuery getCategoryByTypeQuery;
     private final MergeCategoriesCommand mergeCategoriesCommand;
     private final ImportDefaultCategoriesCommand importDefaultCategoriesCommand;
+    private final SearchCategoryByNameQuery searchCategoryByNameQuery;
 
     public CategoryResponse createCategory(CreateCategoryRequest request) {
         return createCategoryCommand.execute(request);
@@ -88,5 +90,9 @@ public class CategoryService {
                 .categories(categoryResponses)
                 .message("Successfully imported " + importedCategories.size() + " default categories")
                 .build();
+    }
+
+    public List<CategoryResponse> searchCategoriesByName(String name) {
+        return searchCategoryByNameQuery.execute(name);
     }
 }

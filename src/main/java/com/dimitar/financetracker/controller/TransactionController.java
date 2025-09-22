@@ -1,6 +1,7 @@
 package com.dimitar.financetracker.controller;
 
 import com.dimitar.financetracker.dto.request.transaction.CreateTransactionRequest;
+import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionRequest;
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.service.TransactionService;
 import jakarta.validation.Valid;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,5 +34,13 @@ public class TransactionController {
     public ResponseEntity<List<TransactionResponse>> getAllTransactions() {
         List<TransactionResponse> transactions = transactionService.getAllTransactions();
         return ResponseEntity.ok(transactions);
+    }
+
+    @PatchMapping("/{transactionId}")
+    public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable Long transactionId,
+                                                                 @Valid @RequestBody UpdateTransactionRequest request) {
+        request.setTransactionId(transactionId);
+        TransactionResponse response = transactionService.updateTransaction(request);
+        return ResponseEntity.ok(response);
     }
 }
