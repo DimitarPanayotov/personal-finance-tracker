@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -37,6 +40,12 @@ public class TransactionController {
         return ResponseEntity.ok(transactions);
     }
 
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Long transactionId) {
+        TransactionResponse response = transactionService.getTransactionById(transactionId);
+        return ResponseEntity.ok(response);
+    }
+
     @PatchMapping("/{transactionId}")
     public ResponseEntity<TransactionResponse> updateTransaction(@PathVariable Long transactionId,
                                                                  @Valid @RequestBody UpdateTransactionRequest request) {
@@ -49,5 +58,47 @@ public class TransactionController {
     public ResponseEntity<Void> deleteTransaction(@PathVariable Long transactionId) {
         transactionService.deleteTransaction(transactionId);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/{transactionId}/duplicate")
+    public ResponseEntity<TransactionResponse> duplicateTransaction(@PathVariable Long transactionId) {
+        TransactionResponse response = transactionService.duplicateTransaction(transactionId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @GetMapping("/date-range")
+    public ResponseEntity<List<TransactionResponse>> getTransactionsInDateRange(
+        @RequestParam("startDate") LocalDate startDate,
+        @RequestParam("endDate") LocalDate endDate) {
+        List<TransactionResponse> responses = transactionService.getTransactionsInDateRange(startDate, endDate);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/category/{categoryId}")
+    public ResponseEntity<List<TransactionResponse>> getTransactionsByCategory(@PathVariable Long categoryId) {
+        List<TransactionResponse> responses = transactionService.getTransactionsByCategory(categoryId);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/amount-range")
+    public ResponseEntity<List<TransactionResponse>> getTransactionsByAmountRange(
+        @RequestParam(value = "minAmount", required = false) BigDecimal minAmount,
+        @RequestParam(value = "maxAmount", required = false) BigDecimal maxAmount) {
+        List<TransactionResponse> responses = transactionService.getTransactionsByAmountRange(minAmount, maxAmount);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<TransactionResponse>> searchTransactions(
+        @RequestParam("q") String q) {
+        List<TransactionResponse> responses = transactionService.searchTransactionsByDescription(q);
+        return ResponseEntity.ok(responses);
+    }
+
+    @GetMapping("/recent")
+    public ResponseEntity<List<TransactionResponse>> getRecentTransactions(
+        @RequestParam(value = "limit", required = false) Integer limit) {
+        List<TransactionResponse> responses = transactionService.getRecentTransactions(limit);
+        return ResponseEntity.ok(responses);
     }
 }

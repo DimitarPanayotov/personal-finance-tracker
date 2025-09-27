@@ -81,7 +81,9 @@ will come later when we start the security implementation)
 - Changed the Service layer by removing input records and moved 
 the authentication logic from the controller to the Service layer
 - Added User Statistics, Merge categories, Import default categories
-- Added Search Category by name, Update Transaction, Delete Transaction
+- Added Search Category by name, Update Transaction, Delete Transaction, Duplicate Transaction,
+Get Transaction by ID,  Get Transactions in Date Range, Get Transaction By category,
+Get Transactions in Amount Range, Search Transaction
 
 ## Next Steps
 - Adding more functionality to the service layer
@@ -89,8 +91,8 @@ the authentication logic from the controller to the Service layer
 - User queries: get user activity summary, get user preferences, validate user status
 - Category commands: archive, restore
 - Category queries: get active, get popular, get empty, get summary, get by date range
-- Transaction commands: Delete, Duplicate
-- Transaction queries: GetById, GetInDateRange, GetByCategory, GetByAmountRange, Search(By description or keywords), Summary(spending by category, period, etc.), GetMonthly/WeeklySpending, GetTopSpending Categories, GetRecentTransactions, GetRecurringTransactions
+- Transaction commands: 
+- Transaction queries: Summary(spending by category, period, etc.) -> should move to user, GetMonthly/WeeklySpending -> to user, GetTopSpending Categories -> to user, GetRecentTransactions, GetRecurringTransactions
 - Budget commands: Update, Delete, Deactivate, Reset, Bulk Crate Budgets(multiple budgets at once - yearly budgets broken down by month)
 - Budget queries: GetById, GetByCategory, GetActiveBudgets, GetBudgetUsage(how much of each budget has been spent), BudgetAlerts(close to being spent), BudgetSummary
 - Advanced Features: Financial Dashboard, Monthly Financial Summary, Goal Progress Tracking

@@ -35,6 +35,13 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findByUserIdAndAmountLessThan(Long userId, BigDecimal amount);
 
+    // Amount range queries (inclusive when using Between / >= / <=)
+    List<Transaction> findByUserIdAndAmountBetween(Long userId, BigDecimal minAmount, BigDecimal maxAmount);
+
+    List<Transaction> findByUserIdAndAmountGreaterThanEqual(Long userId, BigDecimal minAmount);
+
+    List<Transaction> findByUserIdAndAmountLessThanEqual(Long userId, BigDecimal maxAmount);
+
     List<Transaction> findByUserIdAndDescriptionContainingIgnoreCase(Long userId, String searchTerm);
 
     // Analytics queries
