@@ -21,7 +21,6 @@ public class GetTransactionsInDateRangeQuery implements Query<GetTransactionsInD
     private final TransactionMapper transactionMapper;
 
     public record DateRange(LocalDate startDate, LocalDate endDate) {
-
     }
 
     @Override

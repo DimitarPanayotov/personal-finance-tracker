@@ -7,6 +7,7 @@ import com.dimitar.financetracker.exception.user.DuplicateEmailException;
 import com.dimitar.financetracker.exception.user.DuplicateUsernameException;
 import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
 import com.dimitar.financetracker.exception.transaction.TransactionDoesNotExistException;
+import com.dimitar.financetracker.exception.budget.BudgetDoesNotExistException;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +69,12 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
 
-    @ExceptionHandler({UserDoesNotExistException.class, CategoryDoesNotExistException.class, TransactionDoesNotExistException.class})
+    @ExceptionHandler({
+        UserDoesNotExistException.class,
+        CategoryDoesNotExistException.class,
+        TransactionDoesNotExistException.class,
+        BudgetDoesNotExistException.class
+    })
     public ResponseEntity<ErrorResponse> handleNonExistExceptions(
         RuntimeException ex, HttpServletRequest request) {
 

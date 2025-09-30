@@ -9,7 +9,6 @@ import com.dimitar.financetracker.entity.User;
 import com.dimitar.financetracker.exception.category.CategoryDoesNotExistException;
 import com.dimitar.financetracker.repository.BudgetRepository;
 import com.dimitar.financetracker.repository.CategoryRepository;
-import com.dimitar.financetracker.repository.UserRepository;
 import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.command.Command;
 import jakarta.transaction.Transactional;
@@ -21,7 +20,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CreateBudgetCommand implements Command<CreateBudgetRequest, BudgetResponse> {
     private final AuthenticationFacade authenticationFacade;
-    private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final BudgetRepository budgetRepository;
     private final BudgetMapper budgetMapper;
@@ -29,11 +27,9 @@ public class CreateBudgetCommand implements Command<CreateBudgetRequest, BudgetR
     @Override
     public BudgetResponse execute(CreateBudgetRequest request) {
         User user = authenticationFacade.getAuthenticatedUser();
-//        User user = userRepository.findById(input.userId())
-//            .orElseThrow(() -> new UserDoesNotExistException("User with this id does not exist: " + input.userId()));
 
-        Category category = categoryRepository.findById(request.getCategoryId())
-            .orElseThrow(() -> new CategoryDoesNotExistException("Category with this id does not exist: " + request.getCategoryId()));
+        Category category = categoryRepository.findByIdAndUserId(request.getCategoryId(), user.getId())
+            .orElseThrow(() -> new CategoryDoesNotExistException("Access denied or category with this id does not exist: " + request.getCategoryId()));
 
         Budget budget = budgetMapper.toEntity(request, user, category);
         Budget savedBudget = budgetRepository.save(budget);

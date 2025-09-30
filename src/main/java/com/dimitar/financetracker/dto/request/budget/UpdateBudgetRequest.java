@@ -17,6 +17,8 @@ import static com.dimitar.financetracker.util.ErrorMessages.BUDGET_AMOUNT_MIN;
 @AllArgsConstructor
 @Builder
 public class UpdateBudgetRequest {
+    private Long budgetId;
+
     private Long categoryId;
 
     @DecimalMin(value = "0.01", message = BUDGET_AMOUNT_MIN)

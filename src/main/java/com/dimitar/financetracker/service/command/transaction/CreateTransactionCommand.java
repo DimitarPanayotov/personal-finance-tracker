@@ -21,7 +21,6 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class CreateTransactionCommand implements Command<CreateTransactionRequest, TransactionResponse> {
     private final AuthenticationFacade authenticationFacade;
-    private final UserRepository userRepository;
     private final CategoryRepository categoryRepository;
     private final TransactionRepository transactionRepository;
     private final TransactionMapper transactionMapper;
@@ -30,8 +29,8 @@ public class CreateTransactionCommand implements Command<CreateTransactionReques
     public TransactionResponse execute(CreateTransactionRequest request) {
         User user = authenticationFacade.getAuthenticatedUser();
 
-        Category category = categoryRepository.findById(request.getCategoryId())
-            .orElseThrow(() -> new CategoryDoesNotExistException("Category with this id does not exist: " + request.getCategoryId()));
+        Category category = categoryRepository.findByIdAndUserId(request.getCategoryId(), user.getId())
+            .orElseThrow(() -> new CategoryDoesNotExistException("Access denied or category with this id does not exist: " + request.getCategoryId()));
 
         Transaction transaction = transactionMapper.toEntity(request, user, category);
 
