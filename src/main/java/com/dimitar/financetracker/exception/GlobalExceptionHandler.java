@@ -5,6 +5,7 @@ import com.dimitar.financetracker.dto.response.error.ValidationErrorResponse;
 import com.dimitar.financetracker.exception.category.CategoryDoesNotExistException;
 import com.dimitar.financetracker.exception.user.DuplicateEmailException;
 import com.dimitar.financetracker.exception.user.DuplicateUsernameException;
+import com.dimitar.financetracker.exception.user.UserAlreadyExistsException;
 import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
 import com.dimitar.financetracker.exception.transaction.TransactionDoesNotExistException;
 import com.dimitar.financetracker.exception.budget.BudgetDoesNotExistException;
@@ -55,7 +56,11 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
-    @ExceptionHandler({DuplicateUsernameException.class, DuplicateEmailException.class})
+    @ExceptionHandler({
+        DuplicateUsernameException.class,
+        DuplicateEmailException.class,
+        UserAlreadyExistsException.class
+    })
     public ResponseEntity<ErrorResponse> handleDuplicateExceptions(
         RuntimeException ex, HttpServletRequest request) {
 
