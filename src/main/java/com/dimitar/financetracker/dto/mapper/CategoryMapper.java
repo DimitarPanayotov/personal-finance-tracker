@@ -55,23 +55,18 @@ public class CategoryMapper {
         if (category == null || request == null) {
             return;
         }
-        boolean hasChanges = false;
 
         if (request.getName() != null) {
             category.setName(request.getName());
-            hasChanges = true;
-        }
-        if (request.getType() != null) {
-            category.setType(request.getType());
-            hasChanges = true;
-        }
-        if (request.getColor() != null) {
-            category.setColor(request.getColor());
-            hasChanges = true;
         }
 
-        if (hasChanges) {
-            category.setUpdatedAt(LocalDateTime.now());
+        if (request.getType() != null) {
+            category.setType(request.getType());
         }
+
+        if (request.getColor() != null) {
+            category.setColor(request.getColor());
+        }
+
     }
 }

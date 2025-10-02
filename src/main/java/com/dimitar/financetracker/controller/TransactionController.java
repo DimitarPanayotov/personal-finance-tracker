@@ -34,16 +34,10 @@ public class TransactionController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<TransactionResponse>> getAllTransactions() {
-        List<TransactionResponse> transactions = transactionService.getAllTransactions();
-        return ResponseEntity.ok(transactions);
-    }
-
-    @GetMapping("/{transactionId}")
-    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Long transactionId) {
-        TransactionResponse response = transactionService.getTransactionById(transactionId);
-        return ResponseEntity.ok(response);
+    @PostMapping("/{transactionId}/duplicate")
+    public ResponseEntity<TransactionResponse> duplicateTransaction(@PathVariable Long transactionId) {
+        TransactionResponse response = transactionService.duplicateTransaction(transactionId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PatchMapping("/{transactionId}")
@@ -60,10 +54,16 @@ public class TransactionController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/{transactionId}/duplicate")
-    public ResponseEntity<TransactionResponse> duplicateTransaction(@PathVariable Long transactionId) {
-        TransactionResponse response = transactionService.duplicateTransaction(transactionId);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    @GetMapping
+    public ResponseEntity<List<TransactionResponse>> getAllTransactions() {
+        List<TransactionResponse> transactions = transactionService.getAllTransactions();
+        return ResponseEntity.ok(transactions);
+    }
+
+    @GetMapping("/{transactionId}")
+    public ResponseEntity<TransactionResponse> getTransactionById(@PathVariable Long transactionId) {
+        TransactionResponse response = transactionService.getTransactionById(transactionId);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/date-range")

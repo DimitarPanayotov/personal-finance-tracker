@@ -8,7 +8,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-//Request flow (tying it together)
+//Request flow
 //A request with a JWT hits the app.
 //JwtAuthenticationFilter validates the token and sets the Authentication in SecurityContextHolder.
 //Later in the service/controller, call authenticationFacade.getAuthenticatedUser().

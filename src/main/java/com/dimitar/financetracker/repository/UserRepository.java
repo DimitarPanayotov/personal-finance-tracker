@@ -17,10 +17,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByEmail(String email);
 
-    // Custom query with join (if needed later)
-    //@Query("SELECT u FROM User u LEFT JOIN FETCH u.categories WHERE u.id = :userId")
-    //Optional<User> findByIdWithCategories(@Param("userId") Long userId);
-
-    // Count methods for analytics
-    //Long countByUsernameContaining(String searchTerm);
 }

@@ -22,7 +22,7 @@ class UserMapperTest {
     }
 
     @Test
-    void toEntity_shouldMapFieldsCorrectly() {
+    void toEntity_shouldMapFieldsExceptPassword() {
         UserRegistrationRequest request = UserRegistrationRequest.builder()
                 .username("testuser")
                 .email("test@example.com")
@@ -34,7 +34,8 @@ class UserMapperTest {
         assertThat(user).isNotNull();
         assertThat(user.getUsername()).isEqualTo("testuser");
         assertThat(user.getEmail()).isEqualTo("test@example.com");
-        assertThat(user.getPassword()).isEqualTo("password123");
+        // Password must not be set by the mapper; service layer encodes and sets it
+        assertThat(user.getPassword()).isNull();
         assertThat(user.getId()).isNull();
         assertThat(user.getCreatedAt()).isNull();
         assertThat(user.getUpdatedAt()).isNull();
@@ -243,4 +244,3 @@ class UserMapperTest {
         assertThat(user.getEmail()).isEqualTo("original@example.com");
     }
 }
-

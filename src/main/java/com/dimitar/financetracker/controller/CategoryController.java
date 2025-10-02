@@ -35,16 +35,16 @@ public class CategoryController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping("/{categoryId}")
-    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long categoryId) {
-        CategoryResponse response = categoryService.getCategoryById(categoryId);
-        return ResponseEntity.ok(response);
+    @PostMapping("/import-defaults")
+    public ResponseEntity<ImportCategoriesResponse> importDefaultCategories() {
+        ImportCategoriesResponse response = categoryService.importDefaultCategories();
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
-        List<CategoryResponse> categories = categoryService.getAllCategories();
-        return ResponseEntity.ok(categories);
+    @PostMapping("/merge")
+    public ResponseEntity<Void> mergeCategories(@Valid @RequestBody MergeCategoriesRequest request) {
+        categoryService.mergeCategories(request);
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{categoryId}")
@@ -61,26 +61,26 @@ public class CategoryController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
+        List<CategoryResponse> categories = categoryService.getAllCategories();
+        return ResponseEntity.ok(categories);
+    }
+
+    @GetMapping("/{categoryId}")
+    public ResponseEntity<CategoryResponse> getCategoryById(@PathVariable Long categoryId) {
+        CategoryResponse response = categoryService.getCategoryById(categoryId);
+        return ResponseEntity.ok(response);
+    }
+
     @GetMapping("/type/{type}")
     public ResponseEntity<List<CategoryResponse>> getAllCategoriesByType(@PathVariable CategoryType type) {
         List<CategoryResponse> categories = categoryService.getCategoriesByType(type);
         return ResponseEntity.ok(categories);
     }
 
-    @PostMapping("/merge")
-    public ResponseEntity<Void> mergeCategories(@Valid @RequestBody MergeCategoriesRequest request) {
-        categoryService.mergeCategories(request);
-        return ResponseEntity.ok().build();
-    }
-
-    @PostMapping("/import-defaults")
-    public ResponseEntity<ImportCategoriesResponse> importDefaultCategories() {
-        ImportCategoriesResponse response = categoryService.importDefaultCategories();
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-    }
-
     @GetMapping("/name/{name}")
-    public ResponseEntity<List<CategoryResponse>> searchCategoriesByNae(@PathVariable String name) {
+    public ResponseEntity<List<CategoryResponse>> searchCategoriesByName(@PathVariable String name) {
         List<CategoryResponse> categories = categoryService.searchCategoriesByName(name);
         return ResponseEntity.ok(categories);
     }

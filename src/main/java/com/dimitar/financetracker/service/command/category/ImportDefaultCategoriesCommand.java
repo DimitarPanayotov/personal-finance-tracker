@@ -27,24 +27,20 @@ public class ImportDefaultCategoriesCommand implements Command<Void, List<Catego
     public List<Category> execute(Void input) {
         Long userId = authenticationFacade.getAuthenticatedUserId();
 
-        // Get the authenticated user
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserDoesNotExistException("User not found"));
 
-        // Check if user already has categories to avoid duplicates
         List<Category> existingCategories = categoryRepository.findByUserId(userId);
         if (!existingCategories.isEmpty()) {
             throw new IllegalStateException("User already has categories. " +
                     "Cannot import default categories when categories already exist.");
         }
 
-        // Create categories from templates
         List<Category> defaultCategories = templateService.getAllDefaultCategories()
                 .stream()
                 .map(template -> template.toCategory(user))
                 .toList();
 
-        // Save all categories
         return categoryRepository.saveAll(defaultCategories);
     }
 }

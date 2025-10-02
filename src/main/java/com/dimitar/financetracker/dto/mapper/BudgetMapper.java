@@ -9,6 +9,8 @@ import com.dimitar.financetracker.entity.Category;
 import com.dimitar.financetracker.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class BudgetMapper {
     public Budget toEntity(CreateBudgetRequest request, User user, Category category) {

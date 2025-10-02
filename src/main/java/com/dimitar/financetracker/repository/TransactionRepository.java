@@ -27,15 +27,10 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
                                                             LocalDate transactionDateAfter,
                                                             LocalDate transactionDateBefore);
 
-    //List<Transaction> findByUserIdAndTransactionDateYearAndTransactionDateMonth(Long userId,
-    //                                                                          int transactionDateYear,
-    //                                                                        short transactionDateMonth);
-
     List<Transaction> findByUserIdAndAmountGreaterThan(Long userId, BigDecimal amount);
 
     List<Transaction> findByUserIdAndAmountLessThan(Long userId, BigDecimal amount);
 
-    // Amount range queries (inclusive when using Between / >= / <=)
     List<Transaction> findByUserIdAndAmountBetween(Long userId, BigDecimal minAmount, BigDecimal maxAmount);
 
     List<Transaction> findByUserIdAndAmountGreaterThanEqual(Long userId, BigDecimal minAmount);
@@ -44,7 +39,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 
     List<Transaction> findByUserIdAndDescriptionContainingIgnoreCase(Long userId, String searchTerm);
 
-    // Analytics queries
     @Query("SELECT SUM(t.amount) FROM Transaction t " +
         "WHERE t.user.id = :userId " +
         "AND t.category.type = :type")
@@ -90,21 +84,4 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
         @Param("userId") Long userId,
         @Param("type") CategoryType type);
 
-    // Monthly summary
-//    @Query("SELECT FUNCTION('YEAR', t.transactionDate) as year, " +
-//        "FUNCTION('MONTH', t.transactionDate) as month, " +
-//        "t.category.type as type, " +
-//        "SUM(t.amount) as total " +
-//        "FROM Transaction t " +
-//        "WHERE t.user.id = :userId " +
-//        "GROUP BY year, month, type " +
-//        "ORDER BY year, month")
-//    List<Object[]> getMonthlySummary(@Param("userId") Long userId);
-
-    // Recent transactions with category fetch
-//    @Query("SELECT t FROM Transaction t " +
-//        "JOIN FETCH t.category " +
-//        "WHERE t.user.id = :userId " +
-//        "ORDER BY t.transactionDate DESC, t.createdAt DESC")
-//    List<Transaction> findRecentTransactionsWithCategory(@Param("userId") Long userId, Pageable pageable);
 }

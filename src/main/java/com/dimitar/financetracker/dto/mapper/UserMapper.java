@@ -7,6 +7,8 @@ import com.dimitar.financetracker.dto.response.user.UserSummaryResponse;
 import com.dimitar.financetracker.entity.User;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Component
 public class UserMapper {
     public User toEntity(UserRegistrationRequest request) {
@@ -16,7 +18,7 @@ public class UserMapper {
         return User.builder()
             .username(request.getUsername())
             .email(request.getEmail())
-            .password(request.getPassword()) // TODO: This should be encoded by the service layer, not here
+            // Do not set raw password here; service layer must encode and assign it explicitly
             .build();
     }
 
@@ -59,10 +61,4 @@ public class UserMapper {
         }
     }
 
-    public void updatePassword(User user, String newEncodedPassword) {
-        if (user == null || newEncodedPassword == null) {
-            return;
-        }
-        user.setPassword(newEncodedPassword);
-    }
 }

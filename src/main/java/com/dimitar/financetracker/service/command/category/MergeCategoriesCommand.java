@@ -26,17 +26,13 @@ public class MergeCategoriesCommand implements Command<MergeCategoriesRequest, V
     public Void execute(MergeCategoriesRequest request) {
         Long userId = authenticationFacade.getAuthenticatedUserId();
 
-        // Validate target category exists and belongs to user
         Category targetCategory = validateAndGetTargetCategory(request.getTargetCategoryId(), userId);
 
-        // Validate source categories exist, belong to user, and have same type as target
         List<Category> sourceCategories = validateAndGetSourceCategories(
                 request.getSourceCategoryIds(), userId, targetCategory);
 
-        // Transfer all transactions from source categories to target category
         transferTransactions(sourceCategories, targetCategory, userId);
 
-        // Delete source categories
         categoryRepository.deleteAll(sourceCategories);
 
         return null;
@@ -60,13 +56,11 @@ public class MergeCategoriesCommand implements Command<MergeCategoriesRequest, V
                 .orElseThrow(() -> new CategoryDoesNotExistException(
                         "Source category with ID " + categoryId + " not found"));
 
-        // Ensure source category has same type as target category
         if (!category.getType().equals(targetCategory.getType())) {
             throw new IllegalArgumentException("Cannot merge categories of different types. Category " +
                     categoryId + " is " + category.getType() + " but target is " + targetCategory.getType());
         }
 
-        // Prevent merging category with itself
         if (category.getId().equals(targetCategory.getId())) {
             throw new IllegalArgumentException("Cannot merge category with itself");
         }

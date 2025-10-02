@@ -19,7 +19,6 @@ import org.springframework.stereotype.Component;
 public class CreateCategoryCommand implements Command<CreateCategoryRequest, CategoryResponse> {
     private final AuthenticationFacade authenticationFacade;
     private final CategoryRepository categoryRepository;
-    private final UserRepository userRepository;
     private final CategoryMapper categoryMapper;
 
     @Override

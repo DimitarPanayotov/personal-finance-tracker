@@ -22,15 +22,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     private final UserService userService;
 
-    @GetMapping("/me")
-    public ResponseEntity<UserResponse> getCurrentUser() {
-        UserResponse response = userService.getUser();
-        return ResponseEntity.status(HttpStatus.OK).body(response);
-    }
-
     @PatchMapping("/me")
     public ResponseEntity<UserResponse> updateCurrentUser(@Valid @RequestBody UserUpdateRequest request) {
         UserResponse response = userService.updateUser(request);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
+    @PatchMapping("/me/change-password")
+    public ResponseEntity<UserResponse> changeCurrentUserPassword(@Valid @RequestBody PasswordChangeRequest request) {
+        UserResponse response = userService.changePassword(request);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
@@ -39,10 +39,10 @@ public class UserController {
         userService.deleteUser();
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
-    
-    @PatchMapping("/me/change-password")
-    public ResponseEntity<UserResponse> changeCurrentUserPassword(@Valid @RequestBody PasswordChangeRequest request) {
-        UserResponse response = userService.changePassword(request);
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse> getCurrentUser() {
+        UserResponse response = userService.getUser();
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 

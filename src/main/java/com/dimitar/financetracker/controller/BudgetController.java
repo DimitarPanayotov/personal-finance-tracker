@@ -32,6 +32,32 @@ public class BudgetController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PostMapping("/{budgetId}/deactivate")
+    public ResponseEntity<BudgetResponse> deactivateBudget(@PathVariable Long budgetId) {
+        BudgetResponse response = budgetService.deactivateBudget(budgetId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/{budgetId}/activate")
+    public ResponseEntity<BudgetResponse> activateBudget(@PathVariable Long budgetId) {
+        BudgetResponse response = budgetService.activateBudget(budgetId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PatchMapping("/{budgetId}")
+    public ResponseEntity<BudgetResponse> updateBudget(@PathVariable Long budgetId,
+                                                       @Valid @RequestBody UpdateBudgetRequest request) {
+        request.setBudgetId(budgetId);
+        BudgetResponse response = budgetService.updateBudget(request);
+        return ResponseEntity.ok(response);
+    }
+
+    @DeleteMapping("/{budgetId}")
+    public ResponseEntity<Void> deleteBudget(@PathVariable Long budgetId) {
+        budgetService.deleteBudget(budgetId);
+        return ResponseEntity.noContent().build();
+    }
+
     @GetMapping
     public ResponseEntity<List<BudgetResponse>> getAllBudgets() {
         List<BudgetResponse> budgets = budgetService.getAllBudgets();
@@ -68,29 +94,4 @@ public class BudgetController {
         return ResponseEntity.ok(responses);
     }
 
-    @PatchMapping("/{budgetId}")
-    public ResponseEntity<BudgetResponse> updateBudget(@PathVariable Long budgetId,
-                                                       @Valid @RequestBody UpdateBudgetRequest request) {
-        request.setBudgetId(budgetId);
-        BudgetResponse response = budgetService.updateBudget(request);
-        return ResponseEntity.ok(response);
-    }
-
-    @DeleteMapping("/{budgetId}")
-    public ResponseEntity<Void> deleteBudget(@PathVariable Long budgetId) {
-        budgetService.deleteBudget(budgetId);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PostMapping("/{budgetId}/deactivate")
-    public ResponseEntity<BudgetResponse> deactivateBudget(@PathVariable Long budgetId) {
-        BudgetResponse response = budgetService.deactivateBudget(budgetId);
-        return ResponseEntity.ok(response);
-    }
-
-    @PostMapping("/{budgetId}/activate")
-    public ResponseEntity<BudgetResponse> activateBudget(@PathVariable Long budgetId) {
-        BudgetResponse response = budgetService.activateBudget(budgetId);
-        return ResponseEntity.ok(response);
-    }
 }
