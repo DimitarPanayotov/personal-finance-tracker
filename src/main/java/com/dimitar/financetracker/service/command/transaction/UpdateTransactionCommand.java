@@ -5,6 +5,7 @@ import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionReque
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.entity.Category;
 import com.dimitar.financetracker.entity.Transaction;
+import com.dimitar.financetracker.exception.category.CategoryDoesNotExistException;
 import com.dimitar.financetracker.exception.transaction.TransactionDoesNotExistException;
 import com.dimitar.financetracker.repository.CategoryRepository;
 import com.dimitar.financetracker.repository.TransactionRepository;
@@ -29,8 +30,13 @@ public class UpdateTransactionCommand implements Command<UpdateTransactionReques
         Transaction transaction = transactionRepository.findByIdAndUserId(input.getTransactionId(), authenticatedUserId)
             .orElseThrow(() -> new TransactionDoesNotExistException("Transaction not found or access denied!"));
 
-        Category category = categoryRepository.findById(input.getCategoryId())
-                .orElse(null);
+        Category category = null;
+        if (input.getCategoryId() != null) {
+            category = categoryRepository.findByIdAndUserId(input.getCategoryId(), authenticatedUserId)
+                .orElseThrow(() -> new CategoryDoesNotExistException(
+                    "Access denied or category with this id does not exist: " + input.getCategoryId()
+                ));
+        }
 
         transactionMapper.updateEntity(transaction, input, category);
 

@@ -93,6 +93,8 @@ Get Transactions in Amount Range, Search Transaction
 - Tested in Postman
 - Basic Service Layer Finished!
 
+## Day 12 Progress
+- Added tests for all commands and queries with high coverage
 # Immediate next steps
 - Service-layer tests: Add unit tests for your new commands/queries (activate/deactivate/delete/get by id/by category/get active). Use Mockito for AuthenticationFacade and repositories.
 - Business rules on budgets: Enforce “no overlapping active budgets for the same category and time window” in create/update; surface a clear error when it happens.

@@ -35,12 +35,12 @@ public class UpdateUserCommand implements Command<UserUpdateRequest, UserRespons
             if (userRepository.existsByUsername(request.getUsername())) {
                 throw new DuplicateUsernameException("Username already exists: " + request.getUsername());
             }
-            user.setUsername(user.getUsername());
+            user.setUsername(request.getUsername());
         }
 
         if (request.getEmail() != null && !request.getEmail().equals(user.getEmail())) {
             if (userRepository.existsByEmail(request.getEmail())) {
-                throw new DuplicateEmailException("Email already exists: " + user.getEmail());
+                throw new DuplicateEmailException("Email already exists: " + request.getEmail());
             }
             user.setEmail(request.getEmail());
         }

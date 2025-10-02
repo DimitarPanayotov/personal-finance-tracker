@@ -130,6 +130,7 @@ class CategoryMapperTest {
 
     @Test
     void updateEntity_shouldUpdateAllFields() {
+        LocalDateTime originalUpdatedAt = LocalDateTime.now().minusDays(1);
         Category category = Category.builder()
                 .id(1L)
                 .user(testUser)
@@ -137,7 +138,7 @@ class CategoryMapperTest {
                 .type(CategoryType.EXPENSE)
                 .color("#FF0000")
                 .createdAt(LocalDateTime.now().minusDays(1))
-                .updatedAt(LocalDateTime.now().minusDays(1))
+                .updatedAt(originalUpdatedAt)
                 .build();
 
         UpdateCategoryRequest request = UpdateCategoryRequest.builder()
@@ -146,14 +147,13 @@ class CategoryMapperTest {
                 .color("#00FF00")
                 .build();
 
-        LocalDateTime beforeUpdate = LocalDateTime.now();
         mapper.updateEntity(category, request);
-        LocalDateTime afterUpdate = LocalDateTime.now();
 
         assertThat(category.getName()).isEqualTo("New Name");
         assertThat(category.getType()).isEqualTo(CategoryType.INCOME);
         assertThat(category.getColor()).isEqualTo("#00FF00");
-        assertThat(category.getUpdatedAt()).isBetween(beforeUpdate, afterUpdate);
+        // Mapper does not persist; @PreUpdate won't trigger here
+        assertThat(category.getUpdatedAt()).isEqualTo(originalUpdatedAt);
     }
 
     @Test
@@ -174,14 +174,13 @@ class CategoryMapperTest {
                 // type and color are null
                 .build();
 
-        LocalDateTime beforeUpdate = LocalDateTime.now();
         mapper.updateEntity(category, request);
-        LocalDateTime afterUpdate = LocalDateTime.now();
 
         assertThat(category.getName()).isEqualTo("Updated Name");
         assertThat(category.getType()).isEqualTo(CategoryType.EXPENSE); // unchanged
         assertThat(category.getColor()).isEqualTo("#FF0000"); // unchanged
-        assertThat(category.getUpdatedAt()).isBetween(beforeUpdate, afterUpdate);
+        // Mapper-only update shouldn't change updatedAt; @PreUpdate runs on flush
+        assertThat(category.getUpdatedAt()).isEqualTo(originalUpdatedAt);
     }
 
     @Test
@@ -258,14 +257,13 @@ class CategoryMapperTest {
                 .color("")
                 .build();
 
-        LocalDateTime beforeUpdate = LocalDateTime.now();
         mapper.updateEntity(category, request);
-        LocalDateTime afterUpdate = LocalDateTime.now();
 
         assertThat(category.getName()).isEqualTo("");
         assertThat(category.getColor()).isEqualTo("");
         assertThat(category.getType()).isEqualTo(CategoryType.EXPENSE); // unchanged
-        assertThat(category.getUpdatedAt()).isBetween(beforeUpdate, afterUpdate);
+        // Mapper-only update shouldn't change updatedAt; @PreUpdate runs on flush
+        assertThat(category.getUpdatedAt()).isEqualTo(originalUpdatedAt);
     }
 
     @Test
@@ -308,4 +306,3 @@ class CategoryMapperTest {
         assertThat(category.getColor()).isEqualTo("#00FF00");
     }
 }
-
