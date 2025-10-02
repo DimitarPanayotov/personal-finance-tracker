@@ -95,8 +95,9 @@ Get Transactions in Amount Range, Search Transaction
 
 ## Day 12 Progress
 - Added tests for all commands and queries with high coverage
+- 
 # Immediate next steps
-- Service-layer tests: Add unit tests for your new commands/queries (activate/deactivate/delete/get by id/by category/get active). Use Mockito for AuthenticationFacade and repositories.
+- Service-layer tests: Add unit tests for your new commands/queries 
 - Business rules on budgets: Enforce “no overlapping active budgets for the same category and time window” in create/update; surface a clear error when it happens.
 - Pagination and filtering: Add pageable/sort to list endpoints (transactions, budgets, categories) to keep responses fast as data grows.
 - API docs: Add OpenAPI/Swagger UI to document endpoints and enable easy testing.
