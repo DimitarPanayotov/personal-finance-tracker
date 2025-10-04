@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -79,9 +80,9 @@ public class CategoryController {
         return ResponseEntity.ok(categories);
     }
 
-    @GetMapping("/name/{name}")
-    public ResponseEntity<List<CategoryResponse>> searchCategoriesByName(@PathVariable String name) {
-        List<CategoryResponse> categories = categoryService.searchCategoriesByName(name);
+    @GetMapping("/search")
+    public ResponseEntity<List<CategoryResponse>> searchCategoriesByName(@RequestParam("q") String q) {
+        List<CategoryResponse> categories = categoryService.searchCategoriesByName(q);
         return ResponseEntity.ok(categories);
     }
 

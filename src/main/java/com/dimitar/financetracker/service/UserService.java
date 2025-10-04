@@ -47,5 +47,6 @@ public class UserService {
         return changePasswordCommand.execute(request);
     }
 
-    public UserStatisticsResponse getStatistics() {return getUserStatisticsQuery.execute(null); }
+    public UserStatisticsResponse getStatistics() {
+        return getUserStatisticsQuery.execute(null); }
 }
