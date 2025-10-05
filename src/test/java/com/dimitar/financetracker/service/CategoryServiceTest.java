@@ -60,7 +60,6 @@ class CategoryServiceTest {
 
     @Test
     void createCategory_delegatesToCommand() {
-        // Arrange
         CreateCategoryRequest request = CreateCategoryRequest.builder()
                 .name("Groceries").type(CategoryType.EXPENSE).color("#00FF00")
                 .build();
@@ -69,10 +68,8 @@ class CategoryServiceTest {
                 .build();
         when(createCategoryCommand.execute(request)).thenReturn(expected);
 
-        // Act
         CategoryResponse actual = categoryService.createCategory(request);
 
-        // Assert
         assertEquals(expected, actual);
         verify(createCategoryCommand).execute(request);
         verifyNoMoreInteractions(createCategoryCommand);
@@ -82,15 +79,12 @@ class CategoryServiceTest {
 
     @Test
     void getCategoryById_delegatesToQuery() {
-        // Arrange
         Long id = 5L;
         CategoryResponse expected = CategoryResponse.builder().id(id).name("Salary").type(CategoryType.INCOME).color("#123456").build();
         when(getCategoryByIdQuery.execute(id)).thenReturn(expected);
 
-        // Act
         CategoryResponse actual = categoryService.getCategoryById(id);
 
-        // Assert
         assertEquals(expected, actual);
         verify(getCategoryByIdQuery).execute(id);
         verifyNoMoreInteractions(getCategoryByIdQuery);
@@ -100,17 +94,14 @@ class CategoryServiceTest {
 
     @Test
     void getAllCategories_delegatesToQuery() {
-        // Arrange
         List<CategoryResponse> expected = List.of(
                 CategoryResponse.builder().id(1L).name("Food").type(CategoryType.EXPENSE).color("#FF0000").build(),
                 CategoryResponse.builder().id(2L).name("Salary").type(CategoryType.INCOME).color("#00FF00").build()
         );
         when(getAllCategoriesQuery.execute(null)).thenReturn(expected);
 
-        // Act
         List<CategoryResponse> actual = categoryService.getAllCategories();
 
-        // Assert
         assertEquals(expected, actual);
         verify(getAllCategoriesQuery).execute(null);
         verifyNoMoreInteractions(getAllCategoriesQuery);
@@ -120,17 +111,14 @@ class CategoryServiceTest {
 
     @Test
     void updateCategory_delegatesToCommand() {
-        // Arrange
         UpdateCategoryRequest request = UpdateCategoryRequest.builder()
                 .categoryId(1L).name("Dining").color("#AABBCC").type(CategoryType.EXPENSE).build();
         CategoryResponse expected = CategoryResponse.builder()
                 .id(1L).name("Dining").color("#AABBCC").type(CategoryType.EXPENSE).build();
         when(updateCategoryCommand.execute(request)).thenReturn(expected);
 
-        // Act
         CategoryResponse actual = categoryService.updateCategory(request);
 
-        // Assert
         assertEquals(expected, actual);
         verify(updateCategoryCommand).execute(request);
         verifyNoMoreInteractions(updateCategoryCommand);
@@ -140,13 +128,10 @@ class CategoryServiceTest {
 
     @Test
     void deleteCategory_delegatesToCommand() {
-        // Arrange
         Long id = 3L;
 
-        // Act
         categoryService.deleteCategory(id);
 
-        // Assert
         verify(deleteCategoryCommand).execute(id);
         verifyNoMoreInteractions(deleteCategoryCommand);
         verifyNoInteractions(createCategoryCommand, getCategoryByIdQuery, getAllCategoriesQuery, updateCategoryCommand,
@@ -155,17 +140,14 @@ class CategoryServiceTest {
 
     @Test
     void getCategoriesByType_delegatesToQuery() {
-        // Arrange
         CategoryType type = CategoryType.EXPENSE;
         List<CategoryResponse> expected = List.of(
                 CategoryResponse.builder().id(1L).name("Food").type(CategoryType.EXPENSE).color("#FF0000").build()
         );
         when(getCategoryByTypeQuery.execute(type)).thenReturn(expected);
 
-        // Act
         List<CategoryResponse> actual = categoryService.getCategoriesByType(type);
 
-        // Assert
         assertEquals(expected, actual);
         verify(getCategoryByTypeQuery).execute(type);
         verifyNoMoreInteractions(getCategoryByTypeQuery);
@@ -175,14 +157,11 @@ class CategoryServiceTest {
 
     @Test
     void mergeCategories_delegatesToCommand() {
-        // Arrange
         MergeCategoriesRequest request = MergeCategoriesRequest.builder()
                 .targetCategoryId(2L).sourceCategoryIds(java.util.List.of(1L)).build();
 
-        // Act
         categoryService.mergeCategories(request);
 
-        // Assert
         verify(mergeCategoriesCommand).execute(request);
         verifyNoMoreInteractions(mergeCategoriesCommand);
         verifyNoInteractions(createCategoryCommand, getCategoryByIdQuery, getAllCategoriesQuery, updateCategoryCommand,
@@ -191,7 +170,6 @@ class CategoryServiceTest {
 
     @Test
     void importDefaultCategories_buildsAggregatedResponse() {
-        // Arrange
         LocalDateTime now = LocalDateTime.now();
         Category c1 = Category.builder().id(1L).name("Food").type(CategoryType.EXPENSE).color("#FF0000").createdAt(now).updatedAt(now).build();
         Category c2 = Category.builder().id(2L).name("Rent").type(CategoryType.EXPENSE).color("#AA0000").createdAt(now).updatedAt(now).build();
@@ -199,7 +177,6 @@ class CategoryServiceTest {
         List<Category> imported = List.of(c1, c2, c3);
         when(importDefaultCategoriesCommand.execute(null)).thenReturn(imported);
 
-        // Expected mapped responses and counts
         List<CategoryResponse> expectedResponses = List.of(
                 CategoryResponse.builder().id(1L).name("Food").type(CategoryType.EXPENSE).color("#FF0000").createdAt(now).updatedAt(now).build(),
                 CategoryResponse.builder().id(2L).name("Rent").type(CategoryType.EXPENSE).color("#AA0000").createdAt(now).updatedAt(now).build(),
@@ -213,10 +190,8 @@ class CategoryServiceTest {
                 .message("Successfully imported 3 default categories")
                 .build();
 
-        // Act
         ImportCategoriesResponse actual = categoryService.importDefaultCategories();
 
-        // Assert
         assertEquals(expected, actual);
         verify(importDefaultCategoriesCommand).execute(null);
         verifyNoMoreInteractions(importDefaultCategoriesCommand);
@@ -226,7 +201,6 @@ class CategoryServiceTest {
 
     @Test
     void importDefaultCategories_returnsEmptyAggregationWhenNoCategories() {
-        // Arrange
         when(importDefaultCategoriesCommand.execute(null)).thenReturn(java.util.Collections.emptyList());
 
         ImportCategoriesResponse expected = ImportCategoriesResponse.builder()
@@ -237,10 +211,8 @@ class CategoryServiceTest {
                 .message("Successfully imported 0 default categories")
                 .build();
 
-        // Act
         ImportCategoriesResponse actual = categoryService.importDefaultCategories();
 
-        // Assert
         assertEquals(expected, actual);
         verify(importDefaultCategoriesCommand).execute(null);
         verifyNoMoreInteractions(importDefaultCategoriesCommand);
@@ -250,17 +222,14 @@ class CategoryServiceTest {
 
     @Test
     void searchCategoriesByName_delegatesToQuery() {
-        // Arrange
         String name = "Foo";
         List<CategoryResponse> expected = List.of(
                 CategoryResponse.builder().id(1L).name("Food").type(CategoryType.EXPENSE).color("#FF0000").build()
         );
         when(searchCategoryByNameQuery.execute(name)).thenReturn(expected);
 
-        // Act
         List<CategoryResponse> actual = categoryService.searchCategoriesByName(name);
 
-        // Assert
         assertEquals(expected, actual);
         verify(searchCategoryByNameQuery).execute(name);
         verifyNoMoreInteractions(searchCategoryByNameQuery);

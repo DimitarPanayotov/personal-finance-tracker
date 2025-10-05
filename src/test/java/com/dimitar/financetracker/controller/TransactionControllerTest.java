@@ -5,6 +5,7 @@ import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionReque
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.exception.GlobalExceptionHandler;
 import com.dimitar.financetracker.exception.transaction.TransactionDoesNotExistException;
+import com.dimitar.financetracker.service.TransactionService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -44,7 +45,8 @@ class TransactionControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
-    @Mock com.dimitar.financetracker.service.TransactionService transactionService;
+    @Mock
+    TransactionService transactionService;
 
     @BeforeEach
     void setUp() {
@@ -106,7 +108,6 @@ class TransactionControllerTest {
         @Test
         @DisplayName("POST /api/transactions returns 400 with validation errors when payload invalid")
         void create_validationErrors() throws Exception {
-            // categoryId null, amount null, transactionDate null, description too long
             String longDesc = "x".repeat(260);
             CreateTransactionRequest invalid = CreateTransactionRequest.builder()
                     .categoryId(null)

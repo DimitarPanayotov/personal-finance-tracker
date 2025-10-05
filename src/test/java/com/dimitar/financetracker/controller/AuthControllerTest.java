@@ -6,6 +6,7 @@ import com.dimitar.financetracker.dto.response.user.AuthenticationResponse;
 import com.dimitar.financetracker.exception.GlobalExceptionHandler;
 import com.dimitar.financetracker.exception.user.UserAlreadyExistsException;
 import com.dimitar.financetracker.exception.user.UserDoesNotExistException;
+import com.dimitar.financetracker.service.AuthenticationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -35,7 +36,8 @@ class AuthControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
-    @Mock com.dimitar.financetracker.service.AuthenticationService authenticationService;
+    @Mock
+    AuthenticationService authenticationService;
 
     @BeforeEach
     void setUp() {

@@ -29,7 +29,6 @@ class AuthenticationFacadeTest {
 
     @Test
     void getAuthenticatedUser_returnsUser_whenAuthenticatedAndFoundByUsername() {
-        // Arrange
         User expected = User.builder().id(1L).username("john").email("john@example.com").build();
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(expected));
 
@@ -42,10 +41,8 @@ class AuthenticationFacadeTest {
 
         AuthenticationFacade facade = new AuthenticationFacade(userRepository);
 
-        // Act
         User actual = facade.getAuthenticatedUser();
 
-        // Assert
         assertEquals(expected, actual);
         verify(userRepository).findByUsername("john");
         verifyNoMoreInteractions(userRepository);
@@ -53,7 +50,6 @@ class AuthenticationFacadeTest {
 
     @Test
     void getAuthenticatedUser_returnsUser_whenAuthenticatedAndFoundByEmail() {
-        // Arrange
         User expected = User.builder().id(2L).username("jane").email("jane@example.com").build();
         when(userRepository.findByUsername("jane@example.com")).thenReturn(Optional.empty());
         when(userRepository.findByEmail("jane@example.com")).thenReturn(Optional.of(expected));
@@ -67,10 +63,8 @@ class AuthenticationFacadeTest {
 
         AuthenticationFacade facade = new AuthenticationFacade(userRepository);
 
-        // Act
         User actual = facade.getAuthenticatedUser();
 
-        // Assert
         assertEquals(expected, actual);
         verify(userRepository).findByUsername("jane@example.com");
         verify(userRepository).findByEmail("jane@example.com");
@@ -79,7 +73,6 @@ class AuthenticationFacadeTest {
 
     @Test
     void getAuthenticatedUser_throws_whenNotAuthenticated() {
-        // Arrange
         Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(false);
         SecurityContext context = mock(SecurityContext.class);
@@ -88,14 +81,12 @@ class AuthenticationFacadeTest {
 
         AuthenticationFacade facade = new AuthenticationFacade(userRepository);
 
-        // Act + Assert
         assertThrows(RuntimeException.class, facade::getAuthenticatedUser);
         verifyNoInteractions(userRepository);
     }
 
     @Test
     void getAuthenticatedUser_throws_whenUserNotFound() {
-        // Arrange
         when(userRepository.findByUsername("ghost")).thenReturn(Optional.empty());
         when(userRepository.findByEmail("ghost")).thenReturn(Optional.empty());
 
@@ -108,7 +99,6 @@ class AuthenticationFacadeTest {
 
         AuthenticationFacade facade = new AuthenticationFacade(userRepository);
 
-        // Act + Assert
         assertThrows(UserDoesNotExistException.class, facade::getAuthenticatedUser);
         verify(userRepository).findByUsername("ghost");
         verify(userRepository).findByEmail("ghost");
@@ -117,7 +107,6 @@ class AuthenticationFacadeTest {
 
     @Test
     void getAuthenticatedUserId_returnsId() {
-        // Arrange
         User expected = User.builder().id(42L).username("john").build();
         when(userRepository.findByUsername("john")).thenReturn(Optional.of(expected));
 
@@ -130,10 +119,8 @@ class AuthenticationFacadeTest {
 
         AuthenticationFacade facade = new AuthenticationFacade(userRepository);
 
-        // Act
         Long id = facade.getAuthenticatedUserId();
 
-        // Assert
         assertEquals(42L, id);
         verify(userRepository).findByUsername("john");
         verifyNoMoreInteractions(userRepository);

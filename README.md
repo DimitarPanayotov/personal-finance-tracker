@@ -16,7 +16,7 @@ A robust Spring Boot application for managing personal finances with comprehensi
 - **JWT Security**: Stateless authentication system with token-based authorization
 - **Comprehensive Validation**: Jakarta Bean Validation for data integrity
 - **RESTful API**: Well-structured endpoints with global exception handling
-- **High Test Coverage**: 400+ tests with 93-94% coverage using JUnit5, AssertJ, and Spring Boot Test
+- **High Test Coverage**: 600+ tests with 93-94% coverage using JUnit5, AssertJ, and Spring Boot Test
 
 ## Technology Stack
 - **Backend**: Spring Boot, Spring Security, Spring Data JPA

@@ -47,7 +47,6 @@ class UserServiceTest {
 
     @Test
     void getUser_returnsUserResponseFromQuery() {
-        // Arrange
         UserResponse expected = UserResponse.builder()
                 .id(1L)
                 .username("john")
@@ -55,10 +54,8 @@ class UserServiceTest {
                 .build();
         when(getUserQuery.execute(null)).thenReturn(expected);
 
-        // Act
         UserResponse actual = userService.getUser();
 
-        // Assert
         assertEquals(expected, actual);
         verify(getUserQuery, times(1)).execute(null);
         verifyNoMoreInteractions(getUserQuery);
@@ -67,7 +64,6 @@ class UserServiceTest {
 
     @Test
     void updateUser_delegatesToCommand() {
-        // Arrange
         UserUpdateRequest request = UserUpdateRequest.builder()
                 .username("newName")
                 .email("new@example.com")
@@ -79,10 +75,8 @@ class UserServiceTest {
                 .build();
         when(updateUserCommand.execute(request)).thenReturn(expected);
 
-        // Act
         UserResponse actual = userService.updateUser(request);
 
-        // Assert
         assertEquals(expected, actual);
         verify(updateUserCommand, times(1)).execute(request);
         verifyNoMoreInteractions(updateUserCommand);
@@ -91,10 +85,8 @@ class UserServiceTest {
 
     @Test
     void deleteUser_delegatesToCommand() {
-        // Act
         userService.deleteUser();
 
-        // Assert
         verify(deleteUserCommand, times(1)).execute(null);
         verifyNoMoreInteractions(deleteUserCommand);
         verifyNoInteractions(getUserQuery, updateUserCommand, changePasswordCommand, getUserStatisticsQuery);
@@ -102,7 +94,6 @@ class UserServiceTest {
 
     @Test
     void changePassword_delegatesToCommand() {
-        // Arrange
         PasswordChangeRequest request = PasswordChangeRequest.builder()
                 .password("old")
                 .newPassword("new")
@@ -114,10 +105,8 @@ class UserServiceTest {
                 .build();
         when(changePasswordCommand.execute(request)).thenReturn(expected);
 
-        // Act
         UserResponse actual = userService.changePassword(request);
 
-        // Assert
         assertEquals(expected, actual);
         verify(changePasswordCommand, times(1)).execute(request);
         verifyNoMoreInteractions(changePasswordCommand);
@@ -126,7 +115,6 @@ class UserServiceTest {
 
     @Test
     void getStatistics_returnsFromQuery() {
-        // Arrange
         UserStatisticsResponse expected = UserStatisticsResponse.builder()
                 .totalIncome(java.math.BigDecimal.TEN)
                 .totalExpenses(java.math.BigDecimal.ONE)
@@ -142,10 +130,8 @@ class UserServiceTest {
                 .build();
         when(getUserStatisticsQuery.execute(null)).thenReturn(expected);
 
-        // Act
         UserStatisticsResponse actual = userService.getStatistics();
 
-        // Assert
         assertEquals(expected, actual);
         verify(getUserStatisticsQuery, times(1)).execute(null);
         verifyNoMoreInteractions(getUserStatisticsQuery);

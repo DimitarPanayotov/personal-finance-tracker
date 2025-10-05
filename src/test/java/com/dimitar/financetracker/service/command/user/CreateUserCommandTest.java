@@ -37,7 +37,6 @@ class CreateUserCommandTest {
 
     @Test
     void execute_createsUser_whenNoDuplicates() {
-        // Arrange
         UserRegistrationRequest request = UserRegistrationRequest.builder()
                 .username("john")
                 .email("john@example.com")
@@ -59,10 +58,8 @@ class CreateUserCommandTest {
         UserResponse expected = UserResponse.builder().id(1L).username("john").email("john@example.com").build();
         when(userMapper.toResponse(any(User.class))).thenReturn(expected);
 
-        // Act
         UserResponse actual = command.execute(request);
 
-        // Assert
         verify(userRepository).existsByUsername("john");
         verify(userRepository).existsByEmail("john@example.com");
         verify(userMapper).toEntity(request);

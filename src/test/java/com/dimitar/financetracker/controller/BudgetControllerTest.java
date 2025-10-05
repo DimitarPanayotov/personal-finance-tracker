@@ -7,6 +7,7 @@ import com.dimitar.financetracker.dto.response.budget.BudgetUsageResponse;
 import com.dimitar.financetracker.exception.GlobalExceptionHandler;
 import com.dimitar.financetracker.exception.budget.BudgetDoesNotExistException;
 import com.dimitar.financetracker.model.BudgetPeriod;
+import com.dimitar.financetracker.service.BudgetService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -43,7 +44,8 @@ class BudgetControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
-    @Mock com.dimitar.financetracker.service.BudgetService budgetService;
+    @Mock
+    BudgetService budgetService;
 
     @BeforeEach
     void setUp() {
@@ -107,7 +109,6 @@ class BudgetControllerTest {
         @Test
         @DisplayName("POST /api/budgets returns 400 with validation errors when payload invalid")
         void create_validationErrors() throws Exception {
-            // categoryId null, amount null, period null, startDate null
             CreateBudgetRequest invalid = CreateBudgetRequest.builder()
                     .categoryId(null)
                     .amount(null)

@@ -30,17 +30,14 @@ class GetUserQueryTest {
 
     @Test
     void execute_returnsMappedUserResponse() {
-        // Arrange
         User user = User.builder().id(1L).username("john").email("john@example.com").build();
         UserResponse expected = UserResponse.builder().id(1L).username("john").email("john@example.com").build();
 
         when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
         when(userMapper.toResponse(user)).thenReturn(expected);
 
-        // Act
         UserResponse actual = query.execute(null);
 
-        // Assert
         assertEquals(expected, actual);
         verify(authenticationFacade).getAuthenticatedUser();
         verify(userMapper).toResponse(user);

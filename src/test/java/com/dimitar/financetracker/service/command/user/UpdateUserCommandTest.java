@@ -37,7 +37,6 @@ class UpdateUserCommandTest {
 
     @Test
     void execute_updatesUsernameAndEmail_whenChangedAndUnique() {
-        // Arrange
         User user = User.builder().id(1L).username("john").email("old@example.com").build();
         when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
 
@@ -56,10 +55,8 @@ class UpdateUserCommandTest {
 
         ArgumentCaptor<User> captor = ArgumentCaptor.forClass(User.class);
 
-        // Act
         UserResponse actual = command.execute(request);
 
-        // Assert
         verify(userRepository).existsByUsername("johnny");
         verify(userRepository).existsByEmail("new@example.com");
         verify(userRepository).save(captor.capture());
@@ -104,7 +101,6 @@ class UpdateUserCommandTest {
 
     @Test
     void execute_savesWhenNoChangesProvided() {
-        // Arrange
         User user = User.builder().id(1L).username("john").email("old@example.com").build();
         when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
         // Same values mean no change conditions will be triggered
@@ -117,10 +113,8 @@ class UpdateUserCommandTest {
         UserResponse expected = UserResponse.builder().id(1L).username("john").email("old@example.com").build();
         when(userMapper.toResponse(user)).thenReturn(expected);
 
-        // Act
         UserResponse actual = command.execute(request);
 
-        // Assert
         verify(userRepository, never()).existsByUsername(any());
         verify(userRepository, never()).existsByEmail(any());
         verify(userRepository).save(user);

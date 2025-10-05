@@ -38,7 +38,6 @@ class ChangePasswordCommandTest {
 
     @Test
     void execute_changesPassword_whenCurrentPasswordMatches() {
-        // Arrange
         User user = User.builder()
                 .id(1L)
                 .username("john")
@@ -63,10 +62,8 @@ class ChangePasswordCommandTest {
                 .build();
         when(userMapper.toResponse(user)).thenReturn(expected);
 
-        // Act
         UserResponse actual = command.execute(request);
 
-        // Assert
         assertEquals(expected, actual);
         assertEquals("hashedNew", user.getPassword(), "User password should be updated before save");
         verify(userRepository, times(1)).save(user);
@@ -77,7 +74,6 @@ class ChangePasswordCommandTest {
 
     @Test
     void execute_throwsWhenCurrentPasswordIncorrect() {
-        // Arrange
         User user = User.builder().password("hashedOld").build();
         PasswordChangeRequest request = PasswordChangeRequest.builder()
                 .password("wrong")
@@ -87,7 +83,6 @@ class ChangePasswordCommandTest {
         when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
         when(passwordEncoder.matches("wrong", "hashedOld")).thenReturn(false);
 
-        // Act + Assert
         assertThrows(IncorrectPasswordException.class, () -> command.execute(request));
         verify(userRepository, never()).save(any());
         verify(passwordEncoder, never()).encode(any());

@@ -36,7 +36,6 @@ class GetUserStatisticsQueryTest {
 
     @Test
     void execute_returnsComputedStatistics_withValues() {
-        // Arrange
         Long userId = 42L;
         when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
 
@@ -67,24 +66,19 @@ class GetUserStatisticsQueryTest {
         ArgumentCaptor<LocalDate> startCaptor = ArgumentCaptor.forClass(LocalDate.class);
         ArgumentCaptor<LocalDate> endCaptor = ArgumentCaptor.forClass(LocalDate.class);
 
-        // Act
         UserStatisticsResponse resp = query.execute(null);
 
-        // Assert amounts
         assertEquals(new BigDecimal("1000"), resp.getTotalIncome());
         assertEquals(new BigDecimal("400"), resp.getTotalExpenses());
         assertEquals(new BigDecimal("600"), resp.getNetBalance());
 
-        // Assert counts
         assertEquals(10L, resp.getTotalTransactions());
         assertEquals(4L, resp.getTotalIncomeTransactions());
         assertEquals(6L, resp.getTotalExpenseTransactions());
 
-        // Assert averages (rounded)
         assertEquals(new BigDecimal("250.12"), resp.getAverageIncomePerTransaction());
         assertEquals(new BigDecimal("66.67"), resp.getAverageExpensePerTransaction());
 
-        // Verify date range used for monthly computations and assert monthly results
         verify(transactionRepository).sumAmountByUserAndTypeAndDateRange(eq(userId), eq(CategoryType.INCOME), startCaptor.capture(), endCaptor.capture());
         LocalDate capturedStart = startCaptor.getValue();
         LocalDate capturedEnd = endCaptor.getValue();

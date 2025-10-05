@@ -8,6 +8,7 @@ import com.dimitar.financetracker.dto.response.category.ImportCategoriesResponse
 import com.dimitar.financetracker.exception.GlobalExceptionHandler;
 import com.dimitar.financetracker.exception.category.CategoryDoesNotExistException;
 import com.dimitar.financetracker.model.CategoryType;
+import com.dimitar.financetracker.service.CategoryService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -46,7 +47,8 @@ class CategoryControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
-    @Mock com.dimitar.financetracker.service.CategoryService categoryService;
+    @Mock
+    CategoryService categoryService;
 
     @BeforeEach
     void setUp() {
@@ -104,7 +106,6 @@ class CategoryControllerTest {
         @Test
         @DisplayName("POST /api/categories returns 400 with validation errors when payload invalid")
         void create_validationErrors() throws Exception {
-            // name blank, type null, color blank
             String payload = """
             {
               "name": "",
@@ -177,7 +178,6 @@ class CategoryControllerTest {
         @Test
         @DisplayName("POST /api/categories/merge returns 400 with validation errors when payload invalid")
         void merge_validationErrors() throws Exception {
-            // targetCategoryId null, sourceCategoryIds empty
             MergeCategoriesRequest invalid = MergeCategoriesRequest.builder()
                     .targetCategoryId(null)
                     .sourceCategoryIds(List.of())
@@ -374,12 +374,12 @@ class CategoryControllerTest {
         }
 
         @Test
-        @DisplayName("GET /api/categories/name/{name} returns 200 with list")
+        @DisplayName("GET /api/categories/search?q={query} returns 200 with list")
         void searchByName_success() throws Exception {
             CategoryResponse c = CategoryResponse.builder().id(5L).name("Food & Drinks").type(CategoryType.EXPENSE).color("#CCCCCC").build();
             when(categoryService.searchCategoriesByName("food")).thenReturn(List.of(c));
 
-            mockMvc.perform(get("/api/categories/name/{name}", "food"))
+            mockMvc.perform(get("/api/categories/search").param("q", "food"))
                     .andExpect(status().isOk())
                     .andExpect(jsonPath("$", hasSize(1)))
                     .andExpect(jsonPath("$[0].name", containsString("Food")));

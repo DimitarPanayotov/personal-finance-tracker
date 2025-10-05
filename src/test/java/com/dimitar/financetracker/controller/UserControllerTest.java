@@ -7,6 +7,7 @@ import com.dimitar.financetracker.dto.response.user.UserStatisticsResponse;
 import com.dimitar.financetracker.exception.GlobalExceptionHandler;
 import com.dimitar.financetracker.exception.user.DuplicateEmailException;
 import com.dimitar.financetracker.exception.user.DuplicateUsernameException;
+import com.dimitar.financetracker.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -42,7 +43,8 @@ class UserControllerTest {
     private MockMvc mockMvc;
     private ObjectMapper objectMapper;
 
-    @Mock com.dimitar.financetracker.service.UserService userService;
+    @Mock
+    UserService userService;
 
     @BeforeEach
     void setUp() {

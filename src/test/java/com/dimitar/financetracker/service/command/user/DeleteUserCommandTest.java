@@ -28,14 +28,11 @@ class DeleteUserCommandTest {
 
     @Test
     void execute_deletesAuthenticatedUser() {
-        // Arrange
         User user = User.builder().id(1L).username("john").build();
         when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
 
-        // Act
         command.execute(null);
 
-        // Assert
         verify(userRepository).delete(user);
         verifyNoMoreInteractions(userRepository);
     }
