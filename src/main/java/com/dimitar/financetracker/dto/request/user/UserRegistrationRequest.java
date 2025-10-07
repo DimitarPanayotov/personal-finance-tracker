@@ -1,5 +1,6 @@
 package com.dimitar.financetracker.dto.request.user;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -23,18 +24,22 @@ import static com.dimitar.financetracker.util.ErrorMessages.USERNAME_TOO_LONG;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Schema(description = "Registration payload for creating a new user account.")
 public class UserRegistrationRequest {
     @NotBlank(message = USERNAME_REQUIRED)
     @Size(max = USERNAME_MAX_LENGTH, message = USERNAME_TOO_LONG)
+    @Schema(description = "Desired unique username", example = "john_doe")
     private String username;
 
     @NotBlank(message = EMAIL_REQUIRED)
     @Email(message = EMAIL_INVALID)
     @Size(max = EMAIL_MAX_LENGTH, message = EMAIL_TOO_LONG)
+    @Schema(description = "User's email address", example = "john.doe@example.com")
     private String email;
 
     @NotBlank(message = PASSWORD_REQUIRED)
     @Size(min = PASSWORD_MIN_LENGTH, message = PASSWORD_TOO_SHORT)
+    @Schema(description = "Raw password (will be hashed server-side). Must be at least the configured minimum length.", example = "Str0ngP@ss!", accessMode = Schema.AccessMode.WRITE_ONLY)
     private String password;
 
 }

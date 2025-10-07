@@ -4,6 +4,9 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 planning/
+.env
+# Optional local overrides
+.env.local
 
 ### STS ###
 .apt_generated
