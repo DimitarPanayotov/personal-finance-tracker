@@ -100,8 +100,11 @@ POST /api/auth/login
 Example response:
 ```json
 {
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "type": "Bearer"
+  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc1OTg0ODE0NCwiZXhwIjoxNzU5OTM0NTQ0fQ.bcQ7Xr1j6-C-0dFHlxo6YMwQDiuzs7SvW6GtwRchw-I",
+  "type": "Bearer",
+  "username": "john_doe",
+  "email": "john_doe@example.com",
+  "expiresIn": 86400
 }
 ```
 Header usage:
