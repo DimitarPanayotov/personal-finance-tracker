@@ -109,8 +109,7 @@ Example response:
 ```
 Header usage:
 ```
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-```
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc1OTg0ODE0NCwiZXhwIjoxNzU5OTM0NTQ0f...
 
 ### Sample cURL
 ```bash
