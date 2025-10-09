@@ -50,7 +50,7 @@ A robust Spring Boot application for managing personal finances with comprehensi
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR_USERNAME/personal-finance-tracker.git
+git clone https://github.com/DimitarPanayotov/personal-finance-tracker.git
 cd personal-finance-tracker
 
 # Start everything with one command
