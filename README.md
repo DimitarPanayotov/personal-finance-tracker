@@ -60,8 +60,45 @@ docker-compose up --build
 The application will:
 - Start PostgreSQL database with demo credentials
 - Build and start the Spring Boot application
-- Be available at `http://localhost:8080`
+- Start pgAdmin for database management
+- Application available at `http://localhost:8080`
 - Swagger UI at `http://localhost:8080/swagger-ui.html`
+- pgAdmin at `http://localhost:5050`
+
+### Access Points
+
+| Service | URL | Purpose |
+|---------|-----|---------|
+| **Application API** | `http://localhost:8080` | REST API endpoints |
+| **Swagger UI** | `http://localhost:8080/swagger-ui.html` | Interactive API documentation |
+| **pgAdmin** | `http://localhost:5050` | Database management interface |
+
+### pgAdmin Database Access
+
+To view and manage the PostgreSQL database using pgAdmin:
+
+1. **Open pgAdmin**: Navigate to `http://localhost:5050`
+
+2. **Login to pgAdmin:**
+   - Email: `admin@admin.com`
+   - Password: `admin`
+
+3. **Register Database Server:**
+   - Right-click **"Servers"** → **"Register"** → **"Server"**
+   
+   **General Tab:**
+   - Name: `Finance Tracker DB` (or any name)
+   
+   **Connection Tab:**
+   - Host: `postgres`
+   - Port: `5432`
+   - Database: `personal-finance-tracker`
+   - Username: `personal_finance_tracker_user`
+   - Password: `demo_password_123`
+   
+4. **Browse Data:**
+   - Navigate: **Servers** → **Finance Tracker DB** → **Databases** → **personal-finance-tracker** → **Schemas** → **public** → **Tables**
+   - Right-click any table → **"View/Edit Data"** → **"All Rows"**
 
 ### Stop the Application
 ```bash
@@ -77,6 +114,8 @@ docker-compose down -v
 - **Database User**: `personal_finance_tracker_user`
 - **Database Password**: `demo_password_123`
 - **JWT Secret**: Uses secure fallback from application properties
+- **pgAdmin Email**: `admin@admin.com`
+- **pgAdmin Password**: `admin`
 
 ---
 
