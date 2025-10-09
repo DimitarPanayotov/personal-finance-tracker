@@ -25,6 +25,7 @@ A robust Spring Boot application for managing personal finances with comprehensi
 - **API Documentation**: OpenAPI 3 (springdoc) with Swagger UI
 - **Testing**: JUnit5, AssertJ, Jakarta Bean Validation
 - **Architecture**: CQRS pattern, DTOs with mappers
+- **Deployment**: Docker & Docker Compose
 
 ## Project Structure
 - **Entities**: User, Category, Transaction, Budget
@@ -40,41 +41,114 @@ A robust Spring Boot application for managing personal finances with comprehensi
 - Budget tracking with usage analytics
 - Password management
 
-## Configuration
-For this CV/demo project the app ships with simple defaults.
+## Quick Start (Recommended: Docker)
 
-| Variable     | Purpose                                | Default (fallback)                                      |
-|--------------|-----------------------------------------|---------------------------------------------------------|
-| JWT_SECRET   | Secret key for signing JWT tokens       | fallbackSecretKeyThatIsSecureAndItIsLeast256BitsLongForSure |
-| SPRING_PROFILES_ACTIVE | Activate Spring profile        | (none)                                                  |
+### Prerequisites
+- **Docker Desktop** installed ([download here](https://www.docker.com/products/docker-desktop))
 
-If you set `JWT_SECRET` in your environment it will override the fallback. Otherwise the fallback is used—fine for this demo.
+### Run with Docker Compose (Zero Configuration)
 
-Set `JWT_SECRET` (optional) examples:
-
-Windows (cmd):
-```bat
-set JWT_SECRET=SomeValue
-mvnw.cmd spring-boot:run
-```
-Linux / macOS:
 ```bash
-export JWT_SECRET=SomeValue
-./mvnw spring-boot:run
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/personal-finance-tracker.git
+cd personal-finance-tracker
+
+# Start everything with one command
+docker-compose up --build
 ```
 
-## API Documentation
-OpenAPI (Swagger) docs are generated automatically.
+The application will:
+- Start PostgreSQL database with demo credentials
+- Build and start the Spring Boot application
+- Be available at `http://localhost:8080`
+- Swagger UI at `http://localhost:8080/swagger-ui.html`
+
+### Stop the Application
+```bash
+# Stop containers (keeps data)
+docker-compose down
+
+# Stop and remove all data
+docker-compose down -v
+```
+
+### Default Demo Credentials
+- **Database Name**: `personal-finance-tracker`
+- **Database User**: `personal_finance_tracker_user`
+- **Database Password**: `demo_password_123`
+- **JWT Secret**: Uses secure fallback from application properties
+
+---
+
+## Alternative: Run Locally (Without Docker)
+
+### Prerequisites
+- Java 21 or higher
+- PostgreSQL 16 installed and running
+- Maven (or use included Maven wrapper)
+
+### Database Setup
+1. Create PostgreSQL database:
+```sql
+CREATE DATABASE personal-finance-tracker;
+CREATE USER personal_finance_tracker_user WITH PASSWORD 'demo_password_123';
+GRANT ALL PRIVILEGES ON DATABASE personal-finance-tracker TO personal_finance_tracker_user;
+```
+
+2. Ensure PostgreSQL is running on `localhost:5432`
 
 ### Run the Application
 ```bash
-# Unix-like (Git Bash / WSL / macOS / Linux)
-./mvnw spring-boot:run
+# Windows (cmd)
+mvnw.cmd spring-boot:run
 
-# Windows cmd
+# Linux / macOS / Git Bash
+./mvnw spring-boot:run
+```
+
+Application will be available at: `http://localhost:8080`
+
+---
+
+## Configuration
+
+### Environment Variables (Optional)
+
+The application works out-of-the-box with sensible defaults. For production or custom setups, you can override:
+
+| Variable                    | Purpose                          | Default Value                                               |
+|-----------------------------|----------------------------------|-------------------------------------------------------------|
+| `POSTGRES_PASSWORD`         | Database password                | `demo_password_123`                                         |
+| `JWT_SECRET`                | JWT token signing key            | `fallbackSecretKeyThatIsSecureAndItIsLeast256BitsLongForSure` |
+| `SPRING_DATASOURCE_URL`     | Database connection URL          | `jdbc:postgresql://localhost:5432/personal-finance-tracker` |
+| `SPRING_DATASOURCE_USERNAME`| Database username                | `personal_finance_tracker_user`                             |
+
+### Custom Configuration
+
+**With Docker Compose**: Create `.env` file in project root:
+```properties
+POSTGRES_PASSWORD=your_secure_password
+JWT_SECRET=your_jwt_secret_at_least_256_bits
+```
+
+**Without Docker** (Windows cmd):
+```bat
+set JWT_SECRET=YourCustomSecret
+set SPRING_DATASOURCE_PASSWORD=YourPassword
 mvnw.cmd spring-boot:run
 ```
-App URL: `http://localhost:8080`
+
+**Without Docker** (Linux/macOS):
+```bash
+export JWT_SECRET=YourCustomSecret
+export SPRING_DATASOURCE_PASSWORD=YourPassword
+./mvnw spring-boot:run
+```
+
+---
+
+## API Documentation
+OpenAPI (Swagger) docs are generated automatically.
 
 ### Documentation Endpoints
 | Purpose       | URL                                         |
@@ -120,22 +194,23 @@ TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
 curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/api/users/me
 ```
 
-## Quick Start (TL;DR)
-```bash
-mvnw.cmd spring-boot:run   # Windows
-./mvnw spring-boot:run     # Linux/macOS
-```
-
 ## Testing
 ```bash
-mvnw.cmd test        # Windows
-./mvnw test          # Linux/macOS
+# Windows
+mvnw.cmd test
+
+# Linux/macOS
+./mvnw test
 ```
 
 ## Build & Run Jar
 ```bash
-mvnw.cmd -DskipTests package
-java -jar target/personal-finance-tracker-*.jar
+# Build
+mvnw.cmd clean package -DskipTests      # Windows
+./mvnw clean package -DskipTests        # Linux/macOS
+
+# Run
+java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 ```
 
 ### Generate a Client SDK (optional)
@@ -154,12 +229,12 @@ openapi-generator generate \
 - [X] API documentation with Swagger/OpenAPI
 - [ ] Additional unit test coverage for edge cases
 - [ ] Pagination and sorting consistency review
-- [ ] Connect to a real PostgreSQL database (replace in-memory H2 for persistence)
+- [X] Connect to a real PostgreSQL database (replace in-memory H2 for persistence)
+- [X] Docker containerization (App + DB)
 
 ### Phase 2: Quality & Security
 - [ ] Integration tests (repositories + security flow)
 - [ ] Security hardening (rate limiting, basic input sanitization)
-- [ ] Docker containerization (App + DB)
 - [ ] Environment profiles (dev, test, demo)
 - [ ] Structured logging (JSON option) & basic metrics
 

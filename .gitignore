@@ -5,6 +5,7 @@ target/
 !**/src/test/**/target/
 planning/
 .env
+*.env
 # Optional local overrides
 .env.local
 
