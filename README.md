@@ -34,13 +34,6 @@ A robust Spring Boot application for managing personal finances with comprehensi
 - **Controllers**: RESTful endpoints with comprehensive error handling
 - **Security**: Custom authentication filter and user details service
 
-## API Features
-- User authentication (register/login) with JWT tokens
-- Category operations with search and merge capabilities
-- Advanced transaction filtering and management
-- Budget tracking with usage analytics
-- Password management
-
 ## Quick Start (Recommended: Docker)
 
 ### Prerequisites
@@ -153,7 +146,7 @@ Application will be available at: `http://localhost:8080`
 
 ### Environment Variables (Optional)
 
-The application works out-of-the-box with sensible defaults. For production or custom setups, you can override:
+The application works out-of-the-box with sensible defaults. For custom setups, you can override:
 
 | Variable                    | Purpose                          | Default Value                                               |
 |-----------------------------|----------------------------------|-------------------------------------------------------------|
@@ -252,13 +245,6 @@ mvnw.cmd clean package -DskipTests      # Windows
 java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 ```
 
-### Generate a Client SDK (optional)
-```bash
-openapi-generator generate \
-  -i http://localhost:8080/v3/api-docs \
-  -g typescript-fetch \
-  -o ./generated-client
-```
 
 ## Roadmap
 
@@ -292,14 +278,13 @@ openapi-generator generate \
 - [ ] Smart auto-categorization suggestions
 - [ ] CSV/Excel import with field mapping
 
-### Phase 5: Polish & Production Readiness (If Ever Needed)
+### Phase 5: Polish & Production Readiness
 - [ ] Performance profiling & query optimization
 - [ ] Full API specification refinement & examples
-- [ ] Deployment guide (Docker Compose / optional cloud)
 - [ ] Notification hooks (email / webhook stubs)
 - [ ] Multi-currency planning (FX rate abstraction layer)
 
-### Stretch Ideas (Nice-to-Have)
+### Stretch Ideas
 - [ ] Tagging system (tags in addition to categories)
 - [ ] Recurring transaction scheduler
 - [ ] Savings goals & progress tracking
