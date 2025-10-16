@@ -34,6 +34,9 @@ A robust Spring Boot application for managing personal finances with comprehensi
 - **Controllers**: RESTful endpoints with comprehensive error handling
 - **Security**: Custom authentication filter and user details service
 
+## Database Schema
+**Live Diagram:** [View on dbdiagram.io]
+
 ## Quick Start (Recommended: Docker)
 
 ### Prerequisites
