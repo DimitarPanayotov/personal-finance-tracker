@@ -35,7 +35,7 @@ A robust Spring Boot application for managing personal finances with comprehensi
 - **Security**: Custom authentication filter and user details service
 
 ## Database Schema
-**Live Diagram:** [View on dbdiagram.io]
+**Live Diagram:** [View on dbdiagram.io](https://dbdiagram.io/d/PersonalFinanceTrackerDiagram-68aaf8b21e7a611967557bf8)
 
 ## Quick Start (Recommended: Docker)
 
