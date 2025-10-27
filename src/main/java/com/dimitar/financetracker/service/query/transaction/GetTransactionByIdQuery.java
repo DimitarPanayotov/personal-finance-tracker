@@ -9,6 +9,7 @@ import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.query.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -18,6 +19,7 @@ public class GetTransactionByIdQuery implements Query<Long, TransactionResponse>
     private final TransactionMapper transactionMapper;
 
     @Override
+    @Transactional(readOnly = true)
     public TransactionResponse execute(Long transactionId) {
         Long authenticatedUserId = authenticationFacade.getAuthenticatedUserId();
         Transaction transaction = transactionRepository.findByIdAndUserId(transactionId, authenticatedUserId)
@@ -25,4 +27,3 @@ public class GetTransactionByIdQuery implements Query<Long, TransactionResponse>
         return transactionMapper.toResponse(transaction);
     }
 }
-

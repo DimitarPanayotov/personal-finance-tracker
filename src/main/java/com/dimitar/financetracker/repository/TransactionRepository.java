@@ -2,6 +2,7 @@ package com.dimitar.financetracker.repository;
 
 import com.dimitar.financetracker.entity.Transaction;
 import com.dimitar.financetracker.model.CategoryType;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,28 +16,39 @@ import java.util.Optional;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
+    @EntityGraph(attributePaths = {"category", "user"})
     Optional<Transaction> findByIdAndUserId(Long id, Long userId);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserId(Long userId);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     Page<Transaction> findByUserId(Long userId, Pageable pageable);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndCategoryId(Long userId, Long categoryId);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndTransactionDateBetween(Long userId,
                                                             LocalDate transactionDateAfter,
                                                             LocalDate transactionDateBefore);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndAmountGreaterThan(Long userId, BigDecimal amount);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndAmountLessThan(Long userId, BigDecimal amount);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndAmountBetween(Long userId, BigDecimal minAmount, BigDecimal maxAmount);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndAmountGreaterThanEqual(Long userId, BigDecimal minAmount);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndAmountLessThanEqual(Long userId, BigDecimal maxAmount);
 
+    @EntityGraph(attributePaths = {"category", "user"})
     List<Transaction> findByUserIdAndDescriptionContainingIgnoreCase(Long userId, String searchTerm);
 
     @Query("SELECT SUM(t.amount) FROM Transaction t " +

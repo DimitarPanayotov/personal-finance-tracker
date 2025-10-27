@@ -109,7 +109,7 @@ class AuthControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/auth/register")))
                     .andExpect(jsonPath("$.errors.username", anyOf(is("Username is required"), is("Username must be less than 50 characters"))))
                     .andExpect(jsonPath("$.errors.email", anyOf(is("Email must be valid"), is("Email is required"))))
@@ -187,7 +187,7 @@ class AuthControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/auth/login")))
                     .andExpect(jsonPath("$.errors.usernameOrEmail", is("Username or email required")))
                     .andExpect(jsonPath("$.errors.password", is("Password is required")));

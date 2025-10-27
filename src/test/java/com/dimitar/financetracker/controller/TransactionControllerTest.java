@@ -1,7 +1,9 @@
 package com.dimitar.financetracker.controller;
 
+import com.dimitar.financetracker.dto.request.PageRequest;
 import com.dimitar.financetracker.dto.request.transaction.CreateTransactionRequest;
 import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionRequest;
+import com.dimitar.financetracker.dto.response.PagedResponse;
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.exception.GlobalExceptionHandler;
 import com.dimitar.financetracker.exception.transaction.TransactionDoesNotExistException;
@@ -123,7 +125,7 @@ class TransactionControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/transactions")))
                     .andExpect(jsonPath("$.errors.categoryId", is("Category is required")))
                     .andExpect(jsonPath("$.errors.amount", is("Amount is required")))

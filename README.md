@@ -252,11 +252,11 @@ java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 ## Roadmap
 
 ### Phase 1: Core Enhancements (In Progress)
-- [ ] Enhanced error handling with custom exceptions
-- [ ] Expanded validation logic for DTOs and entities
+- [X] Enhanced error handling with custom exceptions
+- [X] Business rule enforcement (budget overlap prevention)
 - [X] API documentation with Swagger/OpenAPI
-- [ ] Additional unit test coverage for edge cases
-- [ ] Pagination and sorting consistency review
+- [X] Additional unit test coverage for edge cases
+- [X] Pagination and sorting for list endpoints
 - [X] Connect to a real PostgreSQL database (replace in-memory H2 for persistence)
 - [X] Docker containerization (App + DB)
 

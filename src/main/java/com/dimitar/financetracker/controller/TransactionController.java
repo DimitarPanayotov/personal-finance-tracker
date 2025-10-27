@@ -1,7 +1,9 @@
 package com.dimitar.financetracker.controller;
 
+import com.dimitar.financetracker.dto.request.PageRequest;
 import com.dimitar.financetracker.dto.request.transaction.CreateTransactionRequest;
 import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionRequest;
+import com.dimitar.financetracker.dto.response.PagedResponse;
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.service.TransactionService;
 import jakarta.validation.Valid;
@@ -99,8 +101,8 @@ public class TransactionController {
     }
 
     @Operation(
-            summary = "List all transactions",
-            description = "Retrieves all transactions for the authenticated user. Consider adding pagination in the future for large datasets."
+            summary = "List all transactions (non-paginated)",
+            description = "Retrieves all transactions for the authenticated user as a simple list."
     )
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "Transactions successfully retrieved"),
@@ -109,6 +111,33 @@ public class TransactionController {
     @GetMapping
     public ResponseEntity<List<TransactionResponse>> getAllTransactions() {
         List<TransactionResponse> transactions = transactionService.getAllTransactions();
+        return ResponseEntity.ok(transactions);
+    }
+
+    @Operation(
+            summary = "List all transactions with pagination",
+            description = "Retrieves all transactions for the authenticated user with pagination and sorting support. " +
+                         "Supports sorting by any transaction field (e.g., transactionDate, amount, id)."
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Transactions successfully retrieved"),
+            @ApiResponse(responseCode = "401", description = "Unauthorized - authentication required")
+    })
+    @GetMapping(params = {"page", "size"})
+    public ResponseEntity<PagedResponse<TransactionResponse>> getAllTransactions(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(defaultValue = "transactionDate") String sortBy,
+            @RequestParam(defaultValue = "DESC") String sortDirection) {
+
+        PageRequest pageRequest = PageRequest.builder()
+                .page(page)
+                .size(size)
+                .sortBy(sortBy)
+                .sortDirection(sortDirection)
+                .build();
+
+        PagedResponse<TransactionResponse> transactions = transactionService.getAllTransactions(pageRequest);
         return ResponseEntity.ok(transactions);
     }
 

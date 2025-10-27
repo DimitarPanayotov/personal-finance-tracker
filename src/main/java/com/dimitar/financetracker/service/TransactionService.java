@@ -1,7 +1,9 @@
 package com.dimitar.financetracker.service;
 
+import com.dimitar.financetracker.dto.request.PageRequest;
 import com.dimitar.financetracker.dto.request.transaction.CreateTransactionRequest;
 import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionRequest;
+import com.dimitar.financetracker.dto.response.PagedResponse;
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.service.command.transaction.CreateTransactionCommand;
 import com.dimitar.financetracker.service.command.transaction.DeleteTransactionCommand;
@@ -40,8 +42,15 @@ public class TransactionService {
         return createTransactionCommand.execute(request);
     }
 
+    public PagedResponse<TransactionResponse> getAllTransactions(PageRequest pageRequest) {
+        return getAllTransactionsQuery.execute(pageRequest);
+    }
+
     public List<TransactionResponse> getAllTransactions() {
-        return getAllTransactionsQuery.execute(null);
+        PagedResponse<TransactionResponse> page = getAllTransactions(
+            PageRequest.builder().page(0).size(50).sortBy("transactionDate").sortDirection("DESC").build()
+        );
+        return page.getContent();
     }
 
     public TransactionResponse getTransactionById(Long transactionId) {

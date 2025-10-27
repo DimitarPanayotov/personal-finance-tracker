@@ -6,6 +6,7 @@ import com.dimitar.financetracker.dto.response.budget.BudgetResponse;
 import com.dimitar.financetracker.entity.Budget;
 import com.dimitar.financetracker.entity.Category;
 import com.dimitar.financetracker.entity.User;
+import com.dimitar.financetracker.exception.budget.OverlappingBudgetException;
 import com.dimitar.financetracker.exception.category.CategoryDoesNotExistException;
 import com.dimitar.financetracker.model.BudgetPeriod;
 import com.dimitar.financetracker.repository.BudgetRepository;
@@ -19,6 +20,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -83,5 +86,158 @@ class CreateBudgetCommandTest {
         verifyNoInteractions(budgetMapper);
         verify(budgetRepository, never()).save(any());
     }
-}
 
+    @Test
+    void execute_throwsOverlappingBudgetException_whenActiveBudgetExistsForSameCategoryAndDates() {
+        User user = User.builder().id(1L).username("john").build();
+        when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
+
+        Category category = Category.builder().id(10L).name("Food").build();
+        when(categoryRepository.findByIdAndUserId(10L, 1L)).thenReturn(Optional.of(category));
+
+        CreateBudgetRequest req = CreateBudgetRequest.builder()
+                .categoryId(10L)
+                .amount(new BigDecimal("100.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .startDate(LocalDate.of(2025, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 31))
+                .build();
+
+        Budget mapped = Budget.builder()
+                .user(user)
+                .category(category)
+                .amount(new BigDecimal("100.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .startDate(LocalDate.of(2025, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 31))
+                .isActive(true)
+                .build();
+        when(budgetMapper.toEntity(req, user, category)).thenReturn(mapped);
+
+        // Existing overlapping budget
+        Budget existingBudget = Budget.builder()
+                .id(50L)
+                .user(user)
+                .category(category)
+                .amount(new BigDecimal("200.00"))
+                .startDate(LocalDate.of(2025, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 31))
+                .isActive(true)
+                .build();
+
+        when(budgetRepository.findOverlappingActiveBudgets(1L, 10L,
+                LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 31)))
+                .thenReturn(List.of(existingBudget));
+
+        OverlappingBudgetException exception = assertThrows(
+                OverlappingBudgetException.class,
+                () -> command.execute(req)
+        );
+
+        assertTrue(exception.getMessage().contains("Food"));
+        assertTrue(exception.getMessage().contains("2025-01-01"));
+        assertTrue(exception.getMessage().contains("2025-01-31"));
+        verify(budgetRepository, never()).save(any());
+    }
+
+    @Test
+    void execute_success_whenNoOverlappingActiveBudgets() {
+        User user = User.builder().id(1L).username("john").build();
+        when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
+
+        Category category = Category.builder().id(10L).name("Food").build();
+        when(categoryRepository.findByIdAndUserId(10L, 1L)).thenReturn(Optional.of(category));
+
+        CreateBudgetRequest req = CreateBudgetRequest.builder()
+                .categoryId(10L)
+                .amount(new BigDecimal("100.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .startDate(LocalDate.of(2025, 2, 1))
+                .endDate(LocalDate.of(2025, 2, 28))
+                .build();
+
+        Budget mapped = Budget.builder()
+                .user(user)
+                .category(category)
+                .amount(new BigDecimal("100.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .startDate(LocalDate.of(2025, 2, 1))
+                .endDate(LocalDate.of(2025, 2, 28))
+                .isActive(true)
+                .build();
+        when(budgetMapper.toEntity(req, user, category)).thenReturn(mapped);
+        when(budgetRepository.findOverlappingActiveBudgets(1L, 10L,
+                LocalDate.of(2025, 2, 1), LocalDate.of(2025, 2, 28)))
+                .thenReturn(Collections.emptyList());
+
+        Budget saved = Budget.builder()
+                .id(100L)
+                .user(user)
+                .category(category)
+                .amount(new BigDecimal("100.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .startDate(LocalDate.of(2025, 2, 1))
+                .endDate(LocalDate.of(2025, 2, 28))
+                .isActive(true)
+                .build();
+        when(budgetRepository.save(mapped)).thenReturn(saved);
+
+        BudgetResponse expected = BudgetResponse.builder()
+                .id(100L)
+                .userId(1L)
+                .categoryId(10L)
+                .amount(new BigDecimal("100.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .build();
+        when(budgetMapper.toResponse(saved)).thenReturn(expected);
+
+        BudgetResponse result = command.execute(req);
+
+        assertEquals(expected, result);
+        verify(budgetRepository).findOverlappingActiveBudgets(1L, 10L,
+                LocalDate.of(2025, 2, 1), LocalDate.of(2025, 2, 28));
+        verify(budgetRepository).save(mapped);
+    }
+
+    @Test
+    void execute_success_whenInactiveBudgetExistsForSamePeriod() {
+        // Inactive budgets should not conflict
+        User user = User.builder().id(1L).username("john").build();
+        when(authenticationFacade.getAuthenticatedUser()).thenReturn(user);
+
+        Category category = Category.builder().id(10L).name("Food").build();
+        when(categoryRepository.findByIdAndUserId(10L, 1L)).thenReturn(Optional.of(category));
+
+        CreateBudgetRequest req = CreateBudgetRequest.builder()
+                .categoryId(10L)
+                .amount(new BigDecimal("100.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .startDate(LocalDate.of(2025, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 31))
+                .build();
+
+        Budget mapped = Budget.builder()
+                .user(user)
+                .category(category)
+                .amount(new BigDecimal("100.00"))
+                .startDate(LocalDate.of(2025, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 31))
+                .isActive(true)
+                .build();
+        when(budgetMapper.toEntity(req, user, category)).thenReturn(mapped);
+
+        // Repository returns empty because query filters for isActive=true
+        when(budgetRepository.findOverlappingActiveBudgets(1L, 10L,
+                LocalDate.of(2025, 1, 1), LocalDate.of(2025, 1, 31)))
+                .thenReturn(Collections.emptyList());
+
+        when(budgetRepository.save(mapped)).thenReturn(mapped);
+        BudgetResponse expected = BudgetResponse.builder().id(99L).build();
+        when(budgetMapper.toResponse(mapped)).thenReturn(expected);
+
+        BudgetResponse result = command.execute(req);
+
+        assertNotNull(result);
+        verify(budgetRepository).save(mapped);
+    }
+}

@@ -123,7 +123,7 @@ class BudgetControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/budgets")))
                     .andExpect(jsonPath("$.errors.categoryId", is("Category is required")))
                     .andExpect(jsonPath("$.errors.amount", is("Amount is required")))

@@ -1,7 +1,9 @@
 package com.dimitar.financetracker.service;
 
+import com.dimitar.financetracker.dto.request.PageRequest;
 import com.dimitar.financetracker.dto.request.transaction.CreateTransactionRequest;
 import com.dimitar.financetracker.dto.request.transaction.UpdateTransactionRequest;
+import com.dimitar.financetracker.dto.response.PagedResponse;
 import com.dimitar.financetracker.dto.response.transaction.TransactionResponse;
 import com.dimitar.financetracker.service.command.transaction.CreateTransactionCommand;
 import com.dimitar.financetracker.service.command.transaction.DeleteTransactionCommand;
@@ -85,16 +87,33 @@ class TransactionServiceTest {
 
     @Test
     void getAllTransactions_delegatesToQuery() {
-        List<TransactionResponse> expected = List.of(
-                TransactionResponse.builder().id(1L).build(),
-                TransactionResponse.builder().id(2L).build()
-        );
-        when(getAllTransactionsQuery.execute(null)).thenReturn(expected);
+        PageRequest pageRequest = PageRequest.builder()
+                .page(0)
+                .size(20)
+                .sortBy("transactionDate")
+                .sortDirection("DESC")
+                .build();
 
-        List<TransactionResponse> actual = transactionService.getAllTransactions();
+        PagedResponse<TransactionResponse> expected = PagedResponse.<TransactionResponse>builder()
+                .content(List.of(
+                        TransactionResponse.builder().id(1L).build(),
+                        TransactionResponse.builder().id(2L).build()
+                ))
+                .pageNumber(0)
+                .pageSize(20)
+                .totalElements(2)
+                .totalPages(1)
+                .first(true)
+                .last(true)
+                .empty(false)
+                .build();
+
+        when(getAllTransactionsQuery.execute(pageRequest)).thenReturn(expected);
+
+        PagedResponse<TransactionResponse> actual = transactionService.getAllTransactions(pageRequest);
 
         assertEquals(expected, actual);
-        verify(getAllTransactionsQuery).execute(null);
+        verify(getAllTransactionsQuery).execute(pageRequest);
         verifyNoMoreInteractions(getAllTransactionsQuery);
         verifyNoInteractions(createTransactionCommand, getTransactionByIdQuery, getTransactionsInDateRangeQuery,
                 updateTransactionCommand, deleteTransactionCommand, duplicateTransactionCommand,

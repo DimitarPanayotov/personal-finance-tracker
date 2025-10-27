@@ -19,6 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Collections;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -39,16 +40,33 @@ class UpdateBudgetCommandTest {
     private UpdateBudgetCommand command;
 
     @BeforeEach
-    void setUp() { command = new UpdateBudgetCommand(authenticationFacade, categoryRepository, budgetRepository, budgetMapper); }
+    void setUp() {
+        command = new UpdateBudgetCommand(authenticationFacade, categoryRepository, budgetRepository, budgetMapper);
+    }
 
     @Test
     void execute_updatesBudget_whenFound_andCategoryOwned() {
-        Long userId = 1L; when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
-        Long budgetId = 50L; Budget budget = Budget.builder().id(budgetId).build();
+        Long userId = 1L;
+        when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
+
+        Category existingCategory = Category.builder().id(5L).name("Food").build();
+        Long budgetId = 50L;
+        Budget budget = Budget.builder()
+                .id(budgetId)
+                .category(existingCategory)
+                .isActive(true)
+                .startDate(LocalDate.of(2024, 12, 1))
+                .endDate(LocalDate.of(2024, 12, 31))
+                .build();
         when(budgetRepository.findByIdAndUserId(budgetId, userId)).thenReturn(Optional.of(budget));
 
-        Long categoryId = 10L; Category category = Category.builder().id(categoryId).build();
+        Long categoryId = 10L;
+        Category category = Category.builder().id(categoryId).name("Transport").build();
         when(categoryRepository.findByIdAndUserId(categoryId, userId)).thenReturn(Optional.of(category));
+
+        // Mock the overlap validation
+        when(budgetRepository.findOverlappingActiveBudgets(eq(userId), eq(categoryId), any(), any(), eq(budgetId)))
+                .thenReturn(Collections.emptyList());
 
         UpdateBudgetRequest req = UpdateBudgetRequest.builder()
                 .budgetId(budgetId)
@@ -60,7 +78,12 @@ class UpdateBudgetCommandTest {
                 .build();
 
         when(budgetRepository.save(budget)).thenReturn(budget);
-        BudgetResponse expected = BudgetResponse.builder().id(budgetId).categoryId(categoryId).amount(new BigDecimal("250.00")).period(BudgetPeriod.MONTHLY).build();
+        BudgetResponse expected = BudgetResponse.builder()
+                .id(budgetId)
+                .categoryId(categoryId)
+                .amount(new BigDecimal("250.00"))
+                .period(BudgetPeriod.MONTHLY)
+                .build();
         when(budgetMapper.toResponse(budget)).thenReturn(expected);
 
         BudgetResponse result = command.execute(req);
@@ -72,7 +95,8 @@ class UpdateBudgetCommandTest {
 
     @Test
     void execute_throwsWhenBudgetNotFound() {
-        Long userId = 1L; when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
+        Long userId = 1L;
+        when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
         when(budgetRepository.findByIdAndUserId(999L, userId)).thenReturn(Optional.empty());
 
         UpdateBudgetRequest req = UpdateBudgetRequest.builder().budgetId(999L).build();
@@ -83,13 +107,28 @@ class UpdateBudgetCommandTest {
 
     @Test
     void execute_throwsWhenCategoryNotOwnedOrMissing() {
-        Long userId = 1L; when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
-        Long budgetId = 50L; Budget budget = Budget.builder().id(budgetId).build();
+        Long userId = 1L;
+        when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
+
+        Category existingCategory = Category.builder().id(5L).build();
+        Long budgetId = 50L;
+        Budget budget = Budget.builder()
+                .id(budgetId)
+                .category(existingCategory)
+                .isActive(false)
+                .startDate(LocalDate.of(2025, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 31))
+                .build();
         when(budgetRepository.findByIdAndUserId(budgetId, userId)).thenReturn(Optional.of(budget));
 
         when(categoryRepository.findByIdAndUserId(123L, userId)).thenReturn(Optional.empty());
 
-        UpdateBudgetRequest req = UpdateBudgetRequest.builder().budgetId(budgetId).categoryId(123L).build();
+        UpdateBudgetRequest req = UpdateBudgetRequest.builder()
+                .budgetId(budgetId)
+                .categoryId(123L)
+                .build();
+
+        // This should throw before reaching any null checks
         assertThrows(CategoryDoesNotExistException.class, () -> command.execute(req));
         verify(budgetRepository, never()).save(any());
         verify(budgetMapper, never()).updateEntity(any(), any(), any());
@@ -97,8 +136,18 @@ class UpdateBudgetCommandTest {
 
     @Test
     void execute_updatesWithoutChangingCategory_whenCategoryIdNull() {
-        Long userId = 1L; when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
-        Long budgetId = 50L; Budget budget = Budget.builder().id(budgetId).build();
+        Long userId = 1L;
+        when(authenticationFacade.getAuthenticatedUserId()).thenReturn(userId);
+
+        Category existingCategory = Category.builder().id(5L).name("Food").build();
+        Long budgetId = 50L;
+        Budget budget = Budget.builder()
+                .id(budgetId)
+                .category(existingCategory)
+                .isActive(false)
+                .startDate(LocalDate.of(2025, 1, 1))
+                .endDate(LocalDate.of(2025, 1, 31))
+                .build();
         when(budgetRepository.findByIdAndUserId(budgetId, userId)).thenReturn(Optional.of(budget));
 
         UpdateBudgetRequest req = UpdateBudgetRequest.builder()
@@ -108,7 +157,10 @@ class UpdateBudgetCommandTest {
                 .build();
 
         when(budgetRepository.save(budget)).thenReturn(budget);
-        BudgetResponse expected = BudgetResponse.builder().id(budgetId).amount(new BigDecimal("300.00")).build();
+        BudgetResponse expected = BudgetResponse.builder()
+                .id(budgetId)
+                .amount(new BigDecimal("300.00"))
+                .build();
         when(budgetMapper.toResponse(budget)).thenReturn(expected);
 
         BudgetResponse result = command.execute(req);
@@ -119,4 +171,3 @@ class UpdateBudgetCommandTest {
         assertEquals(expected, result);
     }
 }
-

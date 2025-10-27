@@ -121,7 +121,7 @@ class CategoryControllerTest {
                     .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/categories")))
                     .andExpect(jsonPath("$.errors.name", is("Category name is required")))
                     .andExpect(jsonPath("$.errors.type", is("Category type is required")))
@@ -189,7 +189,7 @@ class CategoryControllerTest {
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/categories/merge")))
                     .andExpect(jsonPath("$.errors.targetCategoryId", is("Category is required")))
                     .andExpect(jsonPath("$.errors.sourceCategoryIds", anyOf(is("Source categories cannot be empty"), is("At least one source category is required"))));
@@ -264,7 +264,7 @@ class CategoryControllerTest {
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/categories/7")))
                     .andExpect(jsonPath("$.errors.name", is("Category name must be less than 100 characters")))
                     .andExpect(jsonPath("$.errors.color", is("Color must be less than 7 characters")));

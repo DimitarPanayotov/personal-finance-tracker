@@ -108,7 +108,7 @@ class UserControllerTest {
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/users/me")))
                     .andExpect(jsonPath("$.errors.username", is("Username must be less than 50 characters")))
                     .andExpect(jsonPath("$.errors.email", is("Email must be valid")));
@@ -198,7 +198,7 @@ class UserControllerTest {
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/users/me/change-password")))
                     .andExpect(jsonPath("$.errors.password", is("Current password required")))
                     .andExpect(jsonPath("$.errors.newPassword", anyOf(is("Password is required"), is("Password must be at least 6 characters"))));
@@ -218,7 +218,7 @@ class UserControllerTest {
                     .andExpect(status().isBadRequest())
                     .andExpect(jsonPath("$.status", is(400)))
                     .andExpect(jsonPath("$.error", is("Validation Failed")))
-                    .andExpect(jsonPath("$.message", is("Validation failed for user registration")))
+                    .andExpect(jsonPath("$.message", is("Validation failed")))
                     .andExpect(jsonPath("$.path", is("/api/users/me/change-password")))
                     .andExpect(jsonPath("$.errors.newPassword", is("Password must be at least 6 characters")));
         }
