@@ -261,7 +261,7 @@ java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 - [X] Docker containerization (App + DB)
 
 ### Phase 2: Quality & Security
-- [ ] Integration tests (repositories + security flow)
+- [X] Integration tests (repositories + security flow)
 - [ ] Security hardening (rate limiting, basic input sanitization)
 - [ ] Environment profiles (dev, test, demo)
 - [ ] Structured logging (JSON option) & basic metrics
