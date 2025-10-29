@@ -306,7 +306,7 @@ public class GlobalExceptionHandler {
             request.getRequestURI()
         );
 
-       System.err.println("Unhandled exception: " + ex.getClass().getName());
+        System.err.println("Unhandled exception: " + ex.getClass().getName());
         ex.printStackTrace();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);

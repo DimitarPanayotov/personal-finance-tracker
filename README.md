@@ -262,7 +262,7 @@ java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 
 ### Phase 2: Quality & Security
 - [X] Integration tests (repositories + security flow)
-- [ ] Security hardening (rate limiting, basic input sanitization)
+- [ ] Security hardening (rate limiting)
 - [ ] Environment profiles (dev, test, demo)
 - [ ] Structured logging (JSON option) & basic metrics
 
