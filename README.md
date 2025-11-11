@@ -37,66 +37,40 @@ A robust Spring Boot application for managing personal finances with comprehensi
 ## Database Schema
 **Live Diagram:** [View on dbdiagram.io](https://dbdiagram.io/d/PersonalFinanceTrackerDiagram-68aaf8b21e7a611967557bf8)
 
-## Quick Start (Recommended: Docker)
+## Quick Start (Docker)
 
-### Prerequisites
-- **Docker Desktop** installed ([download here](https://www.docker.com/products/docker-desktop))
+### 1. Prerequisites
+- **Docker Desktop** installed.
 
-### Run with Docker Compose (Zero Configuration)
-
+### 2. Run (Zero Configuration)
+Clone the repo, navigate into the directory, and run:
 ```bash
-# Clone the repository
+# Clone, enter directory, and start (includes build)
 git clone https://github.com/DimitarPanayotov/personal-finance-tracker.git
 cd personal-finance-tracker
-
-# Start everything with one command
 docker-compose up --build
 ```
 
-The application will:
-- Start PostgreSQL database with demo credentials
-- Build and start the Spring Boot application
-- Start pgAdmin for database management
-- Application available at `http://localhost:8080`
-- Swagger UI at `http://localhost:8080/swagger-ui.html`
-- pgAdmin at `http://localhost:5050`
+### 3. Access Points
+| Service | URL |
+|---|---|
+| Application API | http://localhost:8080 |
+| Swagger UI (Docs) | http://localhost:8080/swagger-ui.html |
+| pgAdmin (Database) | http://localhost:5050 |
 
-### Access Points
+### 4. pgAdmin Database Access
+1.  **Open pgAdmin**: `http://localhost:5050`
+2.  **Login**:
+    *   Email: `admin@admin.com`
+    *   Password: `admin`
+3.  **Register Server** (Right-click Servers > Register > Server):
+    *   **General** > Name: `Finance Tracker DB` (or any name)
+    *   **Connection** > Host: `postgres`
+    *   **Connection** > Database: `personal-finance-tracker`
+    *   **Connection** > Username: `personal_finance_tracker_user`
+    *   **Connection** > Password: `demo_password_123`
 
-| Service | URL | Purpose |
-|---------|-----|---------|
-| **Application API** | `http://localhost:8080` | REST API endpoints |
-| **Swagger UI** | `http://localhost:8080/swagger-ui.html` | Interactive API documentation |
-| **pgAdmin** | `http://localhost:5050` | Database management interface |
-
-### pgAdmin Database Access
-
-To view and manage the PostgreSQL database using pgAdmin:
-
-1. **Open pgAdmin**: Navigate to `http://localhost:5050`
-
-2. **Login to pgAdmin:**
-   - Email: `admin@admin.com`
-   - Password: `admin`
-
-3. **Register Database Server:**
-   - Right-click **"Servers"** → **"Register"** → **"Server"**
-   
-   **General Tab:**
-   - Name: `Finance Tracker DB` (or any name)
-   
-   **Connection Tab:**
-   - Host: `postgres`
-   - Port: `5432`
-   - Database: `personal-finance-tracker`
-   - Username: `personal_finance_tracker_user`
-   - Password: `demo_password_123`
-   
-4. **Browse Data:**
-   - Navigate: **Servers** → **Finance Tracker DB** → **Databases** → **personal-finance-tracker** → **Schemas** → **public** → **Tables**
-   - Right-click any table → **"View/Edit Data"** → **"All Rows"**
-
-### Stop the Application
+### 5. Stop the Application
 ```bash
 # Stop containers (keeps data)
 docker-compose down
@@ -105,7 +79,7 @@ docker-compose down
 docker-compose down -v
 ```
 
-### Default Demo Credentials
+### Default Credentials
 - **Database Name**: `personal-finance-tracker`
 - **Database User**: `personal_finance_tracker_user`
 - **Database Password**: `demo_password_123`
@@ -115,136 +89,50 @@ docker-compose down -v
 
 ---
 
-## Alternative: Run Locally (Without Docker)
+## Local Development (Without Docker)
 
-### Prerequisites
-- Java 21 or higher
-- PostgreSQL 16 installed and running
-- Maven (or use included Maven wrapper)
+### 1. Prerequisites
+- Java 21+
+- PostgreSQL 16+
+- Maven (or use the included wrapper)
 
-### Database Setup
-1. Create PostgreSQL database:
-```sql
-CREATE DATABASE personal-finance-tracker;
-CREATE USER personal_finance_tracker_user WITH PASSWORD 'demo_password_123';
-GRANT ALL PRIVILEGES ON DATABASE personal-finance-tracker TO personal_finance_tracker_user;
-```
-
-2. Ensure PostgreSQL is running on `localhost:5432`
-
-### Run the Application
-```bash
-# Windows (cmd)
-mvnw.cmd spring-boot:run
-
-# Linux / macOS / Git Bash
-./mvnw spring-boot:run
-```
-
-Application will be available at: `http://localhost:8080`
+### 2. Setup & Run
+1.  **Create Database**: In PostgreSQL, create a database named `personal-finance-tracker` and a user `personal_finance_tracker_user` with password `demo_password_123`, then grant it all privileges.
+2.  **Run Application**:
+    ```bash
+    # Use mvnw.cmd on Windows
+    ./mvnw spring-boot:run
+    ```
+    The application will be available at `http://localhost:8080`.
 
 ---
 
-## Configuration
+## Development
 
-### Environment Variables (Optional)
+### Configuration
+The application is pre-configured but can be customized with environment variables (e.g., `JWT_SECRET`, `POSTGRES_PASSWORD`).
 
-The application works out-of-the-box with sensible defaults. For custom setups, you can override:
-
-| Variable                    | Purpose                          | Default Value                                               |
-|-----------------------------|----------------------------------|-------------------------------------------------------------|
-| `POSTGRES_PASSWORD`         | Database password                | `demo_password_123`                                         |
-| `JWT_SECRET`                | JWT token signing key            | `fallbackSecretKeyThatIsSecureAndItIsLeast256BitsLongForSure` |
-| `SPRING_DATASOURCE_URL`     | Database connection URL          | `jdbc:postgresql://localhost:5432/personal-finance-tracker` |
-| `SPRING_DATASOURCE_USERNAME`| Database username                | `personal_finance_tracker_user`                             |
-
-### Custom Configuration
-
-**With Docker Compose**: Create `.env` file in project root:
-```properties
-POSTGRES_PASSWORD=your_secure_password
-JWT_SECRET=your_jwt_secret_at_least_256_bits
-```
-
-**Without Docker** (Windows cmd):
-```bat
-set JWT_SECRET=YourCustomSecret
-set SPRING_DATASOURCE_PASSWORD=YourPassword
-mvnw.cmd spring-boot:run
-```
-
-**Without Docker** (Linux/macOS):
+**Example (Linux/macOS):**
 ```bash
-export JWT_SECRET=YourCustomSecret
-export SPRING_DATASOURCE_PASSWORD=YourPassword
+export JWT_SECRET=your_secure_secret
 ./mvnw spring-boot:run
 ```
 
----
+### API Documentation
+Interactive API documentation is available at the `/swagger-ui.html` endpoint.
+- **Swagger UI**: `http://localhost:8080/swagger-ui.html`
 
-## API Documentation
-OpenAPI (Swagger) docs are generated automatically.
+To authorize, get a token from the `/api/auth/login` endpoint and use it in Swagger's "Authorize" dialog (`Bearer <token>`).
 
-### Documentation Endpoints
-| Purpose       | URL                                         |
-|---------------|---------------------------------------------|
-| Swagger UI    | http://localhost:8080/swagger-ui.html       |
-| OpenAPI JSON  | http://localhost:8080/v3/api-docs           |
-| OpenAPI YAML  | http://localhost:8080/v3/api-docs.yaml      |
-
-### Security / Authorization (Quick Summary)
-- Obtain a token via `/api/auth/login` (or register first)
-- Use `Authorization: Bearer <token>` on secured endpoints
-- In Swagger UI click Authorize and paste the token
-
-### Example Auth Flow
-Login request:
-```json
-POST /api/auth/login
-{
-  "usernameOrEmail": "john_doe",
-  "password": "Str0ngP@ss!"
-}
-```
-Example response:
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc1OTg0ODE0NCwiZXhwIjoxNzU5OTM0NTQ0fQ.bcQ7Xr1j6-C-0dFHlxo6YMwQDiuzs7SvW6GtwRchw-I",
-  "type": "Bearer",
-  "username": "john_doe",
-  "email": "john_doe@example.com",
-  "expiresIn": 86400
-}
-```
-Header usage:
-```
-Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyMSIsImlhdCI6MTc1OTg0ODE0NCwiZXhwIjoxNzU5OTM0NTQ0f...
-
-### Sample cURL
+### Testing & Building
 ```bash
-TOKEN=$(curl -s -X POST http://localhost:8080/api/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"usernameOrEmail":"john_doe","password":"Str0ngP@ss!"}' | jq -r .token)
-
-curl -H "Authorization: Bearer $TOKEN" http://localhost:8080/api/users/me
-```
-
-## Testing
-```bash
-# Windows
-mvnw.cmd test
-
-# Linux/macOS
+# Run tests
 ./mvnw test
-```
 
-## Build & Run Jar
-```bash
-# Build
-mvnw.cmd clean package -DskipTests      # Windows
-./mvnw clean package -DskipTests        # Linux/macOS
+# Build the JAR
+./mvnw clean package -DskipTests
 
-# Run
+# Run the JAR
 java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 ```
 
@@ -262,7 +150,7 @@ java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 
 ### Phase 2: Quality & Security
 - [X] Integration tests (repositories + security flow)
-- [ ] Security hardening (rate limiting)
+- [X] Security hardening (rate limiting)
 - [ ] Environment profiles (dev, test, demo)
 - [ ] Structured logging (JSON option) & basic metrics
 
@@ -295,5 +183,3 @@ java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 - [ ] Multi-user shared budgets (household mode)
 
 ---
-
-(Phases give recruiters a view of planned evolution; scope intentionally broad for demonstration.)
