@@ -1,39 +1,51 @@
-import { useState } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; 
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import api from '../api';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Navigation hook
+  const [isLoading, setIsLoading] = useState(false);
+  
+  const { login, user } = useAuth(); 
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user) {
+      navigate('/dashboard');
+    }
+  }, [user, navigate]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setError(null);
+    setIsLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8080/api/auth/login', {
+      const response = await api.post('/auth/login', {
         usernameOrEmail: username,
         password: password
       });
 
       console.log('Login successful:', response.data);
       
-      // Will add AuthContex later to save the token
-      localStorage.setItem('token', response.data.token);
-      
-      // Navigating to the dashboard
-      navigate('/dashboard');
+      login(response.data.token);
       
     } catch (err) {
       console.error('Login failed:', err);
-      setError('Login failed. Please check your credentials.');
+      if (err.response && err.response.status === 429) {
+        setError("Too many attempts. Please wait a minute.");
+      } else {
+        setError('Login failed. Please check your credentials.');
+      }
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="card"> {/* App.css style */}
+    <div className="card">
       <form onSubmit={handleLogin}>
         <h1>Login</h1>
         <div>
@@ -52,7 +64,9 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={isLoading}>
+          {isLoading ? 'Logging in...' : 'Login'}
+        </button>
         {error && <p style={{color: 'red'}}>{error}</p>}
       </form>
     </div>
