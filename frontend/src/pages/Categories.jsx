@@ -1,46 +1,75 @@
 import { useEffect, useState } from 'react';
-import api from '../api'; 
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import Navbar from '../components/navbar';
 
 const Categories = () => {
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const fetchCategories = async () => {
-    try {
-      const response = await api.get('/categories');
-      setCategories(response.data);
-      setLoading(false);
-    } catch (err) {
-      console.error('Error fetching categories:', err);
-      setError('Failed to load categories.');
-      setLoading(false);
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
-    fetchCategories();
-  }, []);
+    const token = localStorage.getItem('my_token');
 
-  if (loading) return <p>Loading categories...</p>;
-  if (error) return <p style={{ color: 'red' }}>{error}</p>;
+    if (!token) {
+      navigate('/login');
+      return;
+    }
+
+    axios.get('http://localhost:8080/api/categories', {
+      headers: {
+        'Authorization': `Bearer ${token}` 
+      }
+    })
+    .then(response => {
+      setCategories(response.data);
+    })
+    .catch(err => {
+      console.error(err);
+      setError('Cannot load categories');
+      if (err.response && err.response.status === 401) {
+          navigate('/login');
+      }
+    });
+  }, [navigate]);
+
+
+  const handleDelete = async (id) => {
+    const token = localStorage.getItem('my_token');
+    
+    try {
+        await axios.delete(`http://localhost:8080/api/categories/${id}`, {
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+        setCategories(categories.filter(cat => cat.id !== id));
+    } catch (err) {
+        alert('Error while deleting');
+    }
+  }
 
   return (
     <div>
-      <h1>Categories</h1>
+      <Navbar />
       
-      {categories.length === 0 ? (
-        <p>No categories found. Create one!</p>
-      ) : (
-        <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))' }}>
-          {categories.map((cat) => (
-            <div key={cat.id} className="card" style={{ borderLeft: `5px solid ${cat.color}`, textAlign: 'left' }}>
-              <h3>{cat.name}</h3>
-              <p>Type: <strong>{cat.type}</strong></p>
-            </div>
-          ))}
-        </div>
-      )}
+      <h1>My Categories</h1>
+      
+      <Link to="/categories/new">
+        <button>+ New Category</button>
+      </Link>
+      
+      {error && <p style={{color:'red'}}>{error}</p>}
+
+      <div style={{ display: 'grid', gap: '10px', marginTop: '20px' }}>
+        {categories.map(cat => (
+          <div key={cat.id} style={{ border: '1px solid #ccc', padding: '10px', borderRadius: '8px' }}>
+            <h3>{cat.name}</h3>
+            <p>Type: {cat.type}</p>
+            <button onClick={() => handleDelete(cat.id)} style={{backgroundColor: 'red', color: 'white'}}>
+              Delete
+            </button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
