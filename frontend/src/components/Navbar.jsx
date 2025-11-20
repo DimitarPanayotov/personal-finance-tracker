@@ -21,7 +21,7 @@ const Navbar = () => {
       <div style={{ display: 'flex', gap: '20px' }}>
         {/* Links to the pages */}
         <Link to="/dashboard" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Dashboard</Link>
-        <Link to="/categories" style={{ textDecoration: 'none', fontWeight: 'bold' }}>Categories</Link>
+        <Link to="/categories" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Categories</Link>
         <Link to="/transactions" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Transactions</Link>
       </div>
       
@@ -29,7 +29,7 @@ const Navbar = () => {
         onClick={handleLogout} 
         style={{ 
           padding: '5px 15px', 
-          backgroundColor: '#dc3545', // Червен цвят
+          backgroundColor: '#dc3545',
           color: 'white',
           border: 'none',
           borderRadius: '4px',
