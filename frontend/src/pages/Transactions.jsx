@@ -53,8 +53,6 @@ const Transactions = () => {
 
   return (
     <div>
-      <Navbar />
-      
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Transactions</h1>
         <Link to="/transactions/new">

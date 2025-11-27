@@ -9,6 +9,7 @@ import Budgets from './pages/Budgets';
 import CreateBudget from './pages/CreateBudget';
 import Profile from './pages/Profile';
 import Register from './pages/Register';
+import Layout from './components/Layout';
 import './App.css';
 
 function App() {
@@ -16,22 +17,23 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
-        
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
 
-        <Route path="/dashboard" element={<Dashboard />} />
+        <Route element={<Layout />}>
+          <Route path="/dashboard" element={<Dashboard />} />
 
-        <Route path="/categories" element={<Categories />} />
-        <Route path="/categories/new" element={<CreateCategory />} />
+          <Route path="/categories" element={<Categories />} />
+          <Route path="/categories/new" element={<CreateCategory />} />
 
-        <Route path="/transactions" element={<Transactions />} />
-        <Route path="/transactions/new" element={<CreateTransaction />} />
+          <Route path="/transactions" element={<Transactions />} />
+          <Route path="/transactions/new" element={<CreateTransaction />} />
 
-        <Route path="/budgets" element={<Budgets />} />
-        <Route path="/budgets/new" element={<CreateBudget />} />
+          <Route path="/budgets" element={<Budgets />} />
+          <Route path="/budgets/new" element={<CreateBudget />} />
 
-        <Route path="/profile" element={<Profile />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

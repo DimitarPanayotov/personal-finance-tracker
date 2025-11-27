@@ -1,4 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
+import './Navbar.css'
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -9,37 +10,17 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ 
-      padding: '1rem', 
-      borderBottom: '1px solid #ccc', 
-      marginBottom: '2rem',
-      display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'center',
-      backgroundColor: '#f8f9fa'
-    }}>
-      <div style={{ display: 'flex', gap: '20px' }}>
-        {/* Links to the pages */}
-        <Link to="/dashboard" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Dashboard</Link>
-        <Link to="/categories" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Categories</Link>
-        <Link to="/transactions" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Transactions</Link>
-        <Link to="/budgets" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Budgets</Link>
+    <nav className='navbar'>
+      <div className='nav-links'>
+        <Link to="/dashboard" className="nav-link">Dashboard</Link>
+        <Link to="/categories" className="nav-link">Categories</Link>
+        <Link to="/transactions" className="nav-link">Transactions</Link>
+        <Link to="/budgets" className="nav-link">Budgets</Link>
       </div>
       
-      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
-        <Link to="/profile" style={{ textDecoration: 'none', color: '#555' }}>Profile</Link>
-        <button 
-          onClick={handleLogout} 
-          style={{ 
-            margin: '15px',
-            padding: '5px 15px', 
-            backgroundColor: '#dc3545',
-            color: 'white',
-            border: 'none',
-            borderRadius: '4px',
-            cursor: 'pointer'
-        }}
-      >
+      <div className='nav-actions'>
+        <Link to="/profile" className="nav-link">Profile</Link>
+        <button onClick={handleLogout} className="btn-logout">
         Logout
       </button>
       </div>

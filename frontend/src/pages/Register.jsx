@@ -33,54 +33,82 @@ const Register = () => {
   };
 
   return (
-    <div className="card">
-      <h2>Sign in</h2>
-      {error && <p style={{color: 'red'}}>{error}</p>}
-      
-      <form onSubmit={handleRegister} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '300px', margin: '0 auto' }}>
+    <div className="auth-container">
+      <div className="card" style={{ textAlign: 'center' }}>
+        <h2>Sign Up</h2>
         
-        <div style={{ textAlign: 'left' }}>
-          <label>Username:</label>
-          <input
-            type="text"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            required
-            placeholder="Choose username"
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-          />
-        </div>
+        {error && <p style={{color: 'red', marginBottom: '1rem'}}>{error}</p>}
+        
+        <form onSubmit={handleRegister}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            marginBottom: '1rem' 
+          }}>
+            <label style={{ width: '80px', textAlign: 'right', marginRight: '10px', fontWeight: 'bold' }}>
+              Username:
+            </label>
+            <input
+              type="text"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              placeholder="Choose username"
+              style={{ width: '200px', padding: '5px' }}
+            />
+          </div>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            marginBottom: '1rem' 
+          }}>
+            <label style={{ width: '80px', textAlign: 'right', marginRight: '10px', fontWeight: 'bold' }}>
+              Email:
+            </label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="example@mail.com"
+              style={{ width: '200px', padding: '5px' }}
+            />
+          </div>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            marginBottom: '1rem' 
+          }}>
+            <label style={{ width: '80px', textAlign: 'right', marginRight: '10px', fontWeight: 'bold' }}>
+              Password:
+            </label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="At least 6 chars"
+              style={{ width: '200px', padding: '5px' }}
+            />
+          </div>
 
-        <div style={{ textAlign: 'left' }}>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-            placeholder="your_email@mail.com"
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-          />
-        </div>
+          <button type="submit" style={{ 
+            marginTop: '10px', 
+            backgroundColor: '#4CAF50', 
+            color: 'white', 
+            border: 'none', 
+            padding: '8px 20px', 
+            cursor: 'pointer', 
+            borderRadius: '4px' 
+          }}>
+            Register
+          </button>
+        </form>
 
-        <div style={{ textAlign: 'left' }}>
-          <label>Password:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-            placeholder="Password (at least 6 symbols)"
-            style={{ width: '100%', padding: '8px', boxSizing: 'border-box' }}
-          />
-        </div>
-
-        <button type="submit" style={{ marginTop: '10px', backgroundColor: '#4CAF50' }}>Sign in</button>
-      </form>
-
-      <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
-        Already have an acoount? <Link to="/login">Log in here</Link>
-      </p>
+        <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
+          Already have an account? <Link to="/login">Log in here</Link>
+        </p>
+      </div>
     </div>
   );
 };

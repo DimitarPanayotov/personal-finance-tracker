@@ -83,7 +83,6 @@ const Profile = () => {
 
   return (
     <div>
-      <Navbar />
       <div style={{ maxWidth: '600px', margin: '0 auto' }}>
         <h1>My Profile</h1>
 
@@ -138,7 +137,7 @@ const Profile = () => {
                 <button type="submit" style={{ backgroundColor: '#008CBA' }}>Change password</button>
             </form>
         </div>
-        <div className="card" style={{ textAlign: 'left', border: '1px solid #ff4444' }}>
+        <div className="card" style={{ textAlign: 'left', border: '1px solid #fefefeff' }}>
             <h3 style={{ color: '#ff4444' }}>Warning!</h3>
             <p>Personal data is deleted permanently after deleting account!</p>
             <button onClick={handleDeleteAccount} style={{ backgroundColor: '#ff4444', width: '100%' }}>

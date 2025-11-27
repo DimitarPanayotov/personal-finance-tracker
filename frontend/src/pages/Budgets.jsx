@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
-import Navbar from '../components/navbar';
 
 const Budgets = () => {
   const [budgets, setBudgets] = useState([]);
@@ -55,7 +54,6 @@ const Budgets = () => {
 
   return (
     <div>
-      <Navbar />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <h1>Budgets</h1>
         <Link to="/budgets/new">

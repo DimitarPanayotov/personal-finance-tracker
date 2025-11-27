@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import Navbar from "../components/navbar";
-
 
 const Dashboard = () => {
   const [stats, setStats] = useState(null);
@@ -52,9 +50,7 @@ const Dashboard = () => {
   }, [navigate])
 
   return (
-    <div>
-      <Navbar />
-      
+    <div>      
       <h1>Dashboard</h1>
       
       {/* --- Statistics --- */}
@@ -80,7 +76,7 @@ const Dashboard = () => {
       </div>
       <div style={{ marginTop: '40px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
-            <h2>Latest Transactions</h2>
+            <h2>Recent Transactions</h2>
             <Link to="/transactions">See all: </Link>
         </div>
 
@@ -90,9 +86,9 @@ const Dashboard = () => {
             <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>
                     <tr style={{  backgroundColor: '#f1f1f1' }}>
-                        <th style={{ padding: '10px' }}>Date</th>
-                        <th style={{ padding: '10px' }}>Description</th>
-                        <th style={{ padding: '10px' }}>Amount</th>
+                        <th style={{ padding: '10px', textAlign: 'left' }}>Date</th>
+                        <th style={{ padding: '10px', textAlign: 'left' }}>Description</th>
+                        <th style={{ padding: '10px', textAlign: 'left' }}>Amount</th>
                     </tr>
                 </thead>
                 <tbody>

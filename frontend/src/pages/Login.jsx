@@ -32,23 +32,56 @@ const Login = () => {
   };
 
   return (
-    <div className="card">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <div>
-          <label>Username:</label>
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
-        </div>
-        <div>
-          <label style={{marginLeft: '10px'}}>Password:</label>
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">Login</button>
-        {error && <p style={{color: 'red'}}>{error}</p>}
-      </form>
-      <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
-      You don't have an account? <Link to="/register">Sign in</Link>
-      </p>
+    <div className="auth-container">
+      <div className="card" style={{ textAlign: 'center' }}>
+        <h2>Login</h2>
+        
+        <form onSubmit={handleLogin}>
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            marginBottom: '1rem' 
+          }}>
+            <label style={{ width: '80px', textAlign: 'right', marginRight: '10px', fontWeight: 'bold' }}>
+              Username:
+            </label>
+            <input 
+              type="text" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              style={{ width: '200px', padding: '5px' }}
+            />
+          </div>
+
+          <div style={{ 
+            display: 'flex', 
+            justifyContent: 'center', 
+            alignItems: 'center', 
+            marginBottom: '1rem' 
+          }}>
+            <label style={{ width: '80px', textAlign: 'right', marginRight: '10px', fontWeight: 'bold' }}>
+              Password:
+            </label>
+            <input 
+              type="password" 
+              value={password} 
+              onChange={(e) => setPassword(e.target.value)} 
+              style={{ width: '200px', padding: '5px' }}
+            />
+          </div>
+
+          <button type="submit" style={{ cursor: 'pointer', padding: '8px 20px' }}>
+            Login
+          </button>
+          
+          {error && <p style={{color: 'red', marginTop: '10px'}}>{error}</p>}
+        </form>
+
+        <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
+          You don't have an account? <Link to="/register">Sign in</Link>
+        </p>
+      </div>
     </div>
   );
 };
