@@ -67,7 +67,7 @@ const CreateTransaction = () => {
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxWidth: '400px', margin: '0 auto' }}>
             
             <div style={{ textAlign: 'left' }}>
-                <label>Amount (bgn.):</label>
+                <label>Amount (EUR):</label>
                 <input 
                     type="number" 
                     step="0.01" 

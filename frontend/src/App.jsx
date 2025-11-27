@@ -5,6 +5,10 @@ import Categories from './pages/Categories';
 import CreateCategory from './pages/CreateCategory';
 import Transactions from './pages/Transactions';
 import CreateTransaction from './pages/CreateTransaction';
+import Budgets from './pages/Budgets';
+import CreateBudget from './pages/CreateBudget';
+import Profile from './pages/Profile';
+import Register from './pages/Register';
 import './App.css';
 
 function App() {
@@ -13,7 +17,9 @@ function App() {
       <Routes>
         <Route path="/" element={<Navigate to="/login" />} />
         
+        <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+
         <Route path="/dashboard" element={<Dashboard />} />
 
         <Route path="/categories" element={<Categories />} />
@@ -21,6 +27,11 @@ function App() {
 
         <Route path="/transactions" element={<Transactions />} />
         <Route path="/transactions/new" element={<CreateTransaction />} />
+
+        <Route path="/budgets" element={<Budgets />} />
+        <Route path="/budgets/new" element={<CreateBudget />} />
+
+        <Route path="/profile" element={<Profile />} />
       </Routes>
     </BrowserRouter>
   );

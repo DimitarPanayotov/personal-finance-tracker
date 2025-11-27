@@ -87,7 +87,7 @@ const Transactions = () => {
                 <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{tx.categoryName}</td>
                 <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>{tx.description}</td>
                 <td style={{ padding: '10px', borderBottom: '1px solid #ddd', fontWeight: 'bold', color: tx.amount > 0 ? '#4CAF50' : '#FF5733' }}>
-                    {tx.amount} bgn.
+                    {tx.amount} EUR
                 </td>
                 <td style={{ padding: '10px', borderBottom: '1px solid #ddd' }}>
                   <button onClick={() => handleDelete(tx.id)} style={{ backgroundColor: '#ff4444', color: 'white', border: 'none', padding: '5px 10px', borderRadius: '4px', cursor: 'pointer' }}>

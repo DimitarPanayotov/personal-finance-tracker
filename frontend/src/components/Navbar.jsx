@@ -23,21 +23,26 @@ const Navbar = () => {
         <Link to="/dashboard" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Dashboard</Link>
         <Link to="/categories" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Categories</Link>
         <Link to="/transactions" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Transactions</Link>
+        <Link to="/budgets" style={{ textDecoration: 'none', fontWeight: 'bold', color: '#333' }}>Budgets</Link>
       </div>
       
-      <button 
-        onClick={handleLogout} 
-        style={{ 
-          padding: '5px 15px', 
-          backgroundColor: '#dc3545',
-          color: 'white',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer'
+      <div style={{ display: 'flex', gap: '15px', alignItems: 'center' }}>
+        <Link to="/profile" style={{ textDecoration: 'none', color: '#555' }}>Profile</Link>
+        <button 
+          onClick={handleLogout} 
+          style={{ 
+            margin: '15px',
+            padding: '5px 15px', 
+            backgroundColor: '#dc3545',
+            color: 'white',
+            border: 'none',
+            borderRadius: '4px',
+            cursor: 'pointer'
         }}
       >
         Logout
       </button>
+      </div>
     </nav>
   );
 };

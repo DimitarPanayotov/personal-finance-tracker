@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import axios from 'axios'; // Ползваме директно axios
-import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; 
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -23,7 +23,7 @@ const Login = () => {
 
       localStorage.setItem('my_token', token);
 
-      navigate('/categories');
+      navigate('/dashboard');
       
     } catch (err) {
       console.error(err);
@@ -40,12 +40,15 @@ const Login = () => {
           <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} />
         </div>
         <div>
-          <label>Password:</label>
+          <label style={{marginLeft: '10px'}}>Password:</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
         <button type="submit">Login</button>
         {error && <p style={{color: 'red'}}>{error}</p>}
       </form>
+      <p style={{ marginTop: '1rem', fontSize: '0.9rem' }}>
+      You don't have an account? <Link to="/register">Sign in</Link>
+      </p>
     </div>
   );
 };

@@ -155,11 +155,11 @@ java -jar target/personal-finance-tracker-0.0.1-SNAPSHOT.jar
 - [ ] Structured logging (JSON option) & basic metrics
 
 ### Phase 3: Frontend Development
-- [ ] Lightweight SPA (React/Vue) for core flows
-- [ ] Dashboard: recent transactions + budget usage widgets
-- [ ] Transaction CRUD UI with filtering
+- [X] Lightweight SPA (React/Vue) for core flows
+- [X] Dashboard: recent transactions + budget usage widgets
+- [X] Transaction CRUD UI with filtering
 - [ ] Category management UI with merge capability
-- [ ] Budget creation & progress visualization (charts)
+- [X] Budget creation & progress visualization (charts)
 
 ### Phase 4: Advanced & AI-Powered Features
 - [ ] Spending pattern clustering

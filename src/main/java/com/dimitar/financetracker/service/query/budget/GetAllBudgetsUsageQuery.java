@@ -6,6 +6,7 @@ import com.dimitar.financetracker.repository.BudgetRepository;
 import com.dimitar.financetracker.repository.TransactionRepository;
 import com.dimitar.financetracker.service.AuthenticationFacade;
 import com.dimitar.financetracker.service.query.Query;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -24,6 +25,7 @@ public class GetAllBudgetsUsageQuery implements Query<Void, List<BudgetUsageResp
     private final TransactionRepository transactionRepository;
 
     @Override
+    @Transactional
     public List<BudgetUsageResponse> execute(Void input) {
         Long userId = authenticationFacade.getAuthenticatedUserId();
         List<Budget> budgets = budgetRepository.findByUserId(userId);
